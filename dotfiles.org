@@ -68,7 +68,7 @@ fi
 
 echo -e "${BLUE}Pulling updates from dotfiles repo...${NC}"
 echo
-git pull origin master
+git pull origin main
 echo
 
 if [[ $needs_pop -eq 1 ]]; then
@@ -1584,7 +1584,7 @@ In Doom Emacs ~init.el~ servers as the area for _module_ activation. This is a s
 :ID:       87186222-09f3-4958-9e50-9b0ca6eff78a
 :END:
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/init.el
 ;;; init.el -*- lexical-binding: t; -*-
 
 ;; This file controls what Doom modules are enabled and what order they load
