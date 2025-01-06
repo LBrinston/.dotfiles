@@ -1,0 +1,8 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Liam Brinston
+	email = labrinston@gmail.com
+[core]
+	editor = doom-emacs
+[init]
+	defaultBranch = main
