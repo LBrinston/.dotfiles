@@ -90,7 +90,38 @@ fi
 
 ** Where to put conf files
 
-[[https://specifications.freedesktop.org/basedir-spec/0.6/][XDG Base Directory Specification]]
+The [[https://specifications.freedesktop.org/basedir-spec/0.6/][freedesktop XDG Base Directory Specification]] is widely adopted and provides prescriptions for where user specific data (~$XDG_DATA_HOME~) and user specific config (~$XDG_CONFIG_HOME~) should be.
+
+~$XDG_CONFIG_HOME~
+If not set or empty a default of ~$HOME/.config~ should be used.
+
+~$XDG_CONFIG_HOME~
+If not set or empty a default of ~$HOME/.local/share~ should be used.
+
+Which applications support ~XDG_~ ? That can be challenging to determine. There is some tooling out there to help save you from crawling the web to determine if every dotfile in ~$HOME~ can be moved. For example ~xdg-ninja~
+
+*** ~xdg-nina~
+
+[[https://github.com/b3nj5m1n/xdg-ninja][xdg-ninja git repo]]
+
+_Dependencies_:
+- A POSIX-compliant shell
+- ~find~
+- ~jq~ for parsing json
+- (Optional) ~glow~ for rendering markdown in the terminal
+
+~xdg-ninja~ is a diagnostic tool. It will not move dotfiles instead it simply checks if it can be moved and how to do so.
+
+At time of writing it seems xdg-ninja is not packaged for apt so git clone it is:
+
+#+BEGIN_SRC bash
+git clone https://github.com/b3nj5m1n/xdg-ninja ~/.bin/xdg-ninja
+#+END_SRC
+
+For now I am electing to directly clone this to =~/.bin= instead of =~/.dotfiles/.bin=. I may instead add a check for it to ~.bashrc~ instead. Since this more or less a script that checks a data base this begs the question how do I easily keep this (and other cloned tools) up to date.
+
+**** TODO Keeping git cloned things up to date:
+https://askubuntu.com/questions/759058/how-to-keep-a-local-bin-folder-up-to-date-with-updates-from-various-github-rep
 
 * dotfiles
 *** =bash=
@@ -2516,6 +2547,13 @@ I suspect that I won't end up wanting to use =-goto-word-=. I think usually if I
 )
 #+end_src
 
+Doom seems to use =Avy= under the following binding:
+
+_Normal mode_
+=g s SPC=
+
+But if I query this via =SPC h k= Doom informs me that "This lambda is an interactive function" BUT does list ~evil-motion-state-map~ under "Key Bindings" which does include a number of ~avy~ functions.
+
 ******* Completion
 :PROPERTIES:
 :ID:       dc64093f-f5cd-476b-9fec-c243408e3839
@@ -3007,3 +3045,7 @@ Emacs should offer to do this for you when you first trying to run it.
 2. [[https://github.com/doomemacs/doomemacs/blob/master/docs/getting_started.org#common-mistakes-when-configuring-doom-emacs][Common mistakes when configuring Doom Emacs]]
 3. [[https://hieuphay.com/doom-emacs-config/][Hieu Phay - My Doom Emacs Configuration - 4.1.4 Previewing LaTeX fragments]]
 **** my-emacs
+
+# Local Variables:
+# jinx-local-words: "config"
+# End:
