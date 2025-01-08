@@ -386,6 +386,17 @@ fi
 
 #+BEGIN_SRC conf :tangle ~/.dotfiles/.gitconfig
 # This is Git's per-user configuration file.
+
+# Syntax
+# [ section "subsection"]
+# case insesitive
+# only alphanumeric characters, - , and . allowed
+
+# all variables must belong to a section
+
+# together section & variables correspond to:
+# safe.directory
+
 [user]
 	name = Liam Brinston
 	email = labrinston@gmail.com
@@ -393,7 +404,21 @@ fi
 	editor = doom-emacs
 [init]
 	defaultBranch = main
+[safe]
+    directory = /opt/pico-sdk
 #+END_SRC
+
+See: [[https://git-scm.com/docs/git-config#_configuration_file][git-config configuration file]] for more details.
+
+**** ~safe.directory~
+
+This tells git that we consider a given dir safe. Without it git _will not_ parse a ~.gitconfig~ of a non-safe (assume to be unless told otherwise), run hooks, etc. This value is _only respected when set in the global ~.gitconfig~..
+
+This value is interpolated.
+~~/<path>~ - expands relative to ~$HOME~
+~%(prefix)/<path>~ - expands relative to git's runtime prefix.
+
+See: [[https://git-scm.com/docs/git-config/2.35.2#Documentation/git-config.txt-safedirectory][git-scm safe.directory]]
 
 *** .tmux.conf
 
