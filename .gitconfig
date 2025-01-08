@@ -1,4 +1,15 @@
 # This is Git's per-user configuration file.
+
+# Syntax
+# [ section "subsection"]
+# case insesitive
+# only alphanumeric characters, - , and . allowed
+
+# all variables must belong to a section
+
+# together section & variables correspond to:
+# safe.directory
+
 [user]
 	name = Liam Brinston
 	email = labrinston@gmail.com
@@ -6,3 +17,5 @@
 	editor = doom-emacs
 [init]
 	defaultBranch = main
+[safe]
+    directory = /opt/pico-sdk
