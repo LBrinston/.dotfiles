@@ -173,7 +173,7 @@ source /etc/profile.d/bash_completion.sh
 
 # Default Editor
 export EDITOR="emacs -nw"
-export VISUAL="emacs -nw"
+export VISUAL="doom-emacs"
 
 # Check if bat is installed - note: the bin is named batcat on debian sys because naming conflict
 if dpkg -s bat > /dev/null 2>&1; then
