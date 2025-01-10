@@ -137,7 +137,9 @@ If the directory does not exist, create it. Do nothing if there is no associated
 ) ; use-package!
 ) ; after!
 
-(setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+(after! org
+  (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+)
 
 (use-package! org-super-links
   :after org
@@ -280,6 +282,112 @@ If the directory does not exist, create it. Do nothing if there is no associated
 (with-eval-after-load 'org
   (require 'org-xopp)
   (org-xopp-setup)
+  )
+
+(after! org
+  (setq org-log-done 'time)
+   (setq org-log-into-drawer "LOGBOOK") ; places state transitions into LOGBOOK drawer
+   )
+
+	 (setq org-todo-keywords
+          '(
+            ;; -- General
+            (sequence "TODO(t)" "IN-PROG" "WAITING" "|" "DONE(!)" "SUBMITTED(s!)" "|" "OBE(o)" "WONT-DO")
+            (sequence "IDEA")
+            (sequence "REMINDER" "|" "DONE")
+            (sequence "CALL" "|" "CALLED(!)")
+            (seqeunce "EMAIL" "|" "EMAILED(d!)")
+            (sequence "GROC" "|" "DONE")
+            ;; -- Media
+            (sequence "TOFIND" "|" "FOUND")
+            )
+          )
+
+    (setq org-todo-keyword-faces
+          '(("TODO"      . ( :foreground "red" :weight bold))
+            ("IN-PROG"   . ( :foreground "orange" :weight bold))
+            ("WAITING"   . ( :foreground "yellow" :weight bold))
+            ("DONE"      . ( :foreground "green" :weight bold))
+            ("IDEA"      . ( :foreground "deepskyblue1" :weight bold))
+            ("CANCELLED" . ( :foreground "gray" :weight bold))
+            ("TOFIND"    . ( :foreground "yellow1" :weight bold))
+      )
+    )
+
+(after! org
+  (setq org-capture-templates
+        '(("t" "Todo" entry (file "~/.notes/capture.org")
+           "* TODO %?\n  %i\n"
+           :empty-lines-after 1)
+
+;; -- Life
+("l" "Life")
+("lt" "Todo" entry (file "~/.notes/agenda-life.org")
+ "* TODO %?\n\n\t SCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1)
+("lr" "Reminder" entry (file "~/.notes/agenda-life.org")
+ "* REMINDER %?\nSCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1)
+("lg" "Grocery" entry (file "~/.notes/grocery.org")
+ "* GROC %^{item}\n\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1)
+;;
+
+;; -- School
+("s" "School")
+("sa" "Assignment" entry (file+headline "~/.notes/agenda-school.org" "Spring 2025")
+ "* TODO %^{ECE441|ENGR297|ENGR446} - %^{Assignment|Worksheet} %^{#} \nSCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
+("se" "Exam" entry (file+headline "~/.notes/agenda-school.org" "Spring 2025")
+ "* TODO %^{ECE441|ENGR297|ENGR446} - %^{Quiz|Midterm|Final} \nSCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
+("sr" "Reading" entry (file+headline "~/.notes/agenda-school.org" "Spring 2025")
+ "* TODO %^{ECE441|ENGR297|ENGR446} - %^{Reading} - %^{Chapter|Pages|Section} \nSCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
+
+;; -- Journal
+("j" "Journal" entry (file+olp+datetree "~/.notes/journal.org")
+ "* %U \n %?%i \n"
+ :empty-lines-after 1)
+
+("b" "Bookmark" entry (file "~/.notes/bookmarks.org")
+ "* [[%^{link}][%^{name}]] %^g\n:PROPERTIES:\n:CREATED: %U\n:END:")
+
+("m" "Media")
+("mm" "Movie" entry (file+headline "~/.notes/media.org" "Movies")
+ "* TOFIND Movie - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1)
+("mb" "Book" entry (file+headline "~/.notes/media.org" "Books")
+ "* TOFIND Books - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1)
+("mp" "Pocast" entry (file+headline "~/.notes/media.org" "Podcasts")
+ "* TOFIND Podcast - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1)
+
+;; -- Emacs
+("e" "Emacs")
+("eo" "Org-mode" entry (file+headline "~/.notes/emacs.org" "Improvements")
+ "* EMACS Org-mode - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1)
+;; -- Programming
+("p" "Programming")
+("pe" "Emacs TODO" entry (file+headline "~/.notes/emacs.org" "Improvements")
+ "* EMACS %^{Title}\n\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n %a"
+ :empty-lines-after 1)
+
+;; -- Test
+("z" "Test capture" entry (file "~/.notes/test.org")
+ "* TODO %^{PROMPT|Test1|Test2|Test3}\n\%?"
+ :empty-lines-after 1)
+))
+)
+
+(after! org
+  (setq org-default-notes-file "~/.notes/capture.org")
+  (setq org-refile-targets
+        '((nil :maxlevel . 6)
+          (org-agenda-files :maxlevel . 6))
+        )
   )
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an

@@ -2270,7 +2270,9 @@ If the directory does not exist, create it. Do nothing if there is no associated
 Headings and links go together because we will assign a unique ID to every heading from which we will derive org-links. This makes the links much more resilient.
 
 #+begin_src emacs-lisp
-(setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+(after! org
+  (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+)
 #+end_src
 
 We will also bring in =org-super-links= so that we can have automatic back links.
@@ -2499,6 +2501,163 @@ There appears to be two issues:
   (org-xopp-setup)
   )
 #+END_SRC
+
+******* Agenda
+
+#+BEGIN_SRC emacs-lisp
+(after! org
+  (setq org-log-done 'time)
+   (setq org-log-into-drawer "LOGBOOK") ; places state transitions into LOGBOOK drawer
+   )
+#+END_SRC
+
+******* todo-keywords
+
+#+BEGIN_SRC emacs-lisp
+	 (setq org-todo-keywords
+          '(
+            ;; -- General
+            (sequence "TODO(t)" "IN-PROG" "WAITING" "|" "DONE(!)" "SUBMITTED(s!)" "|" "OBE(o)" "WONT-DO")
+            (sequence "IDEA")
+            (sequence "REMINDER" "|" "DONE")
+            (sequence "CALL" "|" "CALLED(!)")
+            (seqeunce "EMAIL" "|" "EMAILED(d!)")
+            (sequence "GROC" "|" "DONE")
+            ;; -- Media
+            (sequence "TOFIND" "|" "FOUND")
+            )
+          )
+
+    (setq org-todo-keyword-faces
+          '(("TODO"      . ( :foreground "red" :weight bold))
+            ("IN-PROG"   . ( :foreground "orange" :weight bold))
+            ("WAITING"   . ( :foreground "yellow" :weight bold))
+            ("DONE"      . ( :foreground "green" :weight bold))
+            ("IDEA"      . ( :foreground "deepskyblue1" :weight bold))
+            ("CANCELLED" . ( :foreground "gray" :weight bold))
+            ("TOFIND"    . ( :foreground "yellow1" :weight bold))
+      )
+    )
+#+END_SRC
+
+******* Capture
+
+******** Templates
+
+Relevant documentation:
+- [[https://orgmode.org/manual/Template-expansion.html][Org capture template expansion]]
+- [[https://orgmode.org/manual/Template-elements.html][Org capture template elements]]
+- [[https://orgmode.org/manual/Templates-in-contexts.html][Org capture templates in context]]
+
+#+begin_src emacs-lisp
+(after! org
+  (setq org-capture-templates
+        '(("t" "Todo" entry (file "~/.notes/capture.org")
+           "* TODO %?\n  %i\n"
+           :empty-lines-after 1)
+#+end_src
+
+"Life" related things.
+
+#+begin_src emacs-lisp
+;; -- Life
+("l" "Life")
+("lt" "Todo" entry (file "~/.notes/agenda-life.org")
+ "* TODO %?\n\n\t SCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1)
+("lr" "Reminder" entry (file "~/.notes/agenda-life.org")
+ "* REMINDER %?\nSCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1)
+("lg" "Grocery" entry (file "~/.notes/grocery.org")
+ "* GROC %^{item}\n\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1)
+;;
+#+end_src
+
+School related capture groups.
+
+#+begin_src emacs-lisp
+;; -- School
+("s" "School")
+("sa" "Assignment" entry (file+headline "~/.notes/agenda-school.org" "Spring 2025")
+ "* TODO %^{ECE441|ENGR297|ENGR446} - %^{Assignment|Worksheet} %^{#} \nSCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
+("se" "Exam" entry (file+headline "~/.notes/agenda-school.org" "Spring 2025")
+ "* TODO %^{ECE441|ENGR297|ENGR446} - %^{Quiz|Midterm|Final} \nSCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
+("sr" "Reading" entry (file+headline "~/.notes/agenda-school.org" "Spring 2025")
+ "* TODO %^{ECE441|ENGR297|ENGR446} - %^{Reading} - %^{Chapter|Pages|Section} \nSCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
+#+end_src
+
+If I am honest with myself I am terrible at remembering to journal. But maybe! just maybe. I will someday.
+
+#+begin_src emacs-lisp
+;; -- Journal
+("j" "Journal" entry (file+olp+datetree "~/.notes/journal.org")
+ "* %U \n %?%i \n"
+ :empty-lines-after 1)
+#+end_src
+
+#+begin_src emacs-lisp
+("b" "Bookmark" entry (file "~/.notes/bookmarks.org")
+ "* [[%^{link}][%^{name}]] %^g\n:PROPERTIES:\n:CREATED: %U\n:END:")
+#+end_src
+
+Capture grouping for media to follow up on: Movies, books, podcasts, etc.
+
+#+begin_src emacs-lisp
+("m" "Media")
+("mm" "Movie" entry (file+headline "~/.notes/media.org" "Movies")
+ "* TOFIND Movie - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1)
+("mb" "Book" entry (file+headline "~/.notes/media.org" "Books")
+ "* TOFIND Books - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1)
+("mp" "Pocast" entry (file+headline "~/.notes/media.org" "Podcasts")
+ "* TOFIND Podcast - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1)
+#+end_src
+
+These capture groups need to be better defined and expanded:
+- Make use of %a (annotation - ~org-store-link~)
+
+#+begin_src emacs-lisp
+;; -- Emacs
+("e" "Emacs")
+("eo" "Org-mode" entry (file+headline "~/.notes/emacs.org" "Improvements")
+ "* EMACS Org-mode - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1)
+;; -- Programming
+("p" "Programming")
+("pe" "Emacs TODO" entry (file+headline "~/.notes/emacs.org" "Improvements")
+ "* EMACS %^{Title}\n\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n %a"
+ :empty-lines-after 1)
+#+end_src
+
+This one is purely for testing purposes.
+
+#+begin_src emacs-lisp
+;; -- Test
+("z" "Test capture" entry (file "~/.notes/test.org")
+ "* TODO %^{PROMPT|Test1|Test2|Test3}\n\%?"
+ :empty-lines-after 1)
+))
+)
+#+end_src
+
+******** Refile
+
+#+BEGIN_SRC emacs-lisp
+(after! org
+  (setq org-default-notes-file "~/.notes/capture.org")
+  (setq org-refile-targets
+        '((nil :maxlevel . 6)
+          (org-agenda-files :maxlevel . 6))
+        )
+  )
+#+END_SRC
+
 ****** Advice - not the lisp kind
 :PROPERTIES:
 :ID:       dee6c3f1-dbf7-4779-a99e-474307a05220
