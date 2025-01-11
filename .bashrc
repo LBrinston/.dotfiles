@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -8,6 +10,12 @@ case $- in
     *) return;;
 esac
 
+# XDG Base Directory Specification Variables
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_CACHE_HOME="$HOME/.cache"
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -16,6 +24,7 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTFILE="${XDG_STATE_HOME}"/bash/history
 HISTSIZE=1000
 HISTFILESIZE=2000
 HISTOCONTROL=ignoredups
@@ -182,23 +191,23 @@ if dpkg -s bat > /dev/null 2>&1; then
     export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
 fi
 
-#
-XDG_DATA_HOME="$HOME/.local/share"
-XDG_CONFIG_HOME="$HOME/.config"
-XDG_STATE_HOME="$HOME/.local/state"
-XDG_CACHE_HOME="$HOME/.cache"
-
-# XDG_DATA_HOME="$HOME/.local/share"
-# XDG_CONFIG_HOME="$HOME/.config"
-# XDG_STATE_HOME="$HOME/.local/state"
-# XDG_CACHE_HOME="$HOME/.cache"
-
 # Environment variables
 export SEMESTER="spring_2025"
 export UVIC="$HOME/Documents/UVic"
 
+export ANDROID_USER_HOME="$XDG_DATA_HOME/android:$PATH"
+
+# Rust config
+
+## Cargo conf
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export PATH="$XDG_DATA_HOME/cargo/bin:$PATH"
+
 # Adding to PATH
 export PATH="$HOME/.local/bin:$PATH"
+
+# Scripts
+export PATH="$HOME/.bin/:$PATH"
 export PATH="$HOME/scripts/:$PATH"
 export PATH="/$HOME/scripts/file_manip:$PATH"
 export PATH="/$HOME/scripts/hardware:$PATH"
@@ -207,9 +216,17 @@ export PATH="/$HOME/scripts/rclone:$PATH"
 export PATH="/$HOME/scripts/rclone/filters:$PATH"
 export PATH="$HOME/scripts/notifications:$PATH"
 export PATH="$HOME/scripts/sdr:$PATH"
+
+# Microcontrollers
+## Pi Pico
 export PATH="/opt/arm-none-eabi/bin:$PATH"
+
+# Python
 export PATH="$HOME/venvs:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/.config/doom:$PATH"
-export PATH="$HOME/.config/doom-emacs/bin:$PATH"
-export PATH="$HOME/.bin/:$PATH"
+
+# Emacs
+## Doom Emacs
+export PATH="$XDG_CONFIG_HOME/doom:$PATH"
+export PATH="$XDG_CONFIG_HOME/doom-emacs/bin:$PATH"
+#export PATH="$HOME/.config/doom:$PATH"
+#export PATH="$HOME/.config/doom-emacs/bin:$PATH"
