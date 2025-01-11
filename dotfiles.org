@@ -1943,7 +1943,7 @@ It seems like like this however is intended to work with
 #+end_src
 ***** Packages       - =packages.el=
 :properties:
-:header-args: :tangle ~/.config/doom/packages.el
+:header-args: :tangle ~/.dotfiles/.config/doom/packages.el
 :ID:       593c35e4-0d34-4945-b76a-f3c05520d5ba
 :end:
 
@@ -2127,7 +2127,7 @@ But =org-appear= solves this nicely.
 :ID:       4fcbed90-9b55-4b66-9f58-28d25ba1f2b8
 :END:
 
-#+begin_src emacs-lisp :tangle ~/.config/doom/packages.el
+#+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
 (package! org-appear
   :recipe(:host github
           :repo "awth13/org-appear"
@@ -2177,7 +2177,7 @@ Dealing with images in org mode really requires pixel scrolling.
 _External dependencies_:
 A screen snipping tool that you set via ~org-download-screenshot-method~.
 
-#+begin_src emacs-lisp :tangle ~/.config/doom/packages.el
+#+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
 (package! org-download
   :recipe(:host github
           :repo "abo-abo/org-download"
@@ -2282,7 +2282,7 @@ We will also bring in =org-super-links= so that we can have automatic back links
 :ID:       4820bd7e-2be7-4536-8d04-9e0010156e53
 :END:
 
-#+begin_src emacs-lisp :tangle ~/.config/doom/packages.el
+#+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
 (package! org-super-links
  :recipe(:host github
          :repo "toshism/org-super-links"
@@ -2364,7 +2364,7 @@ ref: [[https://hieuphay.com/doom-emacs-config/][Hieu Phay - My Doom Emacs Config
 
 Engraved is the native Emac's highlighting backed that translate Emacs' font locks to LaTeX.
 
-#+BEGIN_SRC emacs-lisp :tangle ~/.config/doom/packages.el
+#+BEGIN_SRC emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
 (package! engrave-faces)
 #+END_SRC
 
@@ -2449,7 +2449,7 @@ Engraved is the native Emac's highlighting backed that translate Emacs' font loc
 
 Then we bring in =org-fragtog= to save from having to constantly toggle previews.
 
-#+begin_src emacs-lisp :tangle ~/.config/doom/packages.el
+#+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
 (package! org-fragtog
     :recipe(:host github
             :repo "io12/org-fragtog")
@@ -2486,7 +2486,7 @@ There appears to be two issues:
 1. It's not very smart about the .xopp file extension. It seems to be creating it's custom link from the file name you give it but fails to append a .xopp. I suspect if I append .xopp to the file name on creation I'll end up with .xopp.xopp situation.
 2. It can't seem to find ~imagemagick convert~ - may have to provide it an explicit path or run doom update?
 
-#+BEGIN_SRC emacs-lisp :tangle ~/.config/doom/packages.el
+#+BEGIN_SRC emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
 (package! org-xopp
   :recipe(:host github
           :repo "mahmoodsh36/org-xopp"
