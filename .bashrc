@@ -182,8 +182,19 @@ if dpkg -s bat > /dev/null 2>&1; then
     export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
 fi
 
+#
+XDG_DATA_HOME="$HOME/.local/share"
+XDG_CONFIG_HOME="$HOME/.config"
+XDG_STATE_HOME="$HOME/.local/state"
+XDG_CACHE_HOME="$HOME/.cache"
+
+# XDG_DATA_HOME="$HOME/.local/share"
+# XDG_CONFIG_HOME="$HOME/.config"
+# XDG_STATE_HOME="$HOME/.local/state"
+# XDG_CACHE_HOME="$HOME/.cache"
+
 # Environment variables
-export SEMESTER="winter_2024"
+export SEMESTER="spring_2025"
 export UVIC="$HOME/Documents/UVic"
 
 # Adding to PATH
@@ -201,3 +212,4 @@ export PATH="$HOME/venvs:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.config/doom:$PATH"
 export PATH="$HOME/.config/doom-emacs/bin:$PATH"
+export PATH="$HOME/.bin/:$PATH"

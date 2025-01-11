@@ -1,6 +1,10 @@
 #+title: dotfiles
 #+author: Liam Brinston
 #+date: 2025-01-02 14:19:44
+# Local Variables:
+# org-babel-noweb-wrap-start: "«"
+# org-babel-noweb-wrap-end: "»"
+# End:
 
 * Dotfile management
 
@@ -98,7 +102,20 @@ If not set or empty a default of ~$HOME/.config~ should be used.
 ~$XDG_CONFIG_HOME~
 If not set or empty a default of ~$HOME/.local/share~ should be used.
 
+~$XDG_STATE_HOME~
+
+~$XDG_CACHE_HOME~
+
 Which applications support ~XDG_~ ? That can be challenging to determine. There is some tooling out there to help save you from crawling the web to determine if every dotfile in ~$HOME~ can be moved. For example ~xdg-ninja~
+
+#+NAME: XDG shell variables
+#+BEGIN_SRC bash
+# XDG Base Directory Specification Variables
+XDG_DATA_HOME="$HOME/.local/share"
+XDG_CONFIG_HOME="$HOME/.config"
+XDG_STATE_HOME="$HOME/.local/state"
+XDG_CACHE_HOME="$HOME/.cache"
+#+END_SRC
 
 *** ~xdg-nina~
 
@@ -129,15 +146,15 @@ https://askubuntu.com/questions/759058/how-to-keep-a-local-bin-folder-up-to-date
 
 The individual per-interactive-shell startup file.
 
-#+BEGIN_SRC bash :tangle ~/.dotfiles/.bashrc
+#+BEGIN_SRC bash :tangle ~/.dotfiles/.bashrc :noweb yes
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
 # If not running interactively, don't do anything
 case $- in
-    *i*) ;;
-    *) return;;
+    ,*i*) ;;
+    ,*) return;;
 esac
 
 # don't put duplicate lines or lines starting with space in the history.
@@ -218,7 +235,7 @@ case "$TERM" in
     xterm*|rxvt*)
         PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
         ;;
-    *)
+    ,*)
         ;;
 esac
 
@@ -314,8 +331,10 @@ if dpkg -s bat > /dev/null 2>&1; then
     export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
 fi
 
+#<<XDG shell variables>>#
+
 # Environment variables
-export SEMESTER="winter_2024"
+export SEMESTER="spring_2025"
 export UVIC="$HOME/Documents/UVic"
 
 # Adding to PATH
@@ -333,6 +352,7 @@ export PATH="$HOME/venvs:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.config/doom:$PATH"
 export PATH="$HOME/.config/doom-emacs/bin:$PATH"
+export PATH="$HOME/.bin/:$PATH"
 #+END_SRC
 **** .bash_profile
 
@@ -2154,6 +2174,52 @@ I usually want to be able to reference the org file I am working from when editi
 (setq org-src-tab-acts-natively t)
 #+END_SRC
 
+******** noweb
+
+noweb syntax (<<block-name>>) allows for the concatenation of org-babel blocks by name. This is all well and good until "<</>>" breaks syntax highlighting for a given language.
+
+There are two solutions to this:
+
+1. Buffer Local Variables
+
+   #+BEGIN_SRC emacs-lisp :tangle no
+   # Local Variables:
+   # org-babel-noweb-wrap-start: "«"
+   # org-babel-noweb-wrap-end: "»"
+   # End:
+   #+END_SRC
+
+2. Overwrite the ~org-babel-noweb-wrap~ function
+
+   Original solution was to use «/» because of the visual parallelism but I'm not sure how keen I am on using unicode.
+
+   These symbols can be inserted via ~insert-character~ using either their name or unicode ID.
+
+   » - RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK - 0000BB
+   « - LEFT-POINT DOUBLE ANGLE QUOTATION MARK - 0000AB
+
+   However, in the interest of keeping things terminal friendly I opting to just add "#" either side of the standard syntax.
+
+   #+BEGIN_SRC emacs-lisp
+   (after! org
+     ;; Note:
+     (defun org-babel-noweb-wrap (&optional regexp)
+       "Return regexp matching a Noweb reference.
+
+   Match any reference, or only those matching REGEXP, if non-nil.
+
+   When matching, reference is stored in match group 1."
+       (rx-to-string
+        `(and (or "<<" "#<<")
+              (group
+               (not (or " " "\t" "\n"))
+               (? (*? any) (not (or " " "\t" "\n"))))
+              (or ">>" ">>#"))))
+     )
+   #+END_SRC
+
+Both solutions found here: [[https://emacs.stackexchange.com/questions/63643/noweb-references-in-sh-blocks-breaks-the-syntax-highlighting][(stackexchange)Noweb ref in sh blocks breaks syntax highlighting]]
+
 ******* Images
 :PROPERTIES:
 :ID:       b90d7788-1db4-4be7-a9e2-24b3e0513d76
@@ -3234,3 +3300,4 @@ Emacs should offer to do this for you when you first trying to run it.
 # Local Variables:
 # jinx-local-words: "config"
 # End:
+

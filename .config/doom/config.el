@@ -62,6 +62,22 @@
 (setq org-src-window-setup 'reorganize-frame)
 (setq org-src-tab-acts-natively t)
 
+   (after! org
+     ;; Note:
+     (defun org-babel-noweb-wrap (&optional regexp)
+       "Return regexp matching a Noweb reference.
+
+   Match any reference, or only those matching REGEXP, if non-nil.
+
+   When matching, reference is stored in match group 1."
+       (rx-to-string
+        `(and (or "<<" "#<<")
+              (group
+               (not (or " " "\t" "\n"))
+               (? (*? any) (not (or " " "\t" "\n"))))
+              (or ">>" ">>#"))))
+     )
+
 ;; -- Images
 (after! org
   (when (display-graphic-p)
