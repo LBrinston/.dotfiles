@@ -166,11 +166,12 @@ If the directory does not exist, create it. Do nothing if there is no associated
   )
 
 ;;(after! org
-(use-package! org-latex-preview
-  :after org
-  :hook ((org-mode . org-latex-preview-auto-mode))
-  :config
-  ;;(pushnew! org-latex-preview--ignored-faces 'org-list-dt 'fixed-pitch)
+;;(use-package! org-latex-preview
+;;  :after org
+;;  :hook ((org-mode . org-latex-preview-auto-mode))
+;;  :config
+(after! org
+;;(pushnew! org-latex-preview--ignored-faces 'org-list-dt 'fixed-pitch)
   (setq org-latex-preview-numbered     t
         org-startup-with-latex-preview t
         org-latex-preview-width 0.6
@@ -184,6 +185,7 @@ If the directory does not exist, create it. Do nothing if there is no associated
         ;;previewing preamble
         )
   )
+
 
 (after! org-src
   (add-to-list 'org-src-block-faces '("latex" (:inherit default :extend t))))
@@ -289,7 +291,7 @@ If the directory does not exist, create it. Do nothing if there is no associated
 
 (after! org
   (use-package! org-fragtog
-    :hook (org-mode . org-fragtog)
+    :hook (org-mode . org-fragtog-mode)
     :config
     (ignore-error (org-latex-preview))
     )

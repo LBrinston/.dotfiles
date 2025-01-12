@@ -2218,6 +2218,11 @@ I usually want to be able to reference the org file I am working from when editi
 (setq org-src-tab-acts-natively t)
 #+END_SRC
 
+
+
+******** TODO Review some safe/sane babel default
+- [[https://sachachua.com/blog/2024/12/linking-to-org-babel-source-in-a-comment-and-making-that-always-use-file-links/][Linking to Org Babel source - Sacha Chua]]
+
 ******** noweb
 
 noweb syntax (<<block-name>>) allows for the concatenation of org-babel blocks by name. This is all well and good until "<</>>" breaks syntax highlighting for a given language.
@@ -2417,11 +2422,12 @@ First we configure some of the built in options for the preview mode.
 
 #+begin_src emacs-lisp
 ;;(after! org
-(use-package! org-latex-preview
-  :after org
-  :hook ((org-mode . org-latex-preview-auto-mode))
-  :config
-  ;;(pushnew! org-latex-preview--ignored-faces 'org-list-dt 'fixed-pitch)
+;;(use-package! org-latex-preview
+;;  :after org
+;;  :hook ((org-mode . org-latex-preview-auto-mode))
+;;  :config
+(after! org
+;;(pushnew! org-latex-preview--ignored-faces 'org-list-dt 'fixed-pitch)
   (setq org-latex-preview-numbered     t
         org-startup-with-latex-preview t
         org-latex-preview-width 0.6
@@ -2571,7 +2577,7 @@ Then we bring in =org-fragtog= to save from having to constantly toggle previews
 #+begin_src emacs-lisp
 (after! org
   (use-package! org-fragtog
-    :hook (org-mode . org-fragtog)
+    :hook (org-mode . org-fragtog-mode)
     :config
     (ignore-error (org-latex-preview))
     )
