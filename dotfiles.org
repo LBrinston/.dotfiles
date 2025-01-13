@@ -2618,15 +2618,6 @@ There appears to be two issues:
   )
 #+END_SRC
 
-******* Agenda
-
-#+BEGIN_SRC emacs-lisp
-(after! org
-  (setq org-log-done 'time)
-   (setq org-log-into-drawer "LOGBOOK") ; places state transitions into LOGBOOK drawer
-   )
-#+END_SRC
-
 ******* todo-keywords
 
 #+BEGIN_SRC emacs-lisp
@@ -2655,6 +2646,49 @@ There appears to be two issues:
       )
     )
 #+END_SRC
+
+******* Agenda
+
+#+begin_src emacs-lisp :noweb yes
+(after! org
+  (setq org-log-done 'time)
+  (setq org-log-into-drawer "LOGBOOK") ; places state transitions into LOGBOOK drawer
+
+  <<org-agenda-custom-commands>>
+  ) ; after! org
+#+end_src
+
+#+RESULTS:
+| p | Planning | tags-todo | +@planning |
+
+_Custom Agenda Commands_
+
+All customer agenda commands can be created through the ~org-agenda-custom-commands~ variable. These commands will appear at the bottom of the agenda in their listed order.
+
+The syntax for creating these commands is:
+(key desc type match settings files)
+
+type can take numerous predefined symbols or a user-defined function.
+
+
+#+name: org-agenda-custom-commands
+#+begin_src emacs-lisp
+(setq org-agenda-custom-commands
+      '(
+        ;; Tag based commands
+        ("u" "Untagged Tasks" tags-todo "-{.*}")
+        ("p" "Planning" tags-todo "+@planning" ((org-agenda-overriding-header "Planning Tasks")))
+        ;; Specific file based commands
+        ;;; Capture file
+        ;;; WIP - not working as of 2024-01-12
+        ("c" "Capture File" (
+         ;; Unprocessed todo items
+         (todo ".*" ((org-agenda-files '("~/.notes/agenda-life.org"))
+                     (org-agenda-overriding-header "Unprocessed Capture Items")))
+          ))
+        )
+      )
+#+end_src
 
 ******* Capture
 

@@ -186,7 +186,6 @@ If the directory does not exist, create it. Do nothing if there is no associated
         )
   )
 
-
 (after! org-src
   (add-to-list 'org-src-block-faces '("latex" (:inherit default :extend t))))
 
@@ -302,11 +301,6 @@ If the directory does not exist, create it. Do nothing if there is no associated
   (org-xopp-setup)
   )
 
-(after! org
-  (setq org-log-done 'time)
-   (setq org-log-into-drawer "LOGBOOK") ; places state transitions into LOGBOOK drawer
-   )
-
 	 (setq org-todo-keywords
           '(
             ;; -- General
@@ -331,6 +325,41 @@ If the directory does not exist, create it. Do nothing if there is no associated
             ("TOFIND"    . ( :foreground "yellow1" :weight bold))
       )
     )
+
+(after! org
+  (setq org-log-done 'time)
+  (setq org-log-into-drawer "LOGBOOK") ; places state transitions into LOGBOOK drawer
+
+  (setq org-agenda-custom-commands
+        '(
+          ;; Tag based commands
+          ("u" "Untagged Tasks" tags-todo "-{.*}")
+          ("p" "Planning" tags-todo "+@planning" ((org-agenda-overriding-header "Planning Tasks")))
+          ;; Specific file based commands
+          ;;; Capture file
+          ("c" "Capture File" (
+           ;; Unprocessed todo items
+           (todo ".*" ((org-agenda-files '("~/.notes/agenda-life.org"))
+                       (org-agenda-overriding-header "Unprocessed Capture Items")))
+            ))
+          )
+        )
+  ) ; after! org
+
+(setq org-agenda-custom-commands
+      '(
+        ;; Tag based commands
+        ("u" "Untagged Tasks" tags-todo "-{.*}")
+        ("p" "Planning" tags-todo "+@planning" ((org-agenda-overriding-header "Planning Tasks")))
+        ;; Specific file based commands
+        ;;; Capture file
+        ("c" "Capture File" (
+         ;; Unprocessed todo items
+         (todo ".*" ((org-agenda-files '("~/.notes/agenda-life.org"))
+                     (org-agenda-overriding-header "Unprocessed Capture Items")))
+          ))
+        )
+      )
 
 (after! org
   (setq org-capture-templates
