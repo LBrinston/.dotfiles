@@ -1,10 +1,9 @@
+:PROPERTIES:
+:ID:       27973b8b-efdb-48a9-9240-478a25159a7f
+:END:
 #+title: dotfiles
 #+author: Liam Brinston
 #+date: 2025-01-02 14:19:44
-# Local Variables:
-# org-babel-noweb-wrap-start: "«"
-# org-babel-noweb-wrap-end: "»"
-# End:
 
 * Dotfile management
 
@@ -2303,7 +2302,7 @@ A screen snipping tool that you set via ~org-download-screenshot-method~.
 =org-download= takes much of the tedium out of inserting images into =org-mode= but does take a little tweaking to make effortless.
 
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :noweb t 
 (after! org
   (use-package! org-download
       :bind (
@@ -2313,7 +2312,6 @@ A screen snipping tool that you set via ~org-download-screenshot-method~.
              )
       :hook
       (
-       (org-mode . my-org-download-set-dir)
        (dired-mode . org-download-enable)
        )
       :init
@@ -2324,57 +2322,38 @@ A screen snipping tool that you set via ~org-download-screenshot-method~.
               "#+attr_latex: :float nil"
               )
             )
-
-      ;; -- Download Directory
-      (setq org-download-image-dir "~/.notes/images")
+      :config
+      <<org-download-config>>
+      )
+  )
 #+end_src
 
-It would be nice if all of our images automagically went to a consistent place (a ~./images~) with a subdir named for the org file we're inserting into.
+It took me FAR too long to figure out how to do this correctly. I did not initially realize that org-download does file path handling internally and what trying to do it myself.
 
+This resulted in a bizarre bug where I would get /almost/ correct paths with "Get_file_name" inserted into them.
+[,[file:.assests/images/dotfiles/Get_file_name/20250116-224536_screenshot.png],]
+
+#+name: org-download-config
 #+begin_src emacs-lisp
-(defun my-org-download-set-dir ()
-  "Set `org-download-image-dir` to the 'images' directory of the current buffer's file.
-If the directory does not exist, create it. Do nothing if there is no associated file or if in agenda mode."
-  (unless (derived-mode-p 'org-agenda-mode)  ; Prevent running in agenda mode
-    (let ((file-name (buffer-file-name)))
-      (when file-name  ; Proceed only if there is a valid file
-        ;; Initialize if org-download-image-dir is nil
-        (unless org-download-image-dir
-          (setq org-download-image-dir "~/.notes/images"))
-
-        (let* ((current-dir (file-name-directory file-name))
-               (base-name (file-name-base file-name))  ; Get the base name of the file
-               (new-dir (expand-file-name (concat "images/" base-name) current-dir)))  ; Create path for images/org-file
-          ;; Check if new-dir is different from org-download-image-dir
-          (unless (string= (expand-file-name new-dir)
-                           (expand-file-name org-download-image-dir))
-            (unless (file-directory-p new-dir)  ; Create the directory if it doesn't exist
-              (make-directory new-dir t))
-            (setq-local org-download-image-dir new-dir)))))))
-
-
-:config
-(setq org-download-method 'directory)
-
-;; (setq org-download-image-dir (concat (file-name-sans-extension (buffer-file-name)) "-img"))
-
 ;; -- Link Formatting
-(setq org-download-link-format "[[file:%s]]\n"
-      org-download-abbreviate-filename-function #'file-relative-name)
+(setq org-download-link-format "[[file:%s]]\n")
 
-(setq org-download-link-format-function
-      'org-download-link-format-function-default)
+;; -- Where to save the images
+;; Default so that we *could* provide a file-local-var
+(setq-default
+org-download-method 'directory
+org-download-image-dir (concat ".assests/images/" (file-name-base))
+org-download-heading-lvl nil)
+
+(setq org-download-abbreviate-filename-function #'file-relative-name)
 
 (setq org-download-timestamp "%Y%m%d-%H%M%S_")
 
-;; ref: https://github.com/abo-abo/org-download/issues/75#issuecomment-1397370997
 (setq org-download-screenshot-method
       "gnome-screenshot -a -f %sa")
 
 ;; This will remove the #+DOWNLOADED annotation
 ;;(setq org-download-annotate-function (lambda (_) "Return empty string" ""))
-) ; use-package!
-) ; after!
 #+end_src
 
 ******* Headings & Links
@@ -2654,41 +2633,78 @@ There appears to be two issues:
   (setq org-log-done 'time)
   (setq org-log-into-drawer "LOGBOOK") ; places state transitions into LOGBOOK drawer
 
-  <<org-agenda-custom-commands>>
+  (setq org-agenda-skip-scheduled-if-done t
+      org-agenda-skip-deadline-if-done t
+      org-agenda-include-deadlines t
+      org-agenda-block-separator #x2501
+      org-agenda-compact-blocks t
+      org-agenda-start-with-log-mode t)
   ) ; after! org
 #+end_src
 
-#+RESULTS:
-| p | Planning | tags-todo | +@planning |
+******** Custome Agenda Commands - Not used
 
-_Custom Agenda Commands_
+_Currently not used due to gremlins_
 
 All customer agenda commands can be created through the ~org-agenda-custom-commands~ variable. These commands will appear at the bottom of the agenda in their listed order.
 
 The syntax for creating these commands is:
 (key desc type match settings files)
 
-type can take numerous predefined symbols or a user-defined function.
+Type can take numerous predefined symbols or a user-defined function.
 
 
 #+name: org-agenda-custom-commands
 #+begin_src emacs-lisp
-(setq org-agenda-custom-commands
-      '(
-        ;; Tag based commands
-        ("u" "Untagged Tasks" tags-todo "-{.*}")
-        ("p" "Planning" tags-todo "+@planning" ((org-agenda-overriding-header "Planning Tasks")))
-        ;; Specific file based commands
+(after! org-agenda
+  (setq org-agenda-custom-commands
+        '(
+          ;; Tag based commands
+          ("u" "Untagged Tasks" tags-todo "-{.*}")
+          ("p" "Planning" tags-todo "+@planning" ((org-agenda-overriding-header "Planning Tasks")))
+          ;; Specific file based commands
         ;;; Capture file
         ;;; WIP - not working as of 2024-01-12
-        ("c" "Capture File" (
-         ;; Unprocessed todo items
-         (todo ".*" ((org-agenda-files '("~/.notes/agenda-life.org"))
-                     (org-agenda-overriding-header "Unprocessed Capture Items")))
-          ))
+           ;;   ("c" "Capture File" (
+           ;;                     (todo ".*" (org-agenda-overriding-header "Unprocessed Capture Items"))
+           ;;                     )
+           ;; (org-agenda-files '("~/.notes/capture.org"))
+           ;; )
+          ("c" "Capture File" (
+                               ;; Unprocessed todo items
+                               (todo ".*" ((org-agenda-files '("~/.notes/capture.org"))
+                                           (org-agenda-overriding-header "Unprocessed Capture Items")))
+                               ))
+          )
         )
-      )
+  )
 #+end_src
+
+******** org-super-agenda
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
+(package! org-super-agenda
+  :recipe(:host github
+          :repo "/alphapapa/org-super-agenda"
+          )
+  )
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(after! org
+  (setq org-super-agenda-grousp
+        '(
+          (:name "Planning"
+           :tag "planning"
+           )
+          (:name "Today"  ; Optionally specify section name
+           :time-grid t  ; Items that appear on the time grid
+           :todo "TODAY")  ; Items that have this TODO keyword
+          )
+        )
+  (org-super-agenda-mode)
+  )
+#+END_SRC
 
 ******* Capture
 

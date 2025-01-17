@@ -81,6 +81,12 @@
          )
   )
 
+(package! org-super-agenda
+  :recipe(:host github
+          :repo "/alphapapa/org-super-agenda"
+          )
+  )
+
 (package! olivetti
   :recipe(:host github
           :repo "rnkn/olivetti"

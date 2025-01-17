@@ -94,7 +94,6 @@
              )
       :hook
       (
-       (org-mode . my-org-download-set-dir)
        (dired-mode . org-download-enable)
        )
       :init
@@ -105,53 +104,30 @@
               "#+attr_latex: :float nil"
               )
             )
-
-      ;; -- Download Directory
-      (setq org-download-image-dir "~/.notes/images")
-
-(defun my-org-download-set-dir ()
-  "Set `org-download-image-dir` to the 'images' directory of the current buffer's file.
-If the directory does not exist, create it. Do nothing if there is no associated file or if in agenda mode."
-  (unless (derived-mode-p 'org-agenda-mode)  ; Prevent running in agenda mode
-    (let ((file-name (buffer-file-name)))
-      (when file-name  ; Proceed only if there is a valid file
-        ;; Initialize if org-download-image-dir is nil
-        (unless org-download-image-dir
-          (setq org-download-image-dir "~/.notes/images"))
-
-        (let* ((current-dir (file-name-directory file-name))
-               (base-name (file-name-base file-name))  ; Get the base name of the file
-               (new-dir (expand-file-name (concat "images/" base-name) current-dir)))  ; Create path for images/org-file
-          ;; Check if new-dir is different from org-download-image-dir
-          (unless (string= (expand-file-name new-dir)
-                           (expand-file-name org-download-image-dir))
-            (unless (file-directory-p new-dir)  ; Create the directory if it doesn't exist
-              (make-directory new-dir t))
-            (setq-local org-download-image-dir new-dir)))))))
-
-
-:config
-(setq org-download-method 'directory)
-
-;; (setq org-download-image-dir (concat (file-name-sans-extension (buffer-file-name)) "-img"))
+      :config
+      <<org-download-config>>
+      )
+  )
 
 ;; -- Link Formatting
-(setq org-download-link-format "[[file:%s]]\n"
-      org-download-abbreviate-filename-function #'file-relative-name)
+(setq org-download-link-format "[[file:%s]]\n")
 
-(setq org-download-link-format-function
-      'org-download-link-format-function-default)
+;; -- Where to save the images
+;; Default so that we *could* provide a file-local-var
+(setq-default
+org-download-method 'directory
+org-download-image-dir (concat ".assests/images/" (file-name-base))
+org-download-heading-lvl nil)
+
+(setq org-download-abbreviate-filename-function #'file-relative-name)
 
 (setq org-download-timestamp "%Y%m%d-%H%M%S_")
 
-;; ref: https://github.com/abo-abo/org-download/issues/75#issuecomment-1397370997
 (setq org-download-screenshot-method
       "gnome-screenshot -a -f %sa")
 
 ;; This will remove the #+DOWNLOADED annotation
 ;;(setq org-download-annotate-function (lambda (_) "Return empty string" ""))
-) ; use-package!
-) ; after!
 
 (after! org
   (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
@@ -330,36 +306,50 @@ If the directory does not exist, create it. Do nothing if there is no associated
   (setq org-log-done 'time)
   (setq org-log-into-drawer "LOGBOOK") ; places state transitions into LOGBOOK drawer
 
+  (setq org-agenda-skip-scheduled-if-done t
+      org-agenda-skip-deadline-if-done t
+      org-agenda-include-deadlines t
+      org-agenda-block-separator #x2501
+      org-agenda-compact-blocks t
+      org-agenda-start-with-log-mode t)
+  ) ; after! org
+
+(after! org-agenda
   (setq org-agenda-custom-commands
         '(
           ;; Tag based commands
           ("u" "Untagged Tasks" tags-todo "-{.*}")
           ("p" "Planning" tags-todo "+@planning" ((org-agenda-overriding-header "Planning Tasks")))
           ;; Specific file based commands
-          ;;; Capture file
+        ;;; Capture file
+        ;;; WIP - not working as of 2024-01-12
+           ;;   ("c" "Capture File" (
+           ;;                     (todo ".*" (org-agenda-overriding-header "Unprocessed Capture Items"))
+           ;;                     )
+           ;; (org-agenda-files '("~/.notes/capture.org"))
+           ;; )
           ("c" "Capture File" (
-           ;; Unprocessed todo items
-           (todo ".*" ((org-agenda-files '("~/.notes/agenda-life.org"))
-                       (org-agenda-overriding-header "Unprocessed Capture Items")))
-            ))
+                               ;; Unprocessed todo items
+                               (todo ".*" ((org-agenda-files '("~/.notes/capture.org"))
+                                           (org-agenda-overriding-header "Unprocessed Capture Items")))
+                               ))
           )
         )
-  ) ; after! org
+  )
 
-(setq org-agenda-custom-commands
-      '(
-        ;; Tag based commands
-        ("u" "Untagged Tasks" tags-todo "-{.*}")
-        ("p" "Planning" tags-todo "+@planning" ((org-agenda-overriding-header "Planning Tasks")))
-        ;; Specific file based commands
-        ;;; Capture file
-        ("c" "Capture File" (
-         ;; Unprocessed todo items
-         (todo ".*" ((org-agenda-files '("~/.notes/agenda-life.org"))
-                     (org-agenda-overriding-header "Unprocessed Capture Items")))
-          ))
+(after! org
+  (setq org-super-agenda-grousp
+        '(
+          (:name "Planning"
+           :tag "planning"
+           )
+          (:name "Today"  ; Optionally specify section name
+           :time-grid t  ; Items that appear on the time grid
+           :todo "TODAY")  ; Items that have this TODO keyword
+          )
         )
-      )
+  (org-super-agenda-mode)
+  )
 
 (after! org
   (setq org-capture-templates
