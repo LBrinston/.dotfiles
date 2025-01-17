@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash
+# Needs bash not shell because of [[ ]]
 # borrowed from: https://systemcrafters.net/managing-your-dotfiles/using-gnu-stow/
 
 # Sync dotfiles repo and ensure that dotfiles are tangled correctly afterward
