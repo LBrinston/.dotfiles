@@ -105,7 +105,25 @@
               )
             )
       :config
-      <<org-download-config>>
+      ;; -- Link Formatting
+      (setq org-download-link-format "[[file:%s]]\n")
+      
+      ;; -- Where to save the images
+      ;; Default so that we *could* provide a file-local-var
+      (setq-default
+      org-download-method 'directory
+      org-download-image-dir (concat ".assests/images/" (file-name-base))
+      org-download-heading-lvl nil)
+      
+      (setq org-download-abbreviate-filename-function #'file-relative-name)
+      
+      (setq org-download-timestamp "%Y%m%d-%H%M%S_")
+      
+      (setq org-download-screenshot-method
+            "gnome-screenshot -a -f %sa")
+      
+      ;; This will remove the #+DOWNLOADED annotation
+      ;;(setq org-download-annotate-function (lambda (_) "Return empty string" ""))
       )
   )
 
