@@ -92,10 +92,10 @@
              ("C-c d c" . org-download-clipboard)
              ("C-c d d" . org-download-delete)
              )
-      :hook
-      (
-       (dired-mode . org-download-enable)
-       )
+      ;; :hook
+      ;; (
+        ;;(dired-mode . org-download-enable) ;;-- this creates problems
+      ;;  )
       :init
       ;; -- Formatting
       (setq org-download-image-attr-list

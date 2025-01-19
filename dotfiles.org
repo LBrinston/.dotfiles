@@ -1,6 +1,3 @@
-:PROPERTIES:
-:ID:       27973b8b-efdb-48a9-9240-478a25159a7f
-:END:
 #+title: dotfiles
 #+author: Liam Brinston
 #+date: 2025-01-02 14:19:44
@@ -108,7 +105,7 @@ If not set or empty a default of ~$HOME/.local/share~ should be used.
 
 Which applications support ~XDG_~ ? That can be challenging to determine. There is some tooling out there to help save you from crawling the web to determine if every dotfile in ~$HOME~ can be moved. For example ~xdg-ninja~
 
-#+NAME: XDG shell variables
+#+NAME: XDG-SHELL-VAR
 #+BEGIN_SRC bash
 # XDG Base Directory Specification Variables
 export XDG_DATA_HOME="$HOME/.local/share"
@@ -145,7 +142,7 @@ https://askubuntu.com/questions/759058/how-to-keep-a-local-bin-folder-up-to-date
 
 For the handful of times a year I need to use ~adb~
 
-#+NAME: ANDROID_USER_HOME
+#+NAME: ANDROID-SHELL-VAR
 #+BEGIN_SRC bash
 export ANDROID_USER_HOME="$XDG_DATA_HOME/android:$PATH"
 #+END_SRC
@@ -154,6 +151,39 @@ export ANDROID_USER_HOME="$XDG_DATA_HOME/android:$PATH"
 #+BEGIN_SRC bash
 alias adb='HOME="$XDG_DATA_HOME"/android adb'
 #+END_SRC
+
+*** docker
+
+#+name: DOCKER-SHELL-VAR
+#+BEGIN_SRC bash
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
+#+END_SRC
+
+*** dotnet
+
+#+name: DOTNET-SHELL-VAR
+#+BEGIN_SRC bash
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/dotnet
+#+END_SRC
+
+*** gnupg
+
+#+name: GNUPG-SHELL-VAR
+#+BEGIN_SRC bash
+export GNUPGHOME="$XDG_DATA_HOME"/gnupg
+#+END_SRC
+
+*** nala
+
+Nala is a shinier front end to ~libapt-pkg~ made in python.
+
+#+BEGIN_SRC bash :tangle no
+sudo apt install nala
+#+END_SRC
+
+It supports parallel downloads! Also it will run some basic perf to determine what mirrors are closest to you with src_bash{nala fetch} (=note= this does require sudo).
+
+It also keeps a history (~/var/lib/nala/history.json~) that can be instrumented with it's history command.
 
 *** =bash=
 **** .bashrc
@@ -173,7 +203,7 @@ case $- in
     ,*) return;;
 esac
 
-#<<XDG shell variables>>#
+#<<XDG-SHELL-VAR>>#
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -354,10 +384,11 @@ fi
 export SEMESTER="spring_2025"
 export UVIC="$HOME/Documents/UVic"
 
-#<<ANDROID_USER_HOME>>#
-
-#<<CARGO_BASHRC>>#
-
+#<<ANDROID-SHELL-VAR>>#
+#<<CARGO-SHELL-VAR>>#
+#<<DOCKER-SHELL-VAR>>#
+#<<DOTNET-SHELL-VAR>>#
+#<<GNUPG-SHELL-VAR>>#
 # Adding to PATH
 export PATH="$HOME/.local/bin:$PATH"
 
@@ -375,12 +406,12 @@ export PATH="$HOME/scripts/sdr:$PATH"
 # Microcontrollers
 ## Pi Pico
 export PATH="/opt/arm-none-eabi/bin:$PATH"
-
-# Python
 #<<PYTHON_BASHRC>>#
-
-# Emacs
 #<<DOOM_BASHRC>>#
+#<<OCTAVE-SHELL-VAR>>#
+#<<CUDA-SHELL-VAR>>#
+#<<WGET-SHELL-VAR>>#
+#<<WINE-SHELL-VAR>>#
 #+END_SRC
 **** .bash_profile
 
@@ -431,9 +462,12 @@ fi
 #+END_SRC
 
 *** =git=
+
 **** .gitconfig
 
-#+BEGIN_SRC conf :tangle ~/.dotfiles/.gitconfig
+Git supportd the XDG spec out of the box so we can just directly place our ~.gitconfig~ at ~XDG_CONFIG_HOME/git/config~ (note config here is a _file_ not a dir).
+
+#+BEGIN_SRC conf :tangle ~/.dotfiles/.config/git/config
 # This is Git's per-user configuration file.
 
 # Syntax
@@ -1096,17 +1130,75 @@ fi
 #+END_SRC
 
 #+RESULTS:
+*** Octave
 
+#+name: OCTAVE-SHELL-VAR
+#+BEGIN_SRC bash
+export OCTAVE_HISTFILE="$XDG_STATE_HOME/octave_hist"
+#+END_SRC
 *** =Python=
 
 #+NAME: PYTHON_BASHRC
 #+BEGIN_SRC bash
+# Python XDG vars
+## For python >v3.13.0a3
+export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/pythonrc
+## For python <v3.13.0a3
+export PYTHON_HISTORY="$XDG_CONFIG_HOME"/python/python_history
+
+# Path to Python virtual environments
 export PATH="$HOME/venvs:$PATH"
+#+END_SRC
+
+**** .pythonrc
+
+As noted in the comment this is unnecessary for python >v3.13.0a3
+
+#+BEGIN_SRC python :tangle ~/.dotfiles/.config/python/pythonrc
+#!/usr/bin/env python3
+# This entire thing is unnecessary post v3.13.0a3
+# https://github.com/python/cpython/issues/73965
+
+def is_vanilla() -> bool:
+    """ :return: whether running "vanilla" Python <3.13 """
+    import sys
+    return not hasattr(__builtins__, '__IPYTHON__') and 'bpython' not in sys.argv[0] and
+sys.version_info < (3, 13)
+
+
+def setup_history():
+    """ read and write history from state file """
+    import os
+    import atexit
+    import readline
+    from pathlib import Path
+
+    # Check PYTHON_HISTORY for future-compatibility with Python 3.13
+    if history := os.environ.get('PYTHON_HISTORY'):
+        history = Path(history)
+    # https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html#variables
+    elif state_home := os.environ.get('XDG_STATE_HOME'):
+        state_home = Path(state_home)
+    else:
+        state_home = Path.home() / '.local' / 'state'
+
+    history: Path = history or state_home / 'python_history'
+
+    # https://github.com/python/cpython/issues/105694
+    if not history.is_file():
+        readline.write_history_file(str(history)) # breaks on macos + python3 without this.
+
+    readline.read_history_file(history)
+    atexit.register(readline.write_history_file, history)
+
+
+if is_vanilla():
+    setup_history()
 #+END_SRC
 
 **** .pylintrc
 
-This is almost entirely the default generated by the command ~pylint --generate-rcfile~.
+This is almost entirely the default generated by the command ~pylint --generate-rcfile~ (=note=: this will take a ~--interactive~ if you want to be walked through each setting).
 
 Valid locations:
 - A global config could be placed in ~/etc/pylintrc~
@@ -1117,7 +1209,7 @@ You may need to specify which with ~pylint --rcfile=<location>~.
 
 At some point I should make some more deliberate choices.
 
-#+BEGIN_SRC conf :tangle ~/.dotfiles/.config/pylintrc/.pylintrc
+#+BEGIN_SRC conf :tangle ~/.dotfiles/.config/python/pylintrc
 [tool.pylint.main]
 # Analyse import fallback blocks. This can be used to support both Python 2 and 3
 # compatible code, which means that the block might have code that exists only in
@@ -2311,10 +2403,10 @@ A screen snipping tool that you set via ~org-download-screenshot-method~.
              ("C-c d c" . org-download-clipboard)
              ("C-c d d" . org-download-delete)
              )
-      :hook
-      (
-       (dired-mode . org-download-enable)
-       )
+      ;; :hook
+      ;; (
+        ;;(dired-mode . org-download-enable) ;;-- this creates problems
+      ;;  )
       :init
       ;; -- Formatting
       (setq org-download-image-attr-list
@@ -3406,11 +3498,29 @@ Emacs should offer to do this for you when you first trying to run it.
 
 Set the home dir for cargo and make sure we can find the executables it installs.
 
-#+NAME: CARGO_BASHRC
+#+NAME: CARGO-SHELL-VAR
 #+BEGIN_SRC bash
 # Rust config
 
 ## Cargo conf
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export PATH="$XDG_DATA_HOME/cargo/bin:$PATH"
+#+END_SRC
+*** nVidia
+
+#+name: CUDA-SHELL-VAR
+#+BEGIN_SRC bash
+export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
+#+END_SRC
+*** wget
+
+#+name: WGET-SHELL-VAR
+#+BEGIN_SRC bash
+alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
+#+END_SRC
+*** wine
+
+#+name: WINE-SHELL-VAR
+#+BEGIN_SRC bash
+export WINEPREFIX="$XDG_DATA_HOME"/wine
 #+END_SRC

@@ -196,13 +196,14 @@ export SEMESTER="spring_2025"
 export UVIC="$HOME/Documents/UVic"
 
 export ANDROID_USER_HOME="$XDG_DATA_HOME/android:$PATH"
-
 # Rust config
 
 ## Cargo conf
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export PATH="$XDG_DATA_HOME/cargo/bin:$PATH"
-
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/dotnet
+export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 # Adding to PATH
 export PATH="$HOME/.local/bin:$PATH"
 
@@ -220,13 +221,20 @@ export PATH="$HOME/scripts/sdr:$PATH"
 # Microcontrollers
 ## Pi Pico
 export PATH="/opt/arm-none-eabi/bin:$PATH"
+# Python XDG vars
+## For python >v3.13.0a3
+export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/pythonrc
+## For python <v3.13.0a3
+export PYTHON_HISTORY="$XDG_CONFIG_HOME"/python/python_history
 
-# Python
+# Path to Python virtual environments
 export PATH="$HOME/venvs:$PATH"
-
-# Emacs
 ## Doom Emacs
 export PATH="$XDG_CONFIG_HOME/doom:$PATH"
 export PATH="$XDG_CONFIG_HOME/doom-emacs/bin:$PATH"
 #export PATH="$HOME/.config/doom:$PATH"
 #export PATH="$HOME/.config/doom-emacs/bin:$PATH"
+export OCTAVE_HISTFILE="$XDG_STATE_HOME/octave_hist"
+export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
+alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
+export WINEPREFIX="$XDG_DATA_HOME"/wine

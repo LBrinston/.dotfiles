@@ -1,0 +1,87 @@
+imprt requests
+import requests
+ from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup
+      url = 'https://www.skyscanner.com/transport/flights/us/nyca/210101/210131/?adults=1&children=0&adultsv2=1&childrenv2=&infants=0&cabinclass=economy&rtn=1&preferdirects=false&outboundaltsenabled=false&inboundaltsenabled=false'
+response = requests.get(url)
+url = 'https://www.skyscanner.com/transport/flights/us/nyca/210101/210131/?adults=1&children=0&adultsv2=1&childrenv2=&infants=0&cabinclass=economy&rtn=1&preferdirects=false&outboundaltsenabled=false&inboundaltsenabled=false'
+response = requests.get(url)
+soup = BeautifulSoup(response.content, 'html.parser')
+flights = soup.select('.flight-result')
+for flight in flights:
+        departure_time = flight.select_one('.depart-time').text
+        arrival_time = flight.select_one('.arrive-time').text
+        price = flight.select_one('.price').text
+        print('Departure:', departure_time)
+        print('Arrival:', arrival_time)
+        print('Price:', price)
+for flight in flights:
+departure_time = flight.select_one('.depart-time').text
+for flight in flights:
+	departure_time = flight.select_one('.depart-time').text
+	arrival_time = flight.select_one('.arrive-time').text
+	price = flight.select_one('.price').text
+	print('Departure:', departure_time)
+	print('Arrival:', arrival_time)
+	print('Price:', price)
+	print('---')
+quit()
+exec("def __PYTHON_EL_eval(source, filename):\n    import ast, sys\n    if sys.version_info[0] == 2:\n        from __builtin__ import compile, eval, globals\n    else:\n        from builtins import compile, eval, globals\n    try:\n        p, e = ast.parse(source, filename), None\n    except SyntaxError:\n        t, v, tb = sys.exc_info()\n        sys.excepthook(t, v, tb.tb_next)\n        return\n    if p.body and isinstance(p.body[-1], ast.Expr):\n        e = p.body.pop()\n    try:\n        g = globals()\n        exec(compile(p, filename, 'exec'), g, g)\n        if e:\n            return eval(compile(ast.Expression(e.value), filename, 'eval'), g, g)\n    except Exception:\n        t, v, tb = sys.exc_info()\n        sys.excepthook(t, v, tb.tb_next)")
+exec("def __PYTHON_EL_eval_file(filename, tempname, delete):\n    import codecs, os, re\n    pattern = r'^[ \t\f]*#.*?coding[:=][ \t]*([-_.a-zA-Z0-9]+)'\n    with codecs.open(tempname or filename, encoding='latin-1') as file:\n        match = re.match(pattern, file.readline())\n        match = match or re.match(pattern, file.readline())\n        encoding = match.group(1) if match else 'utf-8'\n    with codecs.open(tempname or filename, encoding=encoding) as file:\n        source = file.read().encode(encoding)\n    if delete and tempname:\n        os.remove(tempname)\n    return __PYTHON_EL_eval(source, filename)")
+__PYTHON_EL_eval_file("/tmp/pyG4lgbL", "/tmp/pyG4lgbL", True)
+ls
+pwd
+quit()
+exec("def __PYTHON_EL_eval(source, filename):\n    import ast, sys\n    if sys.version_info[0] == 2:\n        from __builtin__ import compile, eval, globals\n    else:\n        from builtins import compile, eval, globals\n    try:\n        p, e = ast.parse(source, filename), None\n    except SyntaxError:\n        t, v, tb = sys.exc_info()\n        sys.excepthook(t, v, tb.tb_next)\n        return\n    if p.body and isinstance(p.body[-1], ast.Expr):\n        e = p.body.pop()\n    try:\n        g = globals()\n        exec(compile(p, filename, 'exec'), g, g)\n        if e:\n            return eval(compile(ast.Expression(e.value), filename, 'eval'), g, g)\n    except Exception:\n        t, v, tb = sys.exc_info()\n        sys.excepthook(t, v, tb.tb_next)")
+exec("def __PYTHON_EL_eval_file(filename, tempname, delete):\n    import codecs, os, re\n    pattern = r'^[ \t\f]*#.*?coding[:=][ \t]*([-_.a-zA-Z0-9]+)'\n    with codecs.open(tempname or filename, encoding='latin-1') as file:\n        match = re.match(pattern, file.readline())\n        match = match or re.match(pattern, file.readline())\n        encoding = match.group(1) if match else 'utf-8'\n    with codecs.open(tempname or filename, encoding=encoding) as file:\n        source = file.read().encode(encoding)\n    if delete and tempname:\n        os.remove(tempname)\n    return __PYTHON_EL_eval(source, filename)")
+__PYTHON_EL_eval_file("/tmp/pylNTPNV", "/tmp/pylNTPNV", True)
+maximize_win.py
+quit
+quit()
+exec("def __PYTHON_EL_eval(source, filename):\n    import ast, sys\n    if sys.version_info[0] == 2:\n        from __builtin__ import compile, eval, globals\n    else:\n        from builtins import compile, eval, globals\n    try:\n        p, e = ast.parse(source, filename), None\n    except SyntaxError:\n        t, v, tb = sys.exc_info()\n        sys.excepthook(t, v, tb.tb_next)\n        return\n    if p.body and isinstance(p.body[-1], ast.Expr):\n        e = p.body.pop()\n    try:\n        g = globals()\n        exec(compile(p, filename, 'exec'), g, g)\n        if e:\n            return eval(compile(ast.Expression(e.value), filename, 'eval'), g, g)\n    except Exception:\n        t, v, tb = sys.exc_info()\n        sys.excepthook(t, v, tb.tb_next)")
+exec("def __PYTHON_EL_eval_file(filename, tempname, delete):\n    import codecs, os, re\n    pattern = r'^[ \t\f]*#.*?coding[:=][ \t]*([-_.a-zA-Z0-9]+)'\n    with codecs.open(tempname or filename, encoding='latin-1') as file:\n        match = re.match(pattern, file.readline())\n        match = match or re.match(pattern, file.readline())\n        encoding = match.group(1) if match else 'utf-8'\n    with codecs.open(tempname or filename, encoding=encoding) as file:\n        source = file.read().encode(encoding)\n    if delete and tempname:\n        os.remove(tempname)\n    return __PYTHON_EL_eval(source, filename)")
+__PYTHON_EL_eval_file("/tmp/pyCtIIaf", "/tmp/pyCtIIaf", True)
+pwd()
+forex_test.py
+quit()
+exec("def __PYTHON_EL_eval(source, filename):\n    import ast, sys\n    if sys.version_info[0] == 2:\n        from __builtin__ import compile, eval, globals\n    else:\n        from builtins import compile, eval, globals\n    try:\n        p, e = ast.parse(source, filename), None\n    except SyntaxError:\n        t, v, tb = sys.exc_info()\n        sys.excepthook(t, v, tb.tb_next)\n        return\n    if p.body and isinstance(p.body[-1], ast.Expr):\n        e = p.body.pop()\n    try:\n        g = globals()\n        exec(compile(p, filename, 'exec'), g, g)\n        if e:\n            return eval(compile(ast.Expression(e.value), filename, 'eval'), g, g)\n    except Exception:\n        t, v, tb = sys.exc_info()\n        sys.excepthook(t, v, tb.tb_next)")
+exec("def __PYTHON_EL_eval_file(filename, tempname, delete):\n    import codecs, os, re\n    pattern = r'^[ \t\f]*#.*?coding[:=][ \t]*([-_.a-zA-Z0-9]+)'\n    with codecs.open(tempname or filename, encoding='latin-1') as file:\n        match = re.match(pattern, file.readline())\n        match = match or re.match(pattern, file.readline())\n        encoding = match.group(1) if match else 'utf-8'\n    with codecs.open(tempname or filename, encoding=encoding) as file:\n        source = file.read().encode(encoding)\n    if delete and tempname:\n        os.remove(tempname)\n    return __PYTHON_EL_eval(source, filename)")
+__PYTHON_EL_eval_file("/tmp/pyAyrcJx", "/tmp/pyAyrcJx", True)
+import os
+os.getcwd()
+os.getenv
+os.getenv()
+__PYTHON_EL_eval_file("/home/bicolor/Documents/education/UVic/spring_2024/ECE_463_Design_of_Networks/project/currency/Markov/debug_currency_variable_bins.py", "/tmp/pyjLJ0zT", True)
+main()
+__PYTHON_EL_eval("def __PYDOC_get_help(obj):\n    try:\n        import inspect\n        try:\n            str_type = basestring\n            argspec_function = inspect.getargspec\n        except NameError:\n            str_type = str\n            argspec_function = inspect.getfullargspec\n        if isinstance(obj, str_type):\n            obj = eval(obj, globals())\n        doc = inspect.getdoc(obj)\n        if not doc and callable(obj):\n            target = None\n            if inspect.isclass(obj) and hasattr(obj, '__init__'):\n                target = obj.__init__\n                objtype = 'class'\n            else:\n                target = obj\n                objtype = 'def'\n            if target:\n                if hasattr(inspect, 'signature'):\n                    args = str(inspect.signature(target))\n                else:\n                    args = inspect.formatargspec(*argspec_function(target))\n                name = obj.__name__\n                doc = '{objtype} {name}{args}'.format(\n                    objtype=objtype, name=name, args=args\n                )\n        else:\n            doc = doc.splitlines()[0]\n    except:\n        doc = ''\n    return doc\nprint(__PYDOC_get_help(\"os.path\"))", "/home/bicolor/Documents/education/UVic/spring_2024/ECE_463_Design_of_Networks/project/currency/Markov/debug_currency_variable_bins.py")
+main()
+quit()
+exec("def __PYTHON_EL_eval(source, filename):\n    import ast, sys\n    if sys.version_info[0] == 2:\n        from __builtin__ import compile, eval, globals\n    else:\n        from builtins import compile, eval, globals\n    try:\n        p, e = ast.parse(source, filename), None\n    except SyntaxError:\n        t, v, tb = sys.exc_info()\n        sys.excepthook(t, v, tb.tb_next)\n        return\n    if p.body and isinstance(p.body[-1], ast.Expr):\n        e = p.body.pop()\n    try:\n        g = globals()\n        exec(compile(p, filename, 'exec'), g, g)\n        if e:\n            return eval(compile(ast.Expression(e.value), filename, 'eval'), g, g)\n    except Exception:\n        t, v, tb = sys.exc_info()\n        sys.excepthook(t, v, tb.tb_next)")
+exec("def __PYTHON_EL_eval_file(filename, tempname, delete):\n    import codecs, os, re\n    pattern = r'^[ \t\f]*#.*?coding[:=][ \t]*([-_.a-zA-Z0-9]+)'\n    with codecs.open(tempname or filename, encoding='latin-1') as file:\n        match = re.match(pattern, file.readline())\n        match = match or re.match(pattern, file.readline())\n        encoding = match.group(1) if match else 'utf-8'\n    with codecs.open(tempname or filename, encoding=encoding) as file:\n        source = file.read().encode(encoding)\n    if delete and tempname:\n        os.remove(tempname)\n    return __PYTHON_EL_eval(source, filename)")
+__PYTHON_EL_eval_file("/tmp/pybrSWwM", "/tmp/pybrSWwM", True)
+__PYTHON_EL_eval_file("/home/bicolor/Documents/education/UVic/spring_2024/ECE_463_Design_of_Networks/project/currency/Markov/debug_currency_variable_bins.py", "/tmp/pyb95OoN", True)
+main()
+quit()
+exec("def __PYTHON_EL_eval(source, filename):\n    import ast, sys\n    if sys.version_info[0] == 2:\n        from __builtin__ import compile, eval, globals\n    else:\n        from builtins import compile, eval, globals\n    try:\n        p, e = ast.parse(source, filename), None\n    except SyntaxError:\n        t, v, tb = sys.exc_info()\n        sys.excepthook(t, v, tb.tb_next)\n        return\n    if p.body and isinstance(p.body[-1], ast.Expr):\n        e = p.body.pop()\n    try:\n        g = globals()\n        exec(compile(p, filename, 'exec'), g, g)\n        if e:\n            return eval(compile(ast.Expression(e.value), filename, 'eval'), g, g)\n    except Exception:\n        t, v, tb = sys.exc_info()\n        sys.excepthook(t, v, tb.tb_next)")
+exec("def __PYTHON_EL_eval_file(filename, tempname, delete):\n    import codecs, os, re\n    pattern = r'^[ \t\f]*#.*?coding[:=][ \t]*([-_.a-zA-Z0-9]+)'\n    with codecs.open(tempname or filename, encoding='latin-1') as file:\n        match = re.match(pattern, file.readline())\n        match = match or re.match(pattern, file.readline())\n        encoding = match.group(1) if match else 'utf-8'\n    with codecs.open(tempname or filename, encoding=encoding) as file:\n        source = file.read().encode(encoding)\n    if delete and tempname:\n        os.remove(tempname)\n    return __PYTHON_EL_eval(source, filename)")
+__PYTHON_EL_eval_file("/tmp/pyLX3wJV", "/tmp/pyLX3wJV", True)
+__PYTHON_EL_eval_file("/home/bicolor/Documents/education/UVic/spring_2024/ECE_463_Design_of_Networks/project/currency/Markov/debug_currency_variable_bins.py", "/tmp/py7ygJf8", True)
+main()
+quit()
+exec("def __PYTHON_EL_eval(source, filename):\n    import ast, sys\n    if sys.version_info[0] == 2:\n        from __builtin__ import compile, eval, globals\n    else:\n        from builtins import compile, eval, globals\n    try:\n        p, e = ast.parse(source, filename), None\n    except SyntaxError:\n        t, v, tb = sys.exc_info()\n        sys.excepthook(t, v, tb.tb_next)\n        return\n    if p.body and isinstance(p.body[-1], ast.Expr):\n        e = p.body.pop()\n    try:\n        g = globals()\n        exec(compile(p, filename, 'exec'), g, g)\n        if e:\n            return eval(compile(ast.Expression(e.value), filename, 'eval'), g, g)\n    except Exception:\n        t, v, tb = sys.exc_info()\n        sys.excepthook(t, v, tb.tb_next)")
+exec("def __PYTHON_EL_eval_file(filename, tempname, delete):\n    import codecs, os, re\n    pattern = r'^[ \t\f]*#.*?coding[:=][ \t]*([-_.a-zA-Z0-9]+)'\n    with codecs.open(tempname or filename, encoding='latin-1') as file:\n        match = re.match(pattern, file.readline())\n        match = match or re.match(pattern, file.readline())\n        encoding = match.group(1) if match else 'utf-8'\n    with codecs.open(tempname or filename, encoding=encoding) as file:\n        source = file.read().encode(encoding)\n    if delete and tempname:\n        os.remove(tempname)\n    return __PYTHON_EL_eval(source, filename)")
+__PYTHON_EL_eval_file("/tmp/pyqa2FgZ", "/tmp/pyqa2FgZ", True)
+__PYTHON_EL_eval_file("/home/bicolor/Documents/education/UVic/spring_2024/ECE_463_Design_of_Networks/project/currency/Markov/debug_currency_variable_bins.py", "/tmp/pypzxTX8", True)
+main()
+__PYTHON_EL_eval_file("/home/bicolor/Documents/education/UVic/spring_2024/ECE_463_Design_of_Networks/project/currency/Markov/debug_currency_variable_bins.py", "/tmp/pywMK7Km", True)
+main()
+quit()
+exec("def __PYTHON_EL_eval(source, filename):\n    import ast, sys\n    if sys.version_info[0] == 2:\n        from __builtin__ import compile, eval, globals\n    else:\n        from builtins import compile, eval, globals\n    try:\n        p, e = ast.parse(source, filename), None\n    except SyntaxError:\n        t, v, tb = sys.exc_info()\n        sys.excepthook(t, v, tb.tb_next)\n        return\n    if p.body and isinstance(p.body[-1], ast.Expr):\n        e = p.body.pop()\n    try:\n        g = globals()\n        exec(compile(p, filename, 'exec'), g, g)\n        if e:\n            return eval(compile(ast.Expression(e.value), filename, 'eval'), g, g)\n    except Exception:\n        t, v, tb = sys.exc_info()\n        sys.excepthook(t, v, tb.tb_next)")
+exec("def __PYTHON_EL_eval_file(filename, tempname, delete):\n    import codecs, os, re\n    pattern = r'^[ \t\f]*#.*?coding[:=][ \t]*([-_.a-zA-Z0-9]+)'\n    with codecs.open(tempname or filename, encoding='latin-1') as file:\n        match = re.match(pattern, file.readline())\n        match = match or re.match(pattern, file.readline())\n        encoding = match.group(1) if match else 'utf-8'\n    with codecs.open(tempname or filename, encoding=encoding) as file:\n        source = file.read().encode(encoding)\n    if delete and tempname:\n        os.remove(tempname)\n    return __PYTHON_EL_eval(source, filename)")
+__PYTHON_EL_eval_file("/tmp/pyhzDKBN", "/tmp/pyhzDKBN", True)
+__PYTHON_EL_eval_file("/home/bicolor/Documents/education/UVic/spring_2024/ECE_463_Design_of_Networks/project/currency/Markov/debug_currency_matrix.py", "/tmp/pyMfI5Zp", True)
+main()
+quit()
+quit
+version()
+quit()
