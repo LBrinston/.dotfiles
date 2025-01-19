@@ -603,6 +603,32 @@ org-download-heading-lvl nil)
   ;; consider setting jinx-exclude-faces
   )
 
+(use-package! writegood-mode
+  :hook (org-mode . writegood-mode)
+  :config
+  ;; Personal Weasel words
+  ;; (setq personal-weasel-words
+  ;;       '("")
+  ;;       )
+  ;;(setq writegood-weasel-words (concat write-good-weasel-words personal-weasel-words))
+  ;;  (key!)
+  ;;
+  (set-face-attribute 'writegood-weasels-face nil
+                      ;; white weasel (ermine)
+                      :underline '(:style wave :color "white")
+                      :slant 'italic
+                      )
+  (set-face-attribute 'writegood-passive-voice-face nil
+                      ;; white weasel (ermine)
+                      :underline '(:style wave :color "CadetBlue1")
+                      )
+  (set-face-attribute 'writegood-duplicates-face nil
+                      ;; white weasel (ermine)
+                      :underline '(:style wave :color "maroon1")
+                      )
+
+  )
+
 ;; -- General dap-mode --
 (after! dap-mode
   (dap-ui-mode 1)
