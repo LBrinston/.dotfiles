@@ -3161,6 +3161,20 @@ Perhaps I shouldn't be using =use-package!= with module packages? I'm missing so
                )
   )
 #+end_src
+
+Some keybinding is necessary to ensure that snippets can be navigated as expected (with tab). Fix found on [[https://github.com/doomemacs/doomemacs/issues/7733][on this github issue.]]
+
+#+begin_src emacs-lisp
+(map!
+ :map org-mode-map
+ :after yasnippet ;; Retain org-mode's native TAB functionality but allow yas-expand when a snippet is available
+ :nvi [tab] yas-maybe-expand
+ ;; Optionally, bind other keys for snippet navigation
+ ;;:nvi "C-c n" #'yas-next-field
+ ;;:nvi "C-c p" #'yas-prev-field
+ )
+#+end_src
+
 ******** whitespace-mode
 
 Doom's whitespace-mode is quite minimal. Should you need it to make other forms of white space apparent here is some sample config.
