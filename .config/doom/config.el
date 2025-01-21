@@ -582,6 +582,13 @@ org-download-heading-lvl nil)
                )
   )
 
+(map!
+  :map org-mode-map
+  :after yasnippet ;; Retain org-mode's native TAB functionality but allow yas-expand when a snippet is available
+  :nvi [tab] yas-maybe-expand
+  ;; Optionally, bind other keys for snippet navigation :nvi "C-c n"      #'yas-next-field :nvi "C-c p"      #'yas-prev-field
+)
+
 ;; (use-package! whitespace
 ;;   :config
 ;;   (setq
@@ -611,8 +618,10 @@ org-download-heading-lvl nil)
   ;;       '("")
   ;;       )
   ;;(setq writegood-weasel-words (concat write-good-weasel-words personal-weasel-words))
-  ;;  (key!)
-  ;;
+   ;;  (map!
+   ;; :prefix
+   ;; )
+
   (set-face-attribute 'writegood-weasels-face nil
                       ;; white weasel (ermine)
                       :underline '(:style wave :color "white")
@@ -626,7 +635,6 @@ org-download-heading-lvl nil)
                       ;; white weasel (ermine)
                       :underline '(:style wave :color "maroon1")
                       )
-
   )
 
 ;; -- General dap-mode --
