@@ -112,7 +112,11 @@
       ;; Default so that we *could* provide a file-local-var
       (setq-default
       org-download-method 'directory
-      org-download-image-dir (concat ".assests/images/" (file-name-base))
+      org-download-image-dir
+      (if (and (buffer-file-name) (file-exists-p (buffer-file-name)))
+            (concat ".assets/images/" (file-name-base (buffer-file-name)))
+          nil)
+      ;;(concat ".assests/images/" (file-name-base))
       org-download-heading-lvl nil)
       
       (setq org-download-abbreviate-filename-function #'file-relative-name)
@@ -134,7 +138,11 @@
 ;; Default so that we *could* provide a file-local-var
 (setq-default
 org-download-method 'directory
-org-download-image-dir (concat ".assests/images/" (file-name-base))
+org-download-image-dir
+(if (and (buffer-file-name) (file-exists-p (buffer-file-name)))
+      (concat ".assets/images/" (file-name-base (buffer-file-name)))
+    nil)
+;;(concat ".assests/images/" (file-name-base))
 org-download-heading-lvl nil)
 
 (setq org-download-abbreviate-filename-function #'file-relative-name)
@@ -586,7 +594,9 @@ org-download-heading-lvl nil)
   :map org-mode-map
   :after yasnippet ;; Retain org-mode's native TAB functionality but allow yas-expand when a snippet is available
   :nvi [tab] yas-maybe-expand
-  ;; Optionally, bind other keys for snippet navigation :nvi "C-c n"      #'yas-next-field :nvi "C-c p"      #'yas-prev-field
+  ;; Optionally, bind other keys for snippet navigation
+  ;;:nvi "C-c n" #'yas-next-field
+  ;;:nvi "C-c p" #'yas-prev-field
 )
 
 ;; (use-package! whitespace

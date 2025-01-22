@@ -2438,7 +2438,11 @@ This resulted in a bizarre bug where I would get /almost/ correct paths with "Ge
 ;; Default so that we *could* provide a file-local-var
 (setq-default
 org-download-method 'directory
-org-download-image-dir (concat ".assests/images/" (file-name-base))
+org-download-image-dir
+(if (and (buffer-file-name) (file-exists-p (buffer-file-name)))
+      (concat ".assets/images/" (file-name-base (buffer-file-name)))
+    nil)
+;;(concat ".assests/images/" (file-name-base))
 org-download-heading-lvl nil)
 
 (setq org-download-abbreviate-filename-function #'file-relative-name)
