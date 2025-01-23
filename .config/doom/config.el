@@ -20,7 +20,7 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;; Fire Mono
-(setq doom-font (font-spec :family "Fira Mono" :size 20 :weight)
+(setq doom-font (font-spec :family "Fira Mono" :size 20)
       doom-big-font (font-spec :family "Fira Mono" :size 36)
       doom-variable-pitch-font (font-spec :family "Overpass" :size 18)
       doom-symbol-font (font-spec :family "JuliaMono")
@@ -31,6 +31,31 @@
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
 ;; refresh your font settings. If Emacs still can't find your font, it likely
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
+
+;; Emacs - Check for Prefered Fonts
+(let (required-fonts available-fonts missing-fonts)
+  (setq required-fonts '("Fira ?Mono.*" "Overpass" "JuliaMono" "IBM Plex Sans"))
+
+(setq available-fonts
+        (delete-dups
+         (or (font-family-list)
+             (and (executable-find "fc-list")
+                  (with-temp-buffer
+                    (call-process "fc-list" nil t nil ":" "family")
+                    (split-string (buffer-string) "[,\n]"))))))
+
+  (setq missing-fonts
+        (delq nil (mapcar
+                   (lambda (font)
+                     (unless (delq nil (mapcar (lambda (f)
+                                                 (string-match-p (format "^%s$" font) f))
+                                               available-fonts))
+                       font))
+                   required-fonts)))
+  (if available-fonts
+      (dolist (font missing-fonts)
+        (warn! (format "Missing font: %s." font)))
+    (warn! "Unable to check for missing fonts, is fc-list installed?")))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the

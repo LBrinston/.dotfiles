@@ -2100,6 +2100,24 @@ It seems like like this however is intended to work with
 (default +bindings +smartparens)
 );end DOOM!
 #+end_src
+
+***** Doctor - =doctor.el=
+
+The ~doom doctor~ shell command can ingest ~doctor.el~ files to help diagnose issues with packages and/or config. Originally discovered and borrowed from reading [[https://tecosaur.github.io/emacs-config/config.html#config-doctor][tecosaur's config]].
+
+#+begin_src emacs-lisp :tangle ./.config/doom/doctor.el :noweb yes
+;;; doctor.el -*- lexical-bindingL t; no-byte-compile: t; -*-
+<<FONT-DOCTOR>>
+
+;; TODO - Rehome this
+(if (string= (shell-command-to-string "xdg-mime query default text/org") "")
+  (warn! "text/org is not a registered mime type.")
+  (unless (string= (shell-command-to-string "xdg-mime query default text/org") "emacs-client.desktop\n")
+    (warn! "Emacs(client) is not set up as the text/org handler.")))
+(unless (executable-find "latex2text")
+  (warn! "Couldn't find latex2text executable (from pylatexenc), will be unable to render LaTeX fragments in org→text exports."))
+#+end_src
+
 ***** Packages       - =packages.el=
 :properties:
 :header-args: :tangle ~/.dotfiles/.config/doom/packages.el
@@ -2218,7 +2236,7 @@ I'm really just storing the header here. I think it makes sense for the package 
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;; Fire Mono
-(setq doom-font (font-spec :family "Fira Mono" :size 20 :weight)
+(setq doom-font (font-spec :family "Fira Mono" :size 20)
       doom-big-font (font-spec :family "Fira Mono" :size 36)
       doom-variable-pitch-font (font-spec :family "Overpass" :size 18)
       doom-symbol-font (font-spec :family "JuliaMono")
@@ -2229,6 +2247,42 @@ I'm really just storing the header here. I think it makes sense for the package 
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
 ;; refresh your font settings. If Emacs still can't find your font, it likely
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
+#+end_src
+
+_Diagnostics for the Doctor_
+
+Dependencies:
++ ~fc-list~ - part of the XDG ~fontconfig~ system (should/probably installed by default - if not should be install-able as a system package).
+
+#+name: FONT-DOCTOR
+#+begin_src emacs-lisp
+;; Emacs - Check for Prefered Fonts
+;; borrowed from tecosaur:
+;; https://tecosaur.github.io/emacs-config/config.html#config-doctor
+(let (required-fonts available-fonts missing-fonts)
+  (setq required-fonts '("Fira ?Mono.*" "Overpass" "JuliaMono" "IBM Plex Sans"))
+
+(setq available-fonts
+        (delete-dups
+         (or (font-family-list)
+             (and (executable-find "fc-list")
+                  (with-temp-buffer
+                    (call-process "fc-list" nil t nil ":" "family")
+                    (split-string (buffer-string) "[,\n]"))))))
+
+  (setq missing-fonts
+        (delq nil (mapcar
+                   (lambda (font)
+                     (unless (delq nil (mapcar (lambda (f)
+                                                 (string-match-p (format "^%s$" font) f))
+                                               available-fonts))
+                       font))
+                   required-fonts)))
+  (if available-fonts
+      (dolist (font missing-fonts)
+        (warn! (format "Missing font: %s." font)))
+    (warn! "Unable to check for missing fonts, is fc-list installed?")))
+
 #+end_src
 
 ****** Themes
