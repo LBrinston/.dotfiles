@@ -10,19 +10,23 @@
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
-;; - `doom-font' -- the primary font to use
+;; - `doom-font'                -- the primary font to use
 ;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
-;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
+;; - `doom-big-font'            -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
-;; - `doom-symbol-font' -- for symbols
-;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
+;; - `doom-symbol-font'         -- for symbols
+;; - `doom-serif-font'          -- for the `fixed-pitch-serif' face
 ;;
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
-;;
-(setq doom-font (font-spec :family "Fira Mono" :size 18 :weight 'bold))
-;;      doom-variable-pitch-font (font-spec :family "Fira Mono" :size 27))
-;;
+;; Fire Mono
+(setq doom-font (font-spec :family "Fira Mono" :size 20 :weight)
+      doom-big-font (font-spec :family "Fira Mono" :size 36)
+      doom-variable-pitch-font (font-spec :family "Overpass" :size 18)
+      doom-symbol-font (font-spec :family "JuliaMono")
+      doom-serif-font (font-spec :family "IBM Plex Sans" :size 22 :weight 'light)
+      ;;      doom-emoji-font ()
+      )
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
 ;; refresh your font settings. If Emacs still can't find your font, it likely
@@ -487,13 +491,15 @@ org-download-heading-lvl nil)
 
 ;; -- Personal Configuration ------------------------------------------------------------------
 
-;; -- Avy
-(map!
-:prefix "M-g"
-"w"   #'avy-goto-word-0
-"1 w" #'avy-goto-word-1
-;;#'avy-goto-line
-)
+;;-- Avy
+  (map!
+   :after avy
+   :leader
+   :n
+   "s w" #'avy-goto-word-1
+   :desc "Jump to a word!"
+   ;;#'avy-goto-line
+   )
 
 ;; -- Consult --
   (map!
@@ -568,6 +574,10 @@ org-download-heading-lvl nil)
 
   )
 
+;; (package! rotate
+;;   ;:pin "4e9ac3ff800880bd9b705794ef0f7c99d72900a6"
+;;   )
+
 (use-package! olivetti
 :config
 (setq-default olivetti-body-width 180)
@@ -591,13 +601,13 @@ org-download-heading-lvl nil)
   )
 
 (map!
-  :map org-mode-map
-  :after yasnippet ;; Retain org-mode's native TAB functionality but allow yas-expand when a snippet is available
-  :nvi [tab] yas-maybe-expand
-  ;; Optionally, bind other keys for snippet navigation
-  ;;:nvi "C-c n" #'yas-next-field
-  ;;:nvi "C-c p" #'yas-prev-field
-)
+ :map org-mode-map
+ :after yasnippet ;; Retain org-mode's native TAB functionality but allow yas-expand when a snippet is available
+ :nvi [tab] yas-maybe-expand
+ ;; Optionally, bind other keys for snippet navigation
+ ;;:nvi "C-c n" #'yas-next-field
+ ;;:nvi "C-c p" #'yas-prev-field
+ )
 
 ;; (use-package! whitespace
 ;;   :config

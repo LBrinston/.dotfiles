@@ -2201,23 +2201,30 @@ I'm really just storing the header here. I think it makes sense for the package 
 :ID:       278299fb-3b55-4756-83bf-46e7a411cdcb
 :END:
 
-#+begin_src emacs-lisp
+=Reminders=:
++ You should be able to find system fonts at ~$XDG_DATA_HOME~​/fonts.
++ You can query what fonts emacs can find with ~describe-font~ - this is also a good way to check what family names are.
 
+#+begin_src emacs-lisp
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
-;; - `doom-font' -- the primary font to use
+;; - `doom-font'                -- the primary font to use
 ;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
-;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
+;; - `doom-big-font'            -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
-;; - `doom-symbol-font' -- for symbols
-;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
+;; - `doom-symbol-font'         -- for symbols
+;; - `doom-serif-font'          -- for the `fixed-pitch-serif' face
 ;;
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
-;;
-(setq doom-font (font-spec :family "Fira Mono" :size 18 :weight 'bold))
-;;      doom-variable-pitch-font (font-spec :family "Fira Mono" :size 27))
-;;
+;; Fire Mono
+(setq doom-font (font-spec :family "Fira Mono" :size 20 :weight)
+      doom-big-font (font-spec :family "Fira Mono" :size 36)
+      doom-variable-pitch-font (font-spec :family "Overpass" :size 18)
+      doom-symbol-font (font-spec :family "JuliaMono")
+      doom-serif-font (font-spec :family "IBM Plex Sans" :size 22 :weight 'light)
+      ;;      doom-emoji-font ()
+      )
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
 ;; refresh your font settings. If Emacs still can't find your font, it likely
@@ -2981,7 +2988,7 @@ This one is purely for testing purposes.
 :ID:       830da1ca-97fb-438f-a2af-e63fb4854aca
 :END:
 
-=avy= appears to be installed by default and _I think_ it's done by :input?
+From ~:config default~
 
 Usage observations:
 1. =-goto-word-0= ignores characters such as ). =-goto-word-1= does not have this limitation since you specify the leading character.
@@ -2989,13 +2996,15 @@ Usage observations:
 I suspect that I won't end up wanting to use =-goto-word-=. I think usually if I want to go to a
 
 #+begin_src emacs-lisp
-;; -- Avy
-(map!
-:prefix "M-g"
-"w"   #'avy-goto-word-0
-"1 w" #'avy-goto-word-1
-;;#'avy-goto-line
-)
+;;-- Avy
+  (map!
+   :after avy
+   :leader
+   :n
+   "s w" #'avy-goto-word-1
+   :desc "Jump to a word!"
+   ;;#'avy-goto-line
+   )
 #+end_src
 
 Doom seems to use =Avy= under the following binding:
@@ -3109,6 +3118,17 @@ Perhaps I shouldn't be using =use-package!= with module packages? I'm missing so
 
   )
 #+end_src
+******** =rotate=
+
+Ro-ro-rotate yer windows.
+This actually seems to be handled by the ~evil-rotate-...~ commands (SPC w ...).
+
+Possible alternative that allows setting predefined layouts:
+#+begin_src emacs-lisp :tanlge .config/doom/packages.el
+;; (package! rotate
+;;   ;:pin "4e9ac3ff800880bd9b705794ef0f7c99d72900a6"
+;;   )
+#+end_src
 
 ******** =olivetti= - named for a [[https://en.wikipedia.org/wiki/Olivetti][typewriter]]
 
@@ -3164,17 +3184,21 @@ Perhaps I shouldn't be using =use-package!= with module packages? I'm missing so
   (add-to-list 'yas-snippet-dirs "~/.my-emacs/snippets"
                )
   )
-
-(map!
-  :map org-mode-map
-  :after yasnippet ;; Retain org-mode's native TAB functionality but allow yas-expand when a snippet is available
-  :nvi [tab] yas-maybe-expand
-  ;; Optionally, bind other keys for snippet navigation
-  ;;:nvi "C-c n" #'yas-next-field
-  ;;:nvi "C-c p" #'yas-prev-field
-)
-
 #+end_src
+
+Some keybinding is necessary to ensure that snippets can be navigated as expected (with tab). Fix found on [[https://github.com/doomemacs/doomemacs/issues/7733][on this github issue.]]
+
+#+begin_src emacs-lisp
+(map!
+ :map org-mode-map
+ :after yasnippet ;; Retain org-mode's native TAB functionality but allow yas-expand when a snippet is available
+ :nvi [tab] yas-maybe-expand
+ ;; Optionally, bind other keys for snippet navigation
+ ;;:nvi "C-c n" #'yas-next-field
+ ;;:nvi "C-c p" #'yas-prev-field
+ )
+#+end_src
+
 ******** whitespace-mode
 
 Doom's whitespace-mode is quite minimal. Should you need it to make other forms of white space apparent here is some sample config.
@@ -3544,6 +3568,8 @@ Vterm requires some extra work to get functioning.
 :ID:       d8a5b148-bc76-4ceb-b71a-a0d6fea92c8f
 :END:
 Emacs should offer to do this for you when you first trying to run it.
+
+
 ***** Reference
 :PROPERTIES:
 :ID:       9f117960-0294-4f2a-a6da-1f44dd91d5fa
@@ -3551,6 +3577,8 @@ Emacs should offer to do this for you when you first trying to run it.
 1. [[https://practical.li/doom-emacs/install/doom-configuration/#indent][Practical.li/doom-emacs]]
 2. [[https://github.com/doomemacs/doomemacs/blob/master/docs/getting_started.org#common-mistakes-when-configuring-doom-emacs][Common mistakes when configuring Doom Emacs]]
 3. [[https://hieuphay.com/doom-emacs-config/][Hieu Phay - My Doom Emacs Configuration - 4.1.4 Previewing LaTeX fragments]]
+4. [[https://karthinks.com/software/emacs-window-management-almanac/][Karthinks - Emacs Window Almanac]]
+5. [[https://tecosaur.github.io/emacs-config/][tecosaur - Doom Emacs, Configuration]]
 **** my-emacs
 
 # Local Variables:
