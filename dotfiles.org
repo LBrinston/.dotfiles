@@ -1783,6 +1783,18 @@ export PATH="$XDG_CONFIG_HOME/doom-emacs/bin:$PATH"
 #export PATH="$HOME/.config/doom:$PATH"
 #export PATH="$HOME/.config/doom-emacs/bin:$PATH"
 #+END_SRC
+***** Desktop Entry
+
+Lets make a desktop entry so doom can be launched from the desktop launcher.
+
+#+BEGIN_SRC conf :tangle ./.local/share/applications/doom-emacs.desktop
+[Desktop Entry]
+Type=Application
+Name=Doom-Emacs
+Icon=
+Exec=emacs --with-profile doom
+Category=Editor
+#+END_SRC
 
 ***** Initialization - =init.el=
 :PROPERTIES:

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Doom-Emacs
+Icon=
+Exec=emacs --with-profile doom
+Category=Editor
