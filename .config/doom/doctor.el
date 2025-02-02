@@ -1,5 +1,7 @@
 ;;; doctor.el -*- lexical-bindingL t; no-byte-compile: t; -*-
 ;; Emacs - Check for Prefered Fonts
+;; borrowed from tecosaur:
+;; https://tecosaur.github.io/emacs-config/config.html#config-doctor
 (let (required-fonts available-fonts missing-fonts)
   (setq required-fonts '("Fira ?Mono.*" "Overpass" "JuliaMono" "IBM Plex Sans"))
 

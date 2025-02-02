@@ -33,6 +33,8 @@
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
 
 ;; Emacs - Check for Prefered Fonts
+;; borrowed from tecosaur:
+;; https://tecosaur.github.io/emacs-config/config.html#config-doctor
 (let (required-fonts available-fonts missing-fonts)
   (setq required-fonts '("Fira ?Mono.*" "Overpass" "JuliaMono" "IBM Plex Sans"))
 
