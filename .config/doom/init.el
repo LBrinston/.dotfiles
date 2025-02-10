@@ -87,7 +87,7 @@ grammar           ; tasing grammar mistake every you make
 
 :tools
 ;;ansible
-;;biblio            ; Writes a PhD for you (citation needed)
+biblio            ; Writes a PhD for you (citation needed)
 ;;collab            ; buffers with friends
 (debugger +lsp)          ; FIXME stepping through code, to help you add bugs
 ;;direnv

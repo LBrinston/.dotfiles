@@ -684,6 +684,13 @@ org-download-heading-lvl nil)
                       )
   )
 
+;; biblio
+(after! citar
+  (setq! citar-bibliography '("~/Documents/references/references.bib"))
+  ;(setq! citar-library-paths '("~/references/library/files"))
+  ;(setq! citar-notes-paths '("~/references/notes"))
+  )
+
 ;; -- General dap-mode --
 (after! dap-mode
   (dap-ui-mode 1)

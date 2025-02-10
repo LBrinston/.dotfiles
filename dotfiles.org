@@ -1966,7 +1966,7 @@ grammar           ; tasing grammar mistake every you make
 #+begin_src emacs-lisp
 :tools
 ;;ansible
-;;biblio            ; Writes a PhD for you (citation needed)
+biblio            ; Writes a PhD for you (citation needed)
 ;;collab            ; buffers with friends
 (debugger +lsp)          ; FIXME stepping through code, to help you add bugs
 ;;direnv
@@ -3368,6 +3368,18 @@ Ref:
 :PROPERTIES:
 :ID:       8fc6d989-9c17-42da-a718-34ce6aa02a5d
 :END:
+
+******** Bibilio
+
+#+BEGIN_SRC emacs-lisp
+;; biblio
+(after! citar
+  (setq! citar-bibliography '("~/Documents/references/references.bib"))
+  ;(setq! citar-library-paths '("~/references/library/files"))
+  ;(setq! citar-notes-paths '("~/references/notes"))
+  )
+#+END_SRC
+
 ******* OS
 :PROPERTIES:
 :ID:       4754f677-9c26-40f8-bfec-e34d1276b01c
