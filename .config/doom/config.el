@@ -20,13 +20,47 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;; Fire Mono
-(setq doom-font (font-spec :family "Fira Mono" :size 20)
-      doom-big-font (font-spec :family "Fira Mono" :size 36)
-      doom-variable-pitch-font (font-spec :family "Overpass" :size 18)
-      doom-symbol-font (font-spec :family "JuliaMono")
-      doom-serif-font (font-spec :family "IBM Plex Sans" :size 22 :weight 'light)
-      ;;      doom-emoji-font ()
-      )
+
+;; ref: https://emacsredux.com/blog/2021/12/22/check-if-a-font-is-available-with-emacs-lisp/
+(defun my-font-available-p (font-name)
+  (find-font (font-spec :name font-name)))
+
+(defvar my-font-size 24
+  "My preferred font size")
+
+;; -- Pick the preferred font otherwise do nothing and let Doom select it's fallbacks
+
+;; -- Doom font
+(cond
+ ((my-font-available-p "Fira Mono")
+  (setq doom-font (font-spec :family "Fira Mono" :size my-font-size)
+        doom-big-font (font-spec :family "Fira Mono" :size 36))
+  ))
+;; -- Doom Variable pitch font
+(cond
+ ((my-font-available-p "Overpass")
+  (setq doom-variable-pitch-font (font-spec :family "Overpass" :size my-font-size))
+  ))
+;; -- Doom Symbol font
+(cond
+ ((my-font-available-p "JuliaMono")
+  (setq doom-symbol-font (font-spec :family "JuliaMono" :size my-font-size))
+  ))
+;; -- Doom Serif font
+(cond
+ ((my-font-available-p "IBM Plex Sans")
+  (setq doom-symbol-font (font-spec :family "IBM Plex Sans" :size my-font-size))
+  ))
+
+;; ;; -- Doom emoji font
+;; (setq doom-font (font-spec :family "Fira Mono" :size 20)
+;;       doom-big-font (font-spec :family "Fira Mono" :size 36)
+;;       doom-variable-pitch-font (font-spec :family "Overpass" :size 18)
+;;       doom-symbol-font (font-spec :family "JuliaMono")
+;;       doom-serif-font (font-spec :family "IBM Plex Sans" :size 22 :weight 'light)
+;;       ;;      doom-emoji-font ()
+;;       )
+
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
 ;; refresh your font settings. If Emacs still can't find your font, it likely
