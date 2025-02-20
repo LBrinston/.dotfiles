@@ -190,7 +190,9 @@ It also keeps a history (~/var/lib/nala/history.json~) that can be instrumented 
 
 The individual per-interactive-shell startup file.
 
-#+BEGIN_SRC bash :tangle ~/.dotfiles/.bashrc :noweb yes
+=REMINDER=: the ~:noweb-prefix no~ here is necessary to stop no-web trying to honor the bash #comment before it recognizes #<<our-alternative-no-web>>#
+
+#+BEGIN_SRC bash :tangle ~/.dotfiles/.bashrc :noweb yes :noweb-prefix no
 #!/bin/bash
 
 # ~/.bashrc: executed by bash(1) for non-login shells.
@@ -2433,6 +2435,8 @@ There are two solutions to this:
 
 1. Buffer Local Variables
 
+   =Note=: The unicode look-up name for these symbols is MUCH LESS/GREATER.
+
    #+BEGIN_SRC emacs-lisp :tangle no
    # Local Variables:
    # org-babel-noweb-wrap-start: "«"
@@ -2450,6 +2454,8 @@ There are two solutions to this:
    « - LEFT-POINT DOUBLE ANGLE QUOTATION MARK - 0000AB
 
    However, in the interest of keeping things terminal friendly I opting to just add "#" either side of the standard syntax.
+
+  =Note=: For this to work reliably you _must_ include the ~:noweb-prefix no~ header in your babel blocks otherwise noweb will attempt to honor #comment first.
 
    #+BEGIN_SRC emacs-lisp
    (after! org
