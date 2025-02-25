@@ -2236,6 +2236,7 @@ I'm really just storing the header here. I think it makes sense for the package 
 =Reminders=:
 + You should be able to find system fonts at ~$XDG_DATA_HOME~​/fonts.
 + You can query what fonts emacs can find with ~describe-font~ - this is also a good way to check what family names are.
++ *Call:* ~doom/reload-font~
 
 #+begin_src emacs-lisp
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
@@ -2844,7 +2845,7 @@ There appears to be two issues:
             ("DONE"      . ( :foreground "green" :weight bold))
             ("IDEA"      . ( :foreground "deepskyblue1" :weight bold))
             ("CANCELLED" . ( :foreground "gray" :weight bold))
-            ("TOFIND"    . ( :foreground "yellow1" :weight bold))
+            ("TO-FIND"   . ( :foreground "yellow1" :weight bold))
       )
     )
 #+END_SRC
@@ -2865,7 +2866,7 @@ There appears to be two issues:
   ) ; after! org
 #+end_src
 
-******** Custome Agenda Commands - Not used
+******** Custom Agenda Commands - Not used
 
 _Currently not used due to gremlins_
 
@@ -3671,7 +3672,7 @@ _Debugging - DAP-mode_
 ***** Debugging & Troubleshooting
 ****** Packages
 
-If a package recipe isn't installed right ~stright~ will still create a directory and symlink for it even when it fails to find a package. This can lead to errors about a file or dir not being.
+If a package recipe isn't installed right ~straight~ will still create a directory and symlink for it even when it fails to find a package. This can lead to errors about a file or dir not being.
 
 ******* Manually updating packages
 You can manually update your packages by calling:
