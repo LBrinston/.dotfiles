@@ -231,10 +231,7 @@ export PYTHON_HISTORY="$XDG_CONFIG_HOME"/python/python_history
 export PATH="$HOME/venvs:$PATH"
 ## Doom Emacs
 export PATH="$XDG_CONFIG_HOME/doom:$PATH"
-export PATH="$XDG_CONFIG_HOME/doom-emacs/bin:$PATH"
-export PATH="~/.bin/GHDL/bin:$PATH"
-export PATH="~/.bin/GHDL/lib:$PATH"
-export PATH="~/.bi/GHDL/libexec/gcc/x86_64-pc-linux-gnu/12.1.0/ghdl1:$PATH"
+export PATH="$XDG_CONFIG_HOME/doom-emacs/n:$PATH"
 export OCTAVE_HISTFILE="$XDG_STATE_HOME/octave_hist"
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
 alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"

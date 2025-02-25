@@ -419,16 +419,42 @@ org-download-heading-lvl nil)
           ;; Specific file based commands
         ;;; Capture file
         ;;; WIP - not working as of 2024-01-12
-           ;;   ("c" "Capture File" (
-           ;;                     (todo ".*" (org-agenda-overriding-header "Unprocessed Capture Items"))
-           ;;                     )
-           ;; (org-agenda-files '("~/.notes/capture.org"))
-           ;; )
+          ;;   ("c" "Capture File" (
+          ;;                     (todo ".*" (org-agenda-overriding-header "Unprocessed Capture Items"))
+          ;;                     )
+          ;; (org-agenda-files '("~/.notes/capture.org"))
+          ;; )
           ("c" "Capture File" (
                                ;; Unprocessed todo items
                                (todo ".*" ((org-agenda-files '("~/.notes/capture.org"))
                                            (org-agenda-overriding-header "Unprocessed Capture Items")))
                                ))
+          ;; -- Work
+          ("f" "Weekly DONE" (
+                              (agenda "" ((org-agenda-overriding-header "Tasks Completed:")
+                                          (org-agenda-skip-function '(org-agenda-skip-subtree-if 'nottodo 'done))
+                                          (org-agenda-skip-scheduled-if-done nil) ;; don't search scheduled
+                                          (org-agenda-skip-timestamp-if-done nil) ;; don't search
+                                          (org-agenda-span 7)
+                                          (org-agenda-use-time-grid nil)
+                                          (setq org-agenda-show-all-dates nil)
+                                          ))
+                              ))
+          ;; ("f" "Weekly DONE and IN-PROGRESS from this week"
+          ;;  (agenda ""
+          ;;          ((org-agenda-overriding-header "Tasks from this Week")
+          ;;           (org-agenda-span 'week)
+          ;;           (org-agenda-start-on-weekday 1) ;; Start on Monday
+          ;;           (org-agenda-use-time-grid nil)
+          ;;           (org-agenda-skip-function
+          ;;            (org-agenda-skip-subtree-if 'todo '("DONE" "IN-PROGRESS")))
+          ;;           (org-agenda-show-all-dates nil)
+          ;;           (org-agenda-skip-scheduled-if-done nil)
+          ;;           (org-agenda-skip-timestamp-if-done nil)
+          ;;           (org-agenda-start-day "Mon")
+          ;;           ))
+          ;;  )
+          ;;--
           )
         )
   )
@@ -484,7 +510,7 @@ org-download-heading-lvl nil)
  :empty-lines-after 1)
 
 ("b" "Bookmark" entry (file "~/.notes/bookmarks.org")
- "* [[%^{link}][%^{name}]] %^g\n:PROPERTIES:\n:CREATED: %U\n:END:")
+ "* [[%x][%^{name}]] %^g\n:PROPERTIES:\n:CREATED: %U\n:END:")
 
 ("m" "Media")
 ("mm" "Movie" entry (file+headline "~/.notes/media.org" "Movies")
@@ -503,15 +529,15 @@ org-download-heading-lvl nil)
 ("ep" "Emacs Package" entry (file+headline "~/.notes/emacs.org" "Improvements")
  "* EMACS-PACKAGE - %^{Package name}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
-;; -- A Package to consider with a link
+;; -- A Package to consider with a link (assumed to be a web link)
 ("ew" "Emacs Package with link" entry (file+headline "~/.notes/emacs.org" "Improvements")
- "* EMACS-PACKAGE - %^{Package name}%^g\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n[[%x][%^{Link description}]\n%?"
+ "* EMACS-PACKAGE - %^{Package name}%^g\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n[[%x][%^{Link description}]]\n%?"
  :empty-lines-after 1 :prepend t)
 ;; -- Configuration to perform
 ("ec" "Emacs Config" entry (file+headline "~/.notes/emacs.org" "Improvements")
  "* EMACS-CONFIG Org-mode - %^{Config}%^g\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
-;;; -- Config to perform with link
+;; -- Config to perform with link (assumed to be a file system link)
 ("ei" "Emacs Config Link" entry (file+headline "~/.notes/emacs.org" "Improvements")
  "* EMACS-CONFIG Org-mode - %^{Config}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?\n%a"
  :empty-lines-after 1 :prepend t)
