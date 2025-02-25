@@ -1761,6 +1761,19 @@ ignored-argument-names = "_.*|^ignored_|^unused_"
 # builtins.
 redefining-builtins-modules = ["six.moves", "past.builtins", "future.builtins", "builtins", "io"]
 #+END_SRC
+
+**** conda - mini and ana
+
+One of the several python package managers.
+
+***** Disabling auto start
+
+Annoyingly conda by default auto-starts with your shell.
+
+#+BEGIN_SRC bash
+conda config --set auto_activate_base false
+#+END_SRC
+
 *** =Emacs=
 
 **** chemacs
