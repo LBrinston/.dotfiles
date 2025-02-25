@@ -2812,18 +2812,28 @@ There appears to be two issues:
 
 ******* todo-keywords
 
+=Reminder=:
+(<fast-key>!)  - creates a timestamp on transition to STATE
+(<fast-key>@)  - creates a note with timestamp on transition to STATE
+(<fast-key>/!) - creates a note with timestamp only on transition back?
+
 #+BEGIN_SRC emacs-lisp
 	 (setq org-todo-keywords
           '(
             ;; -- General
-            (sequence "TODO(t)" "IN-PROG" "WAITING" "|" "DONE(!)" "SUBMITTED(s!)" "|" "OBE(o)" "WONT-DO")
+            (sequence "TODO(t!)" "IN-PROG(i!)" "WAITING(w@/!)" "|" "DONE(d!)")
+            (sequence "|" "SUBMITTED(s!)")
+            (sequence "|" "CANCALLED(c@)" "DELEGATED(e!)")
             (sequence "IDEA")
-            (sequence "REMINDER" "|" "DONE")
+            (sequence "REMINDER(!r)")
             (sequence "CALL" "|" "CALLED(!)")
-            (seqeunce "EMAIL" "|" "EMAILED(d!)")
+            (seqeunce "EMAIL(m!)" "|" "EMAILED(!)")
             (sequence "GROC" "|" "DONE")
             ;; -- Media
-            (sequence "TOFIND" "|" "FOUND")
+            (sequence "TO-FIND" "|" "FOUND")
+            ;; -- Emacs
+            (sequence "EMACS-PACKAGE")
+            (sequence "EMACS-CONFIG")
             )
           )
 
@@ -3005,13 +3015,29 @@ These capture groups need to be better defined and expanded:
 ;; -- Emacs
 ("e" "Emacs")
 ("eo" "Org-mode" entry (file+headline "~/.notes/emacs.org" "Improvements")
- "* EMACS Org-mode - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
+ "* EMACS Org-mode - %^{Title}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1)
 ;; -- Programming
 ("p" "Programming")
 ("pe" "Emacs TODO" entry (file+headline "~/.notes/emacs.org" "Improvements")
- "* EMACS %^{Title}\n\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n %a"
+ "* EMACS %^{Title}\n\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n %a"
  :empty-lines-after 1)
+#+end_src
+
+Work related
+
+#+begin_src emacs-lisp
+;; -- Work
+("w" "Work")
+("wt" "Work TODO" entry (file+headline "~/.notes/work-agenda.org" "Tasks")
+ "* TODO %^{PRJ} - %^{Task}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
+("wn" "Work Note" entry (file+headline "~/.notes/emacs.org" "Improvements")
+ "* NOTE %^{} - %^{}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
+("wi" "Issue" entry (file+headline "~/.notes/emacs.org" "Improvements")
+ "* ISSUE %^{} - %^{}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
 #+end_src
 
 This one is purely for testing purposes.

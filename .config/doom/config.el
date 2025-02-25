@@ -378,7 +378,7 @@ org-download-heading-lvl nil)
             (seqeunce "EMAIL" "|" "EMAILED(d!)")
             (sequence "GROC" "|" "DONE")
             ;; -- Media
-            (sequence "TOFIND" "|" "FOUND")
+            (sequence "TO-FIND" "|" "FOUND")
             )
           )
 
@@ -495,13 +495,25 @@ org-download-heading-lvl nil)
 ;; -- Emacs
 ("e" "Emacs")
 ("eo" "Org-mode" entry (file+headline "~/.notes/emacs.org" "Improvements")
- "* EMACS Org-mode - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
+ "* EMACS Org-mode - %^{Title}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1)
 ;; -- Programming
 ("p" "Programming")
 ("pe" "Emacs TODO" entry (file+headline "~/.notes/emacs.org" "Improvements")
- "* EMACS %^{Title}\n\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n %a"
+ "* EMACS %^{Title}\n\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n %a"
  :empty-lines-after 1)
+
+;; -- Work
+("w" "Work")
+("wt" "Work TODO" entry (file+headline "~/.notes/work-agenda.org" "Tasks")
+ "* TODO %^{PRJ} - %^{Task}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
+("wn" "Work Note" entry (file+headline "~/.notes/emacs.org" "Improvements")
+ "* NOTE %^{} - %^{}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
+("wi" "Issue" entry (file+headline "~/.notes/emacs.org" "Improvements")
+ "* ISSUE %^{} - %^{}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
 
 ;; -- Test
 ("z" "Test capture" entry (file "~/.notes/test.org")
