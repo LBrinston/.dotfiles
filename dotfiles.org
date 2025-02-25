@@ -1795,8 +1795,6 @@ conda config --set auto_activate_base false
 ## Doom Emacs
 export PATH="$XDG_CONFIG_HOME/doom:$PATH"
 export PATH="$XDG_CONFIG_HOME/doom-emacs/bin:$PATH"
-#export PATH="$HOME/.config/doom:$PATH"
-#export PATH="$HOME/.config/doom-emacs/bin:$PATH"
 #+END_SRC
 ***** Desktop Entry
 
@@ -3004,7 +3002,7 @@ If I am honest with myself I am terrible at remembering to journal. But maybe! j
 
 #+begin_src emacs-lisp
 ("b" "Bookmark" entry (file "~/.notes/bookmarks.org")
- "* [[%^{link}][%^{name}]] %^g\n:PROPERTIES:\n:CREATED: %U\n:END:")
+ "* [[%x][%^{name}]] %^g\n:PROPERTIES:\n:CREATED: %U\n:END:")
 #+end_src
 
 Capture grouping for media to follow up on: Movies, books, podcasts, etc.
@@ -3012,25 +3010,45 @@ Capture grouping for media to follow up on: Movies, books, podcasts, etc.
 #+begin_src emacs-lisp
 ("m" "Media")
 ("mm" "Movie" entry (file+headline "~/.notes/media.org" "Movies")
- "* TOFIND Movie - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
+ "* TO-FIND Movie - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1)
 ("mb" "Book" entry (file+headline "~/.notes/media.org" "Books")
- "* TOFIND Books - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
+ "* TO-FIND Books - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1)
 ("mp" "Pocast" entry (file+headline "~/.notes/media.org" "Podcasts")
- "* TOFIND Podcast - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
+ "* TO-FIND Podcast - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1)
 #+end_src
 
+_Emacs related_
+
 These capture groups need to be better defined and expanded:
 - Make use of %a (annotation - ~org-store-link~)
+- Make use of the [[https://orgmode.org/manual/The-capture-protocol.html][capture protocol]]
 
 #+begin_src emacs-lisp
 ;; -- Emacs
 ("e" "Emacs")
-("eo" "Org-mode" entry (file+headline "~/.notes/emacs.org" "Improvements")
- "* EMACS Org-mode - %^{Title}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
- :empty-lines-after 1)
+;; -- A Package to consider
+("ep" "Emacs Package" entry (file+headline "~/.notes/emacs.org" "Improvements")
+ "* EMACS-PACKAGE - %^{Package name}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
+;; -- A Package to consider with a link (assumed to be a web link)
+("ew" "Emacs Package with link" entry (file+headline "~/.notes/emacs.org" "Improvements")
+ "* EMACS-PACKAGE - %^{Package name}%^g\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n[[%x][%^{Link description}]]\n%?"
+ :empty-lines-after 1 :prepend t)
+;; -- Configuration to perform
+("ec" "Emacs Config" entry (file+headline "~/.notes/emacs.org" "Improvements")
+ "* EMACS-CONFIG Org-mode - %^{Config}%^g\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
+;; -- Config to perform with link (assumed to be a file system link)
+("ei" "Emacs Config Link" entry (file+headline "~/.notes/emacs.org" "Improvements")
+ "* EMACS-CONFIG Org-mode - %^{Config}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?\n%a"
+ :empty-lines-after 1 :prepend t)
+;; -- Emacs lisp to write
+("el" "Emacs TODO" entry (file+headline "~/.notes/emacs.org" "Improvements")
+ "* EMACS-LISP %^{Title}\n\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n"
+ :empty-lines-after 1 :prepend t)
 ;; -- Programming
 ("p" "Programming")
 ("pe" "Emacs TODO" entry (file+headline "~/.notes/emacs.org" "Improvements")
@@ -3038,19 +3056,19 @@ These capture groups need to be better defined and expanded:
  :empty-lines-after 1)
 #+end_src
 
-Work related
+_Work related_
 
 #+begin_src emacs-lisp
 ;; -- Work
 ("w" "Work")
 ("wt" "Work TODO" entry (file+headline "~/.notes/work-agenda.org" "Tasks")
- "* TODO %^{PRJ} - %^{Task}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ "* TODO %^{Poject Name} - %^{Task description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
-("wn" "Work Note" entry (file+headline "~/.notes/emacs.org" "Improvements")
- "* NOTE %^{} - %^{}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+("wn" "Work Note" entry (file+headline "~/.notes/work-agenda.org" "Improvements")
+ "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
-("wi" "Issue" entry (file+headline "~/.notes/emacs.org" "Improvements")
- "* ISSUE %^{} - %^{}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+("wi" "Issue" entry (file+headline "~/.notes/work-agenda.org" "Improvements")
+ "* ISSUE %^{Issue name} - %^{Issue description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
 #+end_src
 
