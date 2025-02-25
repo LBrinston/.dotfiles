@@ -371,14 +371,19 @@ org-download-heading-lvl nil)
 	 (setq org-todo-keywords
           '(
             ;; -- General
-            (sequence "TODO(t)" "IN-PROG" "WAITING" "|" "DONE(!)" "SUBMITTED(s!)" "|" "OBE(o)" "WONT-DO")
+            (sequence "TODO(t!)" "IN-PROG(i!)" "WAITING(w@/!)" "|" "DONE(d!)")
+            (sequence "|" "SUBMITTED(s!)")
+            (sequence "|" "CANCALLED(c@)" "DELEGATED(e!)")
             (sequence "IDEA")
-            (sequence "REMINDER" "|" "DONE")
+            (sequence "REMINDER(!r)")
             (sequence "CALL" "|" "CALLED(!)")
-            (seqeunce "EMAIL" "|" "EMAILED(d!)")
+            (seqeunce "EMAIL(m!)" "|" "EMAILED(!)")
             (sequence "GROC" "|" "DONE")
             ;; -- Media
             (sequence "TO-FIND" "|" "FOUND")
+            ;; -- Emacs
+            (sequence "EMACS-PACKAGE")
+            (sequence "EMACS-CONFIG")
             )
           )
 
@@ -389,7 +394,7 @@ org-download-heading-lvl nil)
             ("DONE"      . ( :foreground "green" :weight bold))
             ("IDEA"      . ( :foreground "deepskyblue1" :weight bold))
             ("CANCELLED" . ( :foreground "gray" :weight bold))
-            ("TOFIND"    . ( :foreground "yellow1" :weight bold))
+            ("TO-FIND"   . ( :foreground "yellow1" :weight bold))
       )
     )
 
@@ -483,20 +488,37 @@ org-download-heading-lvl nil)
 
 ("m" "Media")
 ("mm" "Movie" entry (file+headline "~/.notes/media.org" "Movies")
- "* TOFIND Movie - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
+ "* TO-FIND Movie - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1)
 ("mb" "Book" entry (file+headline "~/.notes/media.org" "Books")
- "* TOFIND Books - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
+ "* TO-FIND Books - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1)
 ("mp" "Pocast" entry (file+headline "~/.notes/media.org" "Podcasts")
- "* TOFIND Podcast - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
+ "* TO-FIND Podcast - %^{Title}\n:PROPERTIES:\n\t:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1)
 
 ;; -- Emacs
 ("e" "Emacs")
-("eo" "Org-mode" entry (file+headline "~/.notes/emacs.org" "Improvements")
- "* EMACS Org-mode - %^{Title}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
- :empty-lines-after 1)
+;; -- A Package to consider
+("ep" "Emacs Package" entry (file+headline "~/.notes/emacs.org" "Improvements")
+ "* EMACS-PACKAGE - %^{Package name}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
+;; -- A Package to consider with a link
+("ew" "Emacs Package with link" entry (file+headline "~/.notes/emacs.org" "Improvements")
+ "* EMACS-PACKAGE - %^{Package name}%^g\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n[[%x][%^{Link description}]\n%?"
+ :empty-lines-after 1 :prepend t)
+;; -- Configuration to perform
+("ec" "Emacs Config" entry (file+headline "~/.notes/emacs.org" "Improvements")
+ "* EMACS-CONFIG Org-mode - %^{Config}%^g\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
+;;; -- Config to perform with link
+("ei" "Emacs Config Link" entry (file+headline "~/.notes/emacs.org" "Improvements")
+ "* EMACS-CONFIG Org-mode - %^{Config}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?\n%a"
+ :empty-lines-after 1 :prepend t)
+;; -- Emacs lisp to write
+("el" "Emacs TODO" entry (file+headline "~/.notes/emacs.org" "Improvements")
+ "* EMACS-LISP %^{Title}\n\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n"
+ :empty-lines-after 1 :prepend t)
 ;; -- Programming
 ("p" "Programming")
 ("pe" "Emacs TODO" entry (file+headline "~/.notes/emacs.org" "Improvements")
@@ -506,13 +528,13 @@ org-download-heading-lvl nil)
 ;; -- Work
 ("w" "Work")
 ("wt" "Work TODO" entry (file+headline "~/.notes/work-agenda.org" "Tasks")
- "* TODO %^{PRJ} - %^{Task}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ "* TODO %^{Poject Name} - %^{Task description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
-("wn" "Work Note" entry (file+headline "~/.notes/emacs.org" "Improvements")
- "* NOTE %^{} - %^{}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+("wn" "Work Note" entry (file+headline "~/.notes/work-agenda.org" "Improvements")
+ "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
-("wi" "Issue" entry (file+headline "~/.notes/emacs.org" "Improvements")
- "* ISSUE %^{} - %^{}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+("wi" "Issue" entry (file+headline "~/.notes/work-agenda.org" "Improvements")
+ "* ISSUE %^{Issue name} - %^{Issue description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
 
 ;; -- Test
