@@ -221,21 +221,21 @@ export PATH="$HOME/scripts/sdr:$PATH"
 # Microcontrollers
 ## Pi Pico
 export PATH="/opt/arm-none-eabi/bin:$PATH"
-## Python XDG vars
+# Python XDG vars
 ## For python >v3.13.0a3
 export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/pythonrc
 ## For python <v3.13.0a3
 export PYTHON_HISTORY="$XDG_CONFIG_HOME"/python/python_history
 
 # Path to Python virtual environments
-export PATH="$HOME/venvs:$PATH"#
-### Doom Emacs
+export PATH="$HOME/venvs:$PATH"
+## Doom Emacs
 export PATH="$XDG_CONFIG_HOME/doom:$PATH"
-export PATH="$XDG_CONFIG_HOME/doom-emacs/bin:$PATH"#
-#export PATH="~/.bin/GHDL/bin:$PATH"
+export PATH="$XDG_CONFIG_HOME/doom-emacs/bin:$PATH"
+export PATH="~/.bin/GHDL/bin:$PATH"
 export PATH="~/.bin/GHDL/lib:$PATH"
-export PATH="~/.bi/GHDL/libexec/gcc/x86_64-pc-linux-gnu/12.1.0/ghdl1:$PATH"#
-#export OCTAVE_HISTFILE="$XDG_STATE_HOME/octave_hist"#
-#export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv#
-#alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"#
-#export WINEPREFIX="$XDG_DATA_HOME"/wine#
+export PATH="~/.bi/GHDL/libexec/gcc/x86_64-pc-linux-gnu/12.1.0/ghdl1:$PATH"
+export OCTAVE_HISTFILE="$XDG_STATE_HOME/octave_hist"
+export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
+alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
+export WINEPREFIX="$XDG_DATA_HOME"/wine
