@@ -467,9 +467,9 @@ fi
 
 **** .gitconfig
 
-Git supportd the XDG spec out of the box so we can just directly place our ~.gitconfig~ at ~XDG_CONFIG_HOME/git/config~ (note config here is a _file_ not a dir).
+Git supported the XDG spec out of the box so we can just directly place our ~.gitconfig~ at ~XDG_CONFIG_HOME/git/config~ (note config here is a _file_ not a dir).
 
-#+BEGIN_SRC conf :tangle ~/.dotfiles/.config/git/config
+#+begin_src conf :tangle ~/.dotfiles/.config/git/config
 # This is Git's per-user configuration file.
 
 # Syntax
@@ -481,19 +481,61 @@ Git supportd the XDG spec out of the box so we can just directly place our ~.git
 
 # together section & variables correspond to:
 # safe.directory
+#+end_src
 
+Basic personal configuration.
+
+#+begin_src conf :tangle ~/.dotfiles/.config/git/config
 [user]
-	name = Liam Brinston
-	email = labrinston@gmail.com
+name = Liam Brinston
+email = labrinston@gmail.com
 [core]
-	editor = doom-emacs
+editor = doom-emacs
 [init]
-	defaultBranch = main
+defaultBranch = main
 [safe]
-    directory = /opt/pico-sdk
-#+END_SRC
+directory = /opt/pico-sdk
+#+end_src
 
-See: [[https://git-scm.com/docs/git-config#_configuration_file][git-config configuration file]] for more details.
+Addition configuration inspired by [[fn:git-1]] (<- fix me)
+
+git defaults to alphanumeric order rather than a more logical ordering by commit number or date. So, we sort by commit date and then we put things in columns.
+
+#+begin_src conf :tangle ~/.dotfiles/.config/git/config
+[column]
+ui = auto
+[branch]
+sort = -committerdate
+#+end_src
+
+git defaults to an algorithm called myers diff (from 1986) but git supports at least three more algorithms:
+~myers, minimal, patience, histogram~. Histogram is an improvement upon patience and a compelling reason to use histogram is because it will show you diffs stacked rather than overlapping (which can be confusing).
+
+colorMove marks up moved code sections in a different color than add or removed.
+
+#+begin_src conf :tangle ~/.dotfiles/.config/git/config
+[diff]
+algorithm = histogram
+; Mark moved code in a different colour than add/remove
+colorMoved = plain
+; Use i/ (index), w/ (working dir), or c/ (commit) instead of a/ and b/ in diffs
+mneumonicPrefix = true
+; Detect if a file has been renamed
+rename = true
+#+end_src
+
+_Niceties_
+
+#+begin_src conf :tangle ~/.dotfiles/.config/git/config
+[help]
+    ; Save me from myself
+    autocorrect = true
+#+end_src
+
+
+See:
+- [fn:git-1]. [[https://git-scm.com/docs/git-config#_configuration_file][git-config configuration file]] for more details.
+- [fn:git-2]. [[https://blog.gitbutler.com/how-git-core-devs-configure-git/][How git core devs configure git]]
 
 **** ~safe.directory~
 

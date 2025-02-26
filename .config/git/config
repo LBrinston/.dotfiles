@@ -11,11 +11,29 @@
 # safe.directory
 
 [user]
-	name = Liam Brinston
-	email = labrinston@gmail.com
+name = Liam Brinston
+email = labrinston@gmail.com
 [core]
-	editor = doom-emacs
+editor = doom-emacs
 [init]
-	defaultBranch = main
+defaultBranch = main
 [safe]
-    directory = /opt/pico-sdk
+directory = /opt/pico-sdk
+
+[column]
+ui = auto
+[branch]
+sort = -committerdate
+
+[diff]
+algorithm = histogram
+; Mark moved code in a different colour than add/remove
+colorMoved = plain
+; Use i/ (index), w/ (working dir), or c/ (commit) instead of a/ and b/ in diffs
+mneumonicPrefix = true
+; Detect if a file has been renamed
+rename = true
+
+[help]
+    ; Save me from myself
+    autocorrect = true
