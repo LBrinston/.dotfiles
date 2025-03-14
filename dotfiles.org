@@ -1836,7 +1836,7 @@ conda config --set auto_activate_base false
 #+BEGIN_SRC bash
 ## Doom Emacs
 export PATH="$XDG_CONFIG_HOME/doom:$PATH"
-export PATH="$XDG_CONFIG_HOME/doom-emacs/n:$PATH"
+export PATH="$XDG_CONFIG_HOME/doom-emacs/bin/:$PATH"
 #+END_SRC
 ***** Desktop Entry
 
@@ -3324,8 +3324,6 @@ Although consult is included in the Doom completion module many of the key bindi
    )
 #+end_src
 
-#+RESULTS:
-
 ******* UI
 :PROPERTIES:
 :ID:       22264d97-086c-45ca-b36b-7864ef1ae3f8
@@ -3841,6 +3839,15 @@ Set the home dir for cargo and make sure we can find the executables it installs
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export PATH="$XDG_DATA_HOME/cargo/bin:$PATH"
 #+END_SRC
+**** =ripgrep=
+
+ripgrep is a dependency for doom emacs itself (plus it whips). It is better to install it directly via cargo than apt so that it can be built with 'pcre2'. Don't forget to runn ~doom sync~ after.
+
+
+#+begin_src bash :tangle no
+sudo cargo --features 'pcre2'
+#+end_src
+
 *** nVidia
 
 #+name: CUDA-SHELL-VAR
