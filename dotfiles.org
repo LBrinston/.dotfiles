@@ -8,7 +8,7 @@ Personal dotfile management, and documentation using org-mode, GNU stow, and git
 
 ** GNU Stow
 
-GNU stow assumes that any file in the cwd is to be symlinked somewhere (that somewhere is assumed to be a dir in $HOME that has the same name as the subdir in the cwd).
+GNU stow assumes that any file in the ~cwd~ is to be symlinked somewhere (that somewhere, is assumed to be a dir in ~$HOME~ that has the same name as the subdir in the cwd).
 
 *** .stow-local-ignore
 
@@ -136,6 +136,36 @@ For now I am electing to directly clone this to =~/.bin= instead of =~/.dotfiles
 
 **** TODO Keeping git cloned things up to date:
 https://askubuntu.com/questions/759058/how-to-keep-a-local-bin-folder-up-to-date-with-updates-from-various-github-rep
+
+** Org-mode & Babel
+:PROPERTIES:
+:ID:       29b66f1c-8433-4cd5-8323-dddca0e751fc
+:END:
+
+Emac's org-mode, babel-blocks and noweb syntax allows for coupling of documentation and configuration. It is \therefore important to let Emacs & Org know where our dotfiles should live.
+
+The following set of functions was inspired by [[https://systemcrafters.net/learning-emacs-lisp/managing-files-and-directories/#example-resolving-the-destination-path-of-a-configuration-file][System crafters]]. The necessary emacs-lisp is shown here for context but is inserted down in [[id:e36764f5-eb21-4c8f-a926-e748fbd3d0ea][DOOM - Identifying Information]] as this is an early insertion point in DOOM's initialization.
+
+#+name: my-dotfiles-vars
+#+begin_src emacs-lisp
+(defcustom my--dotfiles-dir "~/.dotfiles"
+"The path to my personal dotfiles."
+:type 'string
+:group 'dotfiles)
+
+(defcustom my--dotfiles-home "~"
+  "The directory in which my-dotfiles-dir should reside, will probably always be ~."
+  :type 'string
+  :group 'dotfiles)
+
+(defcustom my--dotfiles-org-files '()
+  "The list of org-mode files under the `my--dotfiles-dir'
+which contain configuration files that should be tangled"
+  :type '(list string)
+  :group 'dotfiles)
+
+(setq dotcrafter-org-files '("dotfiles.org"))
+#+end_src
 
 * dotfiles
 *** android
@@ -2273,12 +2303,27 @@ I'm really just storing the header here. I think it makes sense for the package 
 :PROPERTIES:
 :ID:       e36764f5-eb21-4c8f-a926-e748fbd3d0ea
 :END:
+:BACKLINKS:
+[2025-03-01 Sat 08:57] <- [[id:29b66f1c-8433-4cd5-8323-dddca0e751fc][Dotfile Management - Org-mode & Babel]]
+:END:
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :noweb yes
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
 ;; (setq user-full-name "John Doe"
 ;;      user-mail-address "john@doe.com")
+
+<<my-dotfiles-vars>>
+
+;; -- Add my personal functions early
+(add-load-path!
+ "my-elisp.el"
+ )
+
+;; -- Require my personal functions
+;; ideally I shouldn't have to hard code this??
+(require 'my-elisp "~/.dotfiles/.config/doom/my-elisp.el")
+
 #+end_src
 
 ****** Fonts
@@ -3768,6 +3813,99 @@ _Debugging - DAP-mode_
 :END:
 
 ***** Personal Elisp - =my-elisp.el=
+
+****** Structure
+
+#+begin_src emacs-lisp :noweb yes :tangle ~/.dotfiles/.config/doom/my-elisp.el
+;;; my-elisp.el --- Description -*- lexical-binding: t; -*-
+;;
+;; Author: Me T-T
+;; Maintainer: Me T-T
+;; Created: March 01, 2025
+;; Modified: March 01, 2025
+;; Version: 0.0.1
+;; Package-Requires: ((emacs "24.3"))
+;;
+;; This file is not part of GNU Emacs.
+;;
+;;; Commentary:
+;;
+;;  Description
+;;
+;;; Code:
+
+<<my--scan-for-output-files>>
+<<test-scan>>
+
+(provide 'my-elisp)
+;;; my-elisp.el ends here
+#+end_src
+
+****** Tooling :WIP:
+
+#+begin_src emacs-lisp :tangle no
+(dolist (org-file my--dotfiles-org-files)
+(with-current-buffer (get-file-buffer (expand-file-name org-file
+                                                        my-dotfiles-dir))
+(message "File: %s" (buffer-file-name))))
+#+end_src
+
+#+RESULTS:
+
+#+name: my--scan-for-output-files
+#+begin_src emacs-lisp :eval no
+(defun my--scan-for-output-files (org-file)
+  (let ((output-files '())
+        (current-match t))
+    ;; Get a buffer for the file, either one that is
+    ;; already open or open a new one
+    (with-current-buffer (or (get-file-buffer org-file)
+                             (find-file-noselect org-file ))
+      ;; Save the current buffer position
+      (save-excursion
+        ;; Go back to the beginning of the buffer
+        (goto-char (point-min))
+        (widen) ; remove any narrowing - just in case buffer is already open
+        (message "Scanning buffer: %s" (buffer-name))
+
+        ;; Loop until no more matches are found
+        (while current-match
+          ;; Search for blocks with a :tangle property
+          ;; NOTE nil - silences search-forwards error on no match, would otherwise break the while
+          (setq current-match (search-forward ":tangle " nil t))
+          (when current-match
+            (let ((output-file (thing-at-point 'filename t)))
+              ;; If a file path was found, add it to the list
+              (unless (or (not output-file)
+                          (string-equal output-file "no")
+                          (string-equal output-file "yes"))
+                (setq output-files (cons output-file
+                                         output-files))))))))
+    output-files)
+  )
+#+end_src
+
+_Testing_
+
+#+name: test-scan
+#+begin_src emacs-lisp
+;; A simple test for my--scan-for-output-files
+(defun test-scan-dotfiles ()
+  (interactive)
+  (let ((output-files '()))
+    (dolist (org-file my--dotfiles-org-files)
+      (setq output-files
+            (append output-files
+                    (my--scan-for-output-files
+                     (expand-file-name org-file
+                                       my-dotfiles-dir)))))
+    (message "Output Files: %S" output-files))
+  )
+#+end_src
+
+#+RESULTS:
+: test-scan-dotfiles
+
 ***** Debugging & Troubleshooting
 ****** Packages
 

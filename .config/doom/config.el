@@ -8,6 +8,33 @@
 ;; (setq user-full-name "John Doe"
 ;;      user-mail-address "john@doe.com")
 
+(defcustom my--dotfiles-dir "~/.dotfiles"
+"The path to my personal dotfiles."
+:type 'string
+:group 'dotfiles)
+
+(defcustom my--dotfiles-home "~"
+  "The directory in which my-dotfiles-dir should reside, will probably always be ~."
+  :type 'string
+  :group 'dotfiles)
+
+(defcustom my--dotfiles-org-files '()
+  "The list of org-mode files under the `my--dotfiles-dir'
+which contain configuration files that should be tangled"
+  :type '(list string)
+  :group 'dotfiles)
+
+(setq dotcrafter-org-files '("dotfiles.org"))
+
+;; -- Add my personal functions early
+(add-load-path!
+ "my-elisp.el"
+ )
+
+;; -- Require my personal functions
+;; ideally I shouldn't have to hard code this??
+(require 'my-elisp "~/.dotfiles/.config/doom/my-elisp.el")
+
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
 ;; - `doom-font'                -- the primary font to use
@@ -413,17 +440,15 @@ org-download-heading-lvl nil)
 (after! org-agenda
   (setq org-agenda-custom-commands
         '(
+          ; -- Reference all TODOs
+          ("n" "Agenda and all TODOs"
+           ((agenda "")
+            (alltodos "")))
           ;; Tag based commands
           ("u" "Untagged Tasks" tags-todo "-{.*}")
           ("p" "Planning" tags-todo "+@planning" ((org-agenda-overriding-header "Planning Tasks")))
           ;; Specific file based commands
         ;;; Capture file
-        ;;; WIP - not working as of 2024-01-12
-          ;;   ("c" "Capture File" (
-          ;;                     (todo ".*" (org-agenda-overriding-header "Unprocessed Capture Items"))
-          ;;                     )
-          ;; (org-agenda-files '("~/.notes/capture.org"))
-          ;; )
           ("c" "Capture File" (
                                ;; Unprocessed todo items
                                (todo ".*" ((org-agenda-files '("~/.notes/capture.org"))
@@ -440,21 +465,6 @@ org-download-heading-lvl nil)
                                           (setq org-agenda-show-all-dates nil)
                                           ))
                               ))
-          ;; ("f" "Weekly DONE and IN-PROGRESS from this week"
-          ;;  (agenda ""
-          ;;          ((org-agenda-overriding-header "Tasks from this Week")
-          ;;           (org-agenda-span 'week)
-          ;;           (org-agenda-start-on-weekday 1) ;; Start on Monday
-          ;;           (org-agenda-use-time-grid nil)
-          ;;           (org-agenda-skip-function
-          ;;            (org-agenda-skip-subtree-if 'todo '("DONE" "IN-PROGRESS")))
-          ;;           (org-agenda-show-all-dates nil)
-          ;;           (org-agenda-skip-scheduled-if-done nil)
-          ;;           (org-agenda-skip-timestamp-if-done nil)
-          ;;           (org-agenda-start-day "Mon")
-          ;;           ))
-          ;;  )
-          ;;--
           )
         )
   )
