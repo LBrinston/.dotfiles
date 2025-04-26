@@ -14,13 +14,17 @@ GNU stow assumes that any file in the ~cwd~ is to be symlinked somewhere (that s
 
 Very important to ignore certain files to keep things tidy.
 =Note=: creation of a ~.stow-local-ignore~ will override the default used by stow itself.
+Note: .stow-local-ignore uses Perl regexp.
 
 #+BEGIN_SRC text :tangle ~/.dotfiles/.stow-local-ignore
 \.git
 \.gitignore
 misc
 LICENSE
-^/.*\.org
+# Ignore org files at the top of .dotfiles
+# This is needed to link our lib-babel.org
+# Stow doesn't support negation -_-
+^\.\/.*\.org$  # Ignore all .org files in the top-level directory (using './' to limit it)
 #+END_SRC
 
 *** Tree Folding (symlinking dirs vs files)
@@ -2521,7 +2525,21 @@ I usually want to be able to reference the org file I am working from when editi
 (setq org-src-tab-acts-natively t)
 #+END_SRC
 
+******** The Library of Babel
 
+Babel blocks can be includes from other files via "the Library of Babel". To do so we must tell Emacs which file/s to use via this function:
+
+WIP - for some reason this creates problems on initialization even though it evals fine interactively.
+#+BEGIN_SRC emacs-lisp
+(after! org
+  ;; (org-babel-lob-ingest (expand-file-name "~/.config/doom/lib-babel.org"))
+  )
+#+END_SRC
+
+#+RESULTS:
+: 1
+
+Which sets ~org-babel-library-of-babel~.
 
 ******** TODO Review some safe/sane babel default
 - [[https://sachachua.com/blog/2024/12/linking-to-org-babel-source-in-a-comment-and-making-that-always-use-file-links/][Linking to Org Babel source - Sacha Chua]]

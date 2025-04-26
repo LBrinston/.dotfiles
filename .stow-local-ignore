@@ -2,4 +2,7 @@
 \.gitignore
 misc
 LICENSE
-^/.*\.org
+# Ignore org files at the top of .dotfiles
+# This is needed to link our lib-babel.org
+# Stow doesn't support negation -_-
+^\.\/.*\.org$  # Ignore all .org files in the top-level directory (using './' to limit it)

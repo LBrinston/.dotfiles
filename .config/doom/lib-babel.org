@@ -1,0 +1,12 @@
+* ANSI colour in babel results blocks
+#+name: hook-babel-ansi
+#+BEGIN_SRC emacs-lisp :results silent
+(require 'ansi-color)
+(defun my--org-babel-display-ansi-colours ()
+  "Process ANSI color codes in code block results."
+  (when-let ((beg (org-babel-where-is-src-block-result))
+             (end (save-excursion (goto-char beg) (forward-line) (org-babel-result-end))))
+    (ansi-color-apply-on-region beg end))
+  )
+(add-hook 'org-babel-after-execute-hook 'my--org-babel-display-ansi-colors)
+#+END_SRC

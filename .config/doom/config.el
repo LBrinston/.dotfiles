@@ -154,6 +154,10 @@ which contain configuration files that should be tangled"
 (setq org-src-window-setup 'reorganize-frame)
 (setq org-src-tab-acts-natively t)
 
+(after! org
+  ;; (org-babel-lob-ingest (expand-file-name "~/.config/doom/lib-babel.org"))
+  )
+
    (after! org
      ;; Note:
      (defun org-babel-noweb-wrap (&optional regexp)
