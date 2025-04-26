@@ -3483,6 +3483,26 @@ Although consult is included in the Doom completion module many of the key bindi
    ;; "M-r"   #'consult-history                ;; orig. previous-matching-history-element
    )
 #+end_src
+******** (package) which-key
+
+~which-key~ is used by default in DOOM. Ideally I would like to add my own labels to prefix menus and such but so far I have not been able to figure out how to do so.
+
+If you wish to consult a key map:
+src_emacs-lisp{(which-key-show-keymap 'doom-leader-map)}
+
+#+BEGIN_SRC emacs-lisp :tangle no
+;; (after! which-key
+;;   (setq which-key-add-column-padding 1
+;;         which-key-max-display-columns nil
+;;         which-key-min-display-lines 6
+;;         which-key-sort-order 'which-key-prefix-then-key-order)
+;;   ;; ;; Rename prefixes
+;;   ;; (which-key-add-key-based-replacements
+;;   ;;   doom-leader-key '("leader" . "Leader Key")
+;;   ;;   (concat doom-leader-key " n") '("notes" . "Notes")
+;;   ;;   (concat doom-leader-key " p") '("project" . "Project"))
+;;   )
+#+END_SRC
 
 ******* UI
 :PROPERTIES:
