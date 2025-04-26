@@ -264,6 +264,7 @@ org-download-heading-lvl nil)
 ;;(setq org-download-annotate-function (lambda (_) "Return empty string" ""))
 
 (after! org
+  (require 'org-id)
   (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 )
 

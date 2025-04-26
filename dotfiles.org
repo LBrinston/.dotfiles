@@ -2726,6 +2726,7 @@ Headings and links go together because we will assign a unique ID to every headi
 
 #+begin_src emacs-lisp
 (after! org
+  (require 'org-id)
   (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 )
 #+end_src
