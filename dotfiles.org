@@ -1851,7 +1851,6 @@ conda config --set auto_activate_base false
 #+END_SRC
 
 *** =Emacs=
-
 **** chemacs
 
 [[https://github.com/plexus/chemacs2][Chemacs2 git repo]]
@@ -1866,12 +1865,15 @@ conda config --set auto_activate_base false
 
 **** DOOM
 
+Upfront make sure that our shell can find DOOM.
+
 #+NAME: DOOM_BASHRC
 #+BEGIN_SRC bash
 ## Doom Emacs
 export PATH="$XDG_CONFIG_HOME/doom:$PATH"
 export PATH="$XDG_CONFIG_HOME/doom-emacs/bin/:$PATH"
 #+END_SRC
+
 ***** Desktop Entry
 
 Lets make a desktop entry so doom can be launched from the desktop launcher.
@@ -2654,7 +2656,7 @@ A screen snipping tool that you set via ~org-download-screenshot-method~.
   )
 #+end_src
 
-It took me FAR too long to figure out how to do this correctly. I did not initially realize that org-download does file path handling internally and what trying to do it myself.
+It took me FAR too long to figure out how to do this correctly. I did not initially realize that org-download does file path handling internally and was trying to do it myself.
 
 This resulted in a bizarre bug where I would get /almost/ correct paths with "Get_file_name" inserted into them.
 [,[file:.assests/images/dotfiles/Get_file_name/20250116-224536_screenshot.png],]
@@ -2705,6 +2707,8 @@ We will also bring in =org-super-links= so that we can have automatic back links
 :PROPERTIES:
 :ID:       4820bd7e-2be7-4536-8d04-9e0010156e53
 :END:
+
+Creates automatic backlinks when it is used to create a link. ~org-refile~ targets seemst to be the function leveraged (in the absence of helm) to find targets.
 
 #+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
 (package! org-super-links
@@ -2870,7 +2874,7 @@ Engraved is the native Emac's highlighting backed that translate Emacs' font loc
   )
 #+END_SRC
 
-********* ~org-fragtog~
+********* (package) ~org-fragtog~
 
 Then we bring in =org-fragtog= to save from having to constantly toggle previews.
 
@@ -2894,7 +2898,7 @@ Then we bring in =org-fragtog= to save from having to constantly toggle previews
 #+end_src
 
 ******* Images
-******** org-xopp
+******** (package) org-xopp
 
 _External dependencies:_
 - ~xournalpp~
@@ -3046,7 +3050,7 @@ Type can take numerous predefined symbols or a user-defined function.
   )
 #+end_src
 
-******** org-super-agenda
+******** (package) org-super-agenda
 
 #+BEGIN_SRC emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
 (package! org-super-agenda
@@ -3278,7 +3282,7 @@ This one is purely for testing purposes.
 :PROPERTIES:
 :ID:       7986cf2a-a721-497d-9c12-0341519d194e
 :END:
-******** =avy= - Jump with a tree!
+******** (package) =avy= - Jump with a tree!
 :PROPERTIES:
 :ID:       830da1ca-97fb-438f-a2af-e63fb4854aca
 :END:
@@ -3829,7 +3833,6 @@ _Debugging - DAP-mode_
 :END:
 
 ***** Personal Elisp - =my-elisp.el=
-
 ****** Structure
 
 #+begin_src emacs-lisp :noweb yes :tangle ~/.dotfiles/.config/doom/my-elisp.el
@@ -3966,7 +3969,6 @@ Vterm requires some extra work to get functioning.
 :ID:       d8a5b148-bc76-4ceb-b71a-a0d6fea92c8f
 :END:
 Emacs should offer to do this for you when you first trying to run it.
-
 
 ***** Reference
 :PROPERTIES:
