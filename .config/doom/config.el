@@ -174,6 +174,18 @@ which contain configuration files that should be tangled"
               (or ">>" ">>#"))))
      )
 
+(after! org
+  (require 'ansi-color)
+
+  (defun my--org-babel-display-ansi-colors ()
+    "Process ANSI color codes in code block results."
+    (when-let ((beg (org-babel-where-is-src-block-result))
+               (end (save-excursion (goto-char beg) (forward-line) (org-babel-result-end))))
+      (ansi-color-apply-on-region beg end)))
+
+  (add-hook 'org-babel-after-execute-hook 'my--org-babel-display-ansi-colors)
+  )
+
 ;; -- Images
 (after! org
   (when (display-graphic-p)

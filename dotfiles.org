@@ -2596,6 +2596,35 @@ There are two solutions to this:
 
 Both solutions found here: [[https://emacs.stackexchange.com/questions/63643/noweb-references-in-sh-blocks-breaks-the-syntax-highlighting][(stackexchange)Noweb ref in sh blocks breaks syntax highlighting]]
 
+******** ANSI colour in output
+:PROPERTIES:
+:ID:       b15c550d-a3d8-4fa0-96ff-9ffd33cb5a32
+:END:
+:BACKLINKS:
+[2025-04-20 Sun 11:59] <- [[id:54061976-b2e6-4c6a-aa12-198115cd4913][SGR - Set Graphics Render]]
+:END:
+
+By default babel blocks will display ANSI control sequences literally. Sometimes this is useful other times we wish to see their results. The ~ansi-color~ library allows us to display those colours.
+
+This isn't reliably loading on start for some reason.
+
+#+name: hook-babel-ansi.el
+#+BEGIN_SRC emacs-lisp :results silent
+(after! org
+  (require 'ansi-color)
+
+  (defun my--org-babel-display-ansi-colors ()
+    "Process ANSI color codes in code block results."
+    (when-let ((beg (org-babel-where-is-src-block-result))
+               (end (save-excursion (goto-char beg) (forward-line) (org-babel-result-end))))
+      (ansi-color-apply-on-region beg end)))
+
+  (add-hook 'org-babel-after-execute-hook 'my--org-babel-display-ansi-colors)
+  )
+#+END_SRC
+
+ref: https://emacs.stackexchange.com/questions/44664/apply-ansi-color-escape-sequences-for-org-babel-results
+
 ******* Images
 :PROPERTIES:
 :ID:       b90d7788-1db4-4be7-a9e2-24b3e0513d76
