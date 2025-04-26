@@ -2952,20 +2952,24 @@ There appears to be two issues:
             (sequence "GROC" "|" "DONE")
             ;; -- Media
             (sequence "TO-FIND" "|" "FOUND")
+            (sequence "TO-READ" "|" "READ")
+            (sequence "TO-WATCH" "|" "WATCHED")
             ;; -- Emacs
+            (sequence "EMACS")
             (sequence "EMACS-PACKAGE")
             (sequence "EMACS-CONFIG")
             )
           )
 
     (setq org-todo-keyword-faces
-          '(("TODO"      . ( :foreground "red" :weight bold))
-            ("IN-PROG"   . ( :foreground "orange" :weight bold))
-            ("WAITING"   . ( :foreground "yellow" :weight bold))
-            ("DONE"      . ( :foreground "green" :weight bold))
+          '(("TODO"      . ( :foreground "red"          :weight bold))
+            ("IN-PROG"   . ( :foreground "orange"       :weight bold))
+            ("WAITING"   . ( :foreground "yellow"       :weight bold))
+            ("DONE"      . ( :foreground "green"        :weight bold))
             ("IDEA"      . ( :foreground "deepskyblue1" :weight bold))
-            ("CANCELLED" . ( :foreground "gray" :weight bold))
-            ("TO-FIND"   . ( :foreground "yellow1" :weight bold))
+            ("CANCELLED" . ( :foreground "gray"         :weight bold))
+            ("TO-FIND"   . ( :foreground "yellow1"      :weight bold))
+            ("EMACS"     . ( :foreground "purple"       :weight bold))
       )
     )
 #+END_SRC

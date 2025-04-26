@@ -412,20 +412,24 @@ org-download-heading-lvl nil)
             (sequence "GROC" "|" "DONE")
             ;; -- Media
             (sequence "TO-FIND" "|" "FOUND")
+            (sequence "TO-READ" "|" "READ")
+            (sequence "TO-WATCH" "|" "WATCHED")
             ;; -- Emacs
+            (sequence "EMACS")
             (sequence "EMACS-PACKAGE")
             (sequence "EMACS-CONFIG")
             )
           )
 
     (setq org-todo-keyword-faces
-          '(("TODO"      . ( :foreground "red" :weight bold))
-            ("IN-PROG"   . ( :foreground "orange" :weight bold))
-            ("WAITING"   . ( :foreground "yellow" :weight bold))
-            ("DONE"      . ( :foreground "green" :weight bold))
+          '(("TODO"      . ( :foreground "red"          :weight bold))
+            ("IN-PROG"   . ( :foreground "orange"       :weight bold))
+            ("WAITING"   . ( :foreground "yellow"       :weight bold))
+            ("DONE"      . ( :foreground "green"        :weight bold))
             ("IDEA"      . ( :foreground "deepskyblue1" :weight bold))
-            ("CANCELLED" . ( :foreground "gray" :weight bold))
-            ("TO-FIND"   . ( :foreground "yellow1" :weight bold))
+            ("CANCELLED" . ( :foreground "gray"         :weight bold))
+            ("TO-FIND"   . ( :foreground "yellow1"      :weight bold))
+            ("EMACS"     . ( :foreground "purple"       :weight bold))
       )
     )
 
@@ -444,15 +448,17 @@ org-download-heading-lvl nil)
 (after! org-agenda
   (setq org-agenda-custom-commands
         '(
-          ; -- Reference all TODOs
-          ("n" "Agenda and all TODOs"
-           ((agenda "")
-            (alltodos "")))
           ;; Tag based commands
           ("u" "Untagged Tasks" tags-todo "-{.*}")
           ("p" "Planning" tags-todo "+@planning" ((org-agenda-overriding-header "Planning Tasks")))
           ;; Specific file based commands
         ;;; Capture file
+        ;;; WIP - not working as of 2024-01-12
+          ;;   ("c" "Capture File" (
+          ;;                     (todo ".*" (org-agenda-overriding-header "Unprocessed Capture Items"))
+          ;;                     )
+          ;; (org-agenda-files '("~/.notes/capture.org"))
+          ;; )
           ("c" "Capture File" (
                                ;; Unprocessed todo items
                                (todo ".*" ((org-agenda-files '("~/.notes/capture.org"))
@@ -469,6 +475,21 @@ org-download-heading-lvl nil)
                                           (setq org-agenda-show-all-dates nil)
                                           ))
                               ))
+          ;; ("f" "Weekly DONE and IN-PROGRESS from this week"
+          ;;  (agenda ""
+          ;;          ((org-agenda-overriding-header "Tasks from this Week")
+          ;;           (org-agenda-span 'week)
+          ;;           (org-agenda-start-on-weekday 1) ;; Start on Monday
+          ;;           (org-agenda-use-time-grid nil)
+          ;;           (org-agenda-skip-function
+          ;;            (org-agenda-skip-subtree-if 'todo '("DONE" "IN-PROGRESS")))
+          ;;           (org-agenda-show-all-dates nil)
+          ;;           (org-agenda-skip-scheduled-if-done nil)
+          ;;           (org-agenda-skip-timestamp-if-done nil)
+          ;;           (org-agenda-start-day "Mon")
+          ;;           ))
+          ;;  )
+          ;;--
           )
         )
   )
