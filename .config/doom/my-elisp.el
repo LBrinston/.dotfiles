@@ -44,16 +44,6 @@
                                          output-files))))))))
     output-files)
   )
-
-;; This needs to be turned into a test function in the next block elow
-(let ((output-files '()))
-  (dolist (org-file my--dotfiles-org-files)
-    (setq output-files
-          (append output-files
-                  (my--scan-for-output-files
-                   (expand-file-name org-file
-                                     my-dotfiles-dir)))))
-  (message "Output Files: %S" output-files))
 ;; A simple test for my--scan-for-output-files
 (defun test-scan-dotfiles ()
   (interactive)

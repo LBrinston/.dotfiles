@@ -2757,6 +2757,46 @@ Creates automatic backlinks when it is used to create a link. ~org-refile~ targe
          )
   )
 #+end_src
+
+******** fetching link titles
+
+I know this will work.
+
+#+BEGIN_SRC sh :tangle no
+curl s "<title>Taming the buck with a Type III compensator</title>" | grep -oP --regexp='(?<=<title>)(.*?)(?=<\/title>)'
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :result output :tangle no
+(shell-command-to-string "curl -s https://arstechnica.com/space/2025/04/private-jets-awkward-convos-and-kazakh-vodka-my-most-memorable-interviews/ | rg -oP --regexp='(?<=<title>)(.*?)(?=<\/title>)'")
+#+END_SRC
+
+#+RESULTS:
+: “What the hell are you doing?” How I learned to interview astronauts, scientists, and billionaires &#x2d; Ars Technica
+
+May need to sanitize special characters...
+
+ref: [[https://emacs.stackexchange.com/questions/66178/how-to-execute-shell-command-with-piping-in-elisp][(st-ex) how to execute shell command with piping in Elisp?]]
+
+******* Export
+
+
+******** (package) HTMLize
+
+#+begin_src emacs-lisp :tangle ./.config/doom/packages.el
+(package! htmlize
+  :recipe (:host github
+           :repo "https://github.com/hniksic/emacs-htmlize"
+           :branch "stable"))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package! htmlize
+  :defer t
+  :hook (mhtml-mode . htmlize)
+  ;; TODO Other stuff?
+  )
+#+end_src
+
 ******* LaTeX
 
 ******** LaTeX - previews
@@ -3972,8 +4012,31 @@ _Debugging - DAP-mode_
 (provide 'my-elisp)
 ;;; my-elisp.el ends here
 #+end_src
+****** Yoinking font properties
 
-****** Tooling :WIP:
+#+BEGIN_SRC emacs-lisp :tangle no
+(defun copy-face-color-at-point ()
+  "Copy the foreground color of the face at point to the kill ring."
+  (interactive)
+  (let* ((face (get-text-property (point) 'face))
+         ;; Sometimes, faces are lists!
+         (color (if (listp face)
+                    ;; So if they are, create an alist of face:foreground
+                   (mapcar (lambda (f) (cons f (face-attribute f :foreground))) face)
+                  ;; Otherwise, just one face so grab the :foreground from the face
+                 (face-attribute face :foreground))))
+    ;; Yoink it to the kill ring.
+    (kill-new (format "%s" color))
+    ;; Make it clear everything went according to plan.
+    (message "Copied to kill ring: %s" color)))
+
+;; Give it a hotkey
+(map!
+ :leader
+ (:prefix ("c" . "code")
+  :desc "Copy face color at point" "f" #'copy-face-color-at-point))
+#+END_SRC
+****** Config Tooling :WIP:
 
 #+begin_src emacs-lisp :tangle no
 (dolist (org-file my--dotfiles-org-files)
@@ -4037,7 +4100,9 @@ _Testing_
 
 #+RESULTS:
 : test-scan-dotfiles
+****** Wrap-text :WIP:
 
+ref: [[https://stackoverflow.com/questions/1760939/how-to-write-an-emacs-function-to-wrap-the-marked-region-with-specified-text][How to write an Emacs function to wrap the marked region with specified text]]
 ***** Debugging & Troubleshooting
 ****** Packages
 
