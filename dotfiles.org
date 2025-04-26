@@ -3313,11 +3313,70 @@ _Normal mode_
 
 But if I query this via =SPC h k= Doom informs me that "This lambda is an interactive function" BUT does list ~evil-motion-state-map~ under "Key Bindings" which does include a number of ~avy~ functions.
 
+******* Project.el
+
+You can set porject "indicator" files like this (by default it uses VC files to "guess"):
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package project
+  :config
+  (setq project-vc-extra-root-markers '(".project" "CMakeLists.txt"))
+  )
+#+END_SRC
+
+******** WireViz
+
+******* Projectile.el
+
+#+BEGIN_SRC emacs-lisp :tangle no :noweb yes
+(use-package! projectile
+  :config
+  <<projectile-mode-line>>
+  <<projectile-per-prj-buffers>>
+    )
+#+END_SRC
+
+Doom seems to use ~projectile~ by default so I will go with that for now.
+You can use ~projectile-discover-projects-in-directory~ to "find" projects interactively.
+
+When it finds one of those it adds the directory to your project index which you can query via ~projectile-switch-project~ (~SPC p p~).
+
+Once _inside a project dir_ you can query a list of it's files with ~projectile-find-file~ (~SPC SPC~).
+
+You can also specify projectile's search paths:
+#+BEGIN_SRC emacs-lisp :tangle no
+(projectile-project-search-path '("~/path/to/prj"))
+#+END_SRC
+~projectile-project-search-path~
+
+The modeline can be set like so (it won't work for TRAMP however):
+#+name: projectile-mode-line
+#+BEGIN_SRC emacs-lisp
+(setq projectile-mode-line-function '(lambda () (format " Proj[%s]" (projectile-project-name))))
+#+END_SRC
+
+******** Generic Project Override Functions
+
+The following functions can be configured to perform project specific actions.
+
+projectile -configure-project
+           -configure-project
+           -run-project
+           -test-project
+           -install-project
+           -package-project
+
+These commands use output buffers that are _shared_ \therefore if called by different projects the results will intermix. You may want to make the output buffers project specific:
+
+#+name: projectile-per-prj-buffers
+#+BEGIN_SRC emacs-lisp
+(setq projectile-per-project-compilation-buffer t)
+#+END_SRC
+
 ******* Completion
 :PROPERTIES:
 :ID:       dc64093f-f5cd-476b-9fec-c243408e3839
 :END:
-******** Consult
+******** (package) Consult
 :PROPERTIES:
 :ID:       d543f813-c091-460c-83ab-3857345cb107
 :END:

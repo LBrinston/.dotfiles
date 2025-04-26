@@ -636,6 +636,10 @@ org-download-heading-lvl nil)
    ;;#'avy-goto-line
    )
 
+(setq projectile-mode-line-function '(lambda () (format " Proj[%s]" (projectile-project-name))))
+
+(setq projectile-per-project-compilation-buffer t)
+
 ;; -- Consult --
   (map!
    :after consult
