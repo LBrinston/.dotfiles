@@ -264,6 +264,44 @@ org-download-heading-lvl nil)
 ;;(setq org-download-annotate-function (lambda (_) "Return empty string" ""))
 
 (after! org
+  ;; org-yank-image-save-method can accept two args:
+  ;; 'attach - use attach (and therefore all configuration of behaviour is done via attach)
+  ;; OR a /path/to/a/dir
+  ;; Now IDEALLY th
+  (customize-set-variable 'org-yank-image-save-method (expand-file-name "~/.notes/.assets"))
+
+  ;; This is ignored if the save method is 'attach
+  (setq org-yank-dnd-method 'file-link)
+
+  ;; org-download came with it's own Delete image at point function, yank-media does not (unless you use attach)
+  ;;ref: https://www.reddit.com/r/emacs/comments/tdseci/org_how_can_i_remove_link_at_point_and_trash/
+  (defun org-remove-link-and-trash-linked-file ()
+    "Remove `org-mode' link at point and trash linked file."
+    (interactive)
+    (let* ((link (org-element-context))
+           (path (org-element-property :path link)))
+      (move-file-to-trash path)
+      (delete-region (org-element-property :begin link)
+                     (org-element-property :end link))
+      )
+    )
+  (map!
+   ;;:map org-mode-map
+   :leader
+   :prefix ("i m" . "Media")
+   :n
+   :desc "Yank media" "i"  #'yank-media
+   )
+  (map!
+   ;; :map org-mode-map
+   :leader
+   :prefix ("i m" . "Media")
+   :n
+   :desc "Trash org-link" "d" #'org-remove-link-and-trash-linked-file
+   )
+  )
+
+(after! org
   (require 'org-id)
   (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 )
