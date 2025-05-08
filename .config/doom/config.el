@@ -264,13 +264,35 @@ org-download-heading-lvl nil)
 ;;(setq org-download-annotate-function (lambda (_) "Return empty string" ""))
 
 (after! org
+  (defun get-assets-directory-path ()
+    "Return path to .assets directory for current buffer. Creates the directory if it doesn't exist, prompt for confirmation."
+    (interactive)
+    (let ((file-path (buffer-file-name)))
+      (cond
+       ;; Case 1 - buffer for an unsaved file
+       ((null file-path)
+        (message "Buffer is not visiting a file.")
+        nil)
+       ;; Case 2 - file exists
+       (t
+        ;; Check if the .assets directory already exists
+        (let* ((directory (file-name-directory file-path))
+               (assets-dir (concat directory ".assets")))
+          (unless (file-directory-p assets-dir)
+            (when (yes-or-no-p (format "Create assets directory at %s? " assets-dir))
+              (make-directory assets-dir t)
+              )
+            (setq assets-dir (expand-file-name "~/.notes/assets/"))
+            (message "Using default dir: %s" assets-dir)
+            )
+          assets-dir)))))
+
+  (customize-set-variable 'org-yank-image-save-method (expand-file-name (get-assets-directory-path)))
+  ;; (customize-set-variable 'org-yank-image-save-method (expand-file-name "~/.notes/.assets"))
+
   ;; org-yank-image-save-method can accept two args:
   ;; 'attach - use attach (and therefore all configuration of behaviour is done via attach)
   ;; OR a /path/to/a/dir
-  ;; Now IDEALLY th
-  (customize-set-variable 'org-yank-image-save-method (expand-file-name "~/.notes/.assets"))
-
-  ;; This is ignored if the save method is 'attach
   (setq org-yank-dnd-method 'file-link)
 
   ;; org-download came with it's own Delete image at point function, yank-media does not (unless you use attach)
@@ -283,21 +305,18 @@ org-download-heading-lvl nil)
       (move-file-to-trash path)
       (delete-region (org-element-property :begin link)
                      (org-element-property :end link))
-      )
-    )
+      ))
+
   (map!
-   ;;:map org-mode-map
    :leader
    :prefix ("i m" . "Media")
-   :n
-   :desc "Yank media" "i"  #'yank-media
+   :n :desc "Yank media" "i"  #'yank-media
    )
   (map!
    ;; :map org-mode-map
    :leader
    :prefix ("i m" . "Media")
-   :n
-   :desc "Trash org-link" "d" #'org-remove-link-and-trash-linked-file
+   :n :desc "Trash org-link" "d" #'org-remove-link-and-trash-linked-file
    )
   )
 

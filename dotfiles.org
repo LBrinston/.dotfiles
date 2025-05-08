@@ -2724,8 +2724,6 @@ Org-mode has a ~yank-media~ command since 9.something. It seems to more or less 
 #+name: yank-media
 #+BEGIN_SRC emacs-lisp
 (after! org
-  ;; Now IDEALLY this path would be determined dynamically - I'm not always working out of my notes dir.
-
   (defun get-assets-directory-path ()
     "Return path to .assets directory for current buffer. Creates the directory if it doesn't exist, prompt for confirmation."
     (interactive)
@@ -2735,7 +2733,6 @@ Org-mode has a ~yank-media~ command since 9.something. It seems to more or less 
        ((null file-path)
         (message "Buffer is not visiting a file.")
         nil)
-
        ;; Case 2 - file exists
        (t
         ;; Check if the .assets directory already exists
@@ -2743,10 +2740,15 @@ Org-mode has a ~yank-media~ command since 9.something. It seems to more or less 
                (assets-dir (concat directory ".assets")))
           (unless (file-directory-p assets-dir)
             (when (yes-or-no-p (format "Create assets directory at %s? " assets-dir))
-              (make-directory assets-dir t)))
+              (make-directory assets-dir t)
+              )
+            (setq assets-dir (expand-file-name "~/.notes/assets/"))
+            (message "Using default dir: %s" assets-dir)
+            )
           assets-dir)))))
 
-  (customize-set-variable 'org-yank-image-save-method (expand-file-name "~/.notes/.assets"))
+  (customize-set-variable 'org-yank-image-save-method (expand-file-name (get-assets-directory-path)))
+  ;; (customize-set-variable 'org-yank-image-save-method (expand-file-name "~/.notes/.assets"))
 
   ;; org-yank-image-save-method can accept two args:
   ;; 'attach - use attach (and therefore all configuration of behaviour is done via attach)
@@ -2763,21 +2765,18 @@ Org-mode has a ~yank-media~ command since 9.something. It seems to more or less 
       (move-file-to-trash path)
       (delete-region (org-element-property :begin link)
                      (org-element-property :end link))
-      )
-    )
+      ))
+
   (map!
-   ;;:map org-mode-map
    :leader
    :prefix ("i m" . "Media")
-   :n
-   :desc "Yank media" "i"  #'yank-media
+   :n :desc "Yank media" "i"  #'yank-media
    )
   (map!
    ;; :map org-mode-map
    :leader
    :prefix ("i m" . "Media")
-   :n
-   :desc "Trash org-link" "d" #'org-remove-link-and-trash-linked-file
+   :n :desc "Trash org-link" "d" #'org-remove-link-and-trash-linked-file
    )
   )
 #+END_SRC
