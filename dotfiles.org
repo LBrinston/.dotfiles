@@ -2724,7 +2724,7 @@ Org-mode has a ~yank-media~ command since 9.something. It seems to more or less 
 #+name: yank-media
 #+BEGIN_SRC emacs-lisp
 (after! org
-  (defun get-assets-directory-path ()
+  (defun get-assets-dir-path ()
     "Return path to .assets directory for current buffer. Creates the directory if it doesn't exist, prompt for confirmation."
     (interactive)
     (let ((file-path (buffer-file-name)))
@@ -2747,8 +2747,17 @@ Org-mode has a ~yank-media~ command since 9.something. It seems to more or less 
             )
           assets-dir)))))
 
-  (customize-set-variable 'org-yank-image-save-method (expand-file-name (get-assets-directory-path)))
-  ;; (customize-set-variable 'org-yank-image-save-method (expand-file-name "~/.notes/.assets"))
+  (defun set-assets-dir-path ()
+    (interactive)
+    (let ((assets-dir (get-assests-dir-path)))
+      (when assets-dir
+        (customize-set-variable 'org-yank-image-save-method assets-dir))
+      ))
+
+  (advice-add 'set-assets-dir-path :before #'yank-media)
+
+  ;;(customize-set-variable 'org-yank-image-save-method (expand-file-name (get-assets-directory-path)))
+  (customize-set-variable 'org-yank-image-save-method (expand-file-name "~/.notes/.assets"))
 
   ;; org-yank-image-save-method can accept two args:
   ;; 'attach - use attach (and therefore all configuration of behaviour is done via attach)

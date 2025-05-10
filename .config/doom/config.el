@@ -264,7 +264,7 @@ org-download-heading-lvl nil)
 ;;(setq org-download-annotate-function (lambda (_) "Return empty string" ""))
 
 (after! org
-  (defun get-assets-directory-path ()
+  (defun get-assets-dir-path ()
     "Return path to .assets directory for current buffer. Creates the directory if it doesn't exist, prompt for confirmation."
     (interactive)
     (let ((file-path (buffer-file-name)))
@@ -287,8 +287,19 @@ org-download-heading-lvl nil)
             )
           assets-dir)))))
 
-  (customize-set-variable 'org-yank-image-save-method (expand-file-name (get-assets-directory-path)))
-  ;; (customize-set-variable 'org-yank-image-save-method (expand-file-name "~/.notes/.assets"))
+  (defun set-assets-dir-path ()
+    (interactive)
+    (let ((assets-dir (get-assets-dir-path)))
+      (when assets-dir
+        (customize-set-variable 'org-yank-image-save-method assets-dir))
+      ))
+
+  ;; (advice-add 'set-assets-dir-path :before #'yank-media)
+  (advice-add 'yank-media :before #'set-assets-dir-path)
+
+
+  ;;(customize-set-variable 'org-yank-image-save-m`ethod (expand-file-name (get-assets-directory-path)))
+  (customize-set-variable 'org-yank-image-save-method (expand-file-name "~/.notes/.assets"))
 
   ;; org-yank-image-save-method can accept two args:
   ;; 'attach - use attach (and therefore all configuration of behaviour is done via attach)
