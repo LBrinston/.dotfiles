@@ -837,7 +837,7 @@ org-download-heading-lvl nil)
   ;; (setq-default yas-snippet-dirs `(,(expand-file-name "snippets/"
   ;;  user-emacs-directory)))
   ;;
-  (add-to-list 'yas-snippet-dirs "~/.my-emacs/snippets"
+  (add-to-list 'yas-snippet-dirs "~/.config/doom/snippets"
                )
   )
 

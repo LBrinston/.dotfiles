@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: doom-package!
+# key: p!
+# TODO: Just parse the host right out of a link in the kill ring: isearch-yank-from-kill-ring
+# --
+(package! ${4:package}
+ :recipe(
+         :host ${3github}github
+         :repo "${1:repo-slug}"
+         :branch "${2:branch}"develop )
+ )

@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: school TODO
+# key: >st
+# --
+* TODO ${1} - ${1:Assignment} ${2}
+	DEADLINE:  ${3}
+	SCHEDULED: ${3}
+	$0

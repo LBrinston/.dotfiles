@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: matlab-block
+# key: >ml
+# --
+#+attr_latex: :float nil
+#+caption: 
+#+BEGIN_SRC matlab :file ${1:figurename}.png :exports ${2:$$(yas-choose-value '("both" "code" "results" "both"))} :results file graphics
+  clear all; close all;
+
+  $3
+#+END_SRC

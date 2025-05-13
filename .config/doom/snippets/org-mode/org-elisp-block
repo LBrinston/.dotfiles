@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name:  org-caption-image
+# key: >cap
+# --
+  #+attr_html: :width $1% :align center
+  #+attr_latex: :float nil
+  #+caption: $2

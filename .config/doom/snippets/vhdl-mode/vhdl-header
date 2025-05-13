@@ -1,0 +1,23 @@
+# -*- mode: snippet -*-
+# name: vhdl-header
+# key: --head
+# --
+-----------------------------------------------------------
+-- Author : Liam Brinston$2
+-- Contact: labrinston@gmail.com$3
+--
+-- Acknowledgements: this code is based on:
+--
+-- Module Name: $4
+--
+-- Description: $5
+--
+-- Course: ECE 441/543
+-- Department of Electrical and Computer Engineering
+-- University of Victoria
+--
+-- Date: `(format-time-string "%Y-%m-%d")`
+--
+-- Notes: $6
+-----------------------------------------------------------
+$0

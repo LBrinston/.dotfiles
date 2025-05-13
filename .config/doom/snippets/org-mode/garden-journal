@@ -1,0 +1,10 @@
+# -*- mode: org -*-
+# name: garden-journal
+# key: >g
+# --
+- [${1:X}] AM Watering
+- [${2:X}] PM Watering
+- [${3:X}] Turned compost
+- [${4:X}] Fed compost
+
+  =Notes=: ${5} 

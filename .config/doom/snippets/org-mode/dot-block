@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: dot block
+# key: >d
+# --
+#+BEGIN_SRC dot :file ${1:`(concat "./images/" (file-name-sans-extension (file-name-nondirectory (buffer-file-name))))`}/${2:`(file-name-nondirectory (buffer-file-name)`}.svg :exports results
+$0
+#+END_SRCe

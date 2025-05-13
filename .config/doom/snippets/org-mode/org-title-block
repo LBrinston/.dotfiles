@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: org-title-block
+# key: >tb
+# --
+#+title: $1
+#+author: Liam Brinston
+#+date: `(format-time-string "%Y-%m-%d %H:%M:%S")`
+#+options: latex-prefer-user-labels:t
+#+options: toc:nil
+#+setupfile: ~/.my-emacs/org-latex-setup.org 
+$0

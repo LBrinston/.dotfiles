@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-                    
+# name: $1                                 
+# key:  snippet                            
+# --                                       
+# ---                                      
+# -*- mode: snippet -*-                    
+# name: ${1:Snippet:Name}                  
+# key: ${2:trigger}                        
+# condition: (memq major-mode '(text-mode))
+# ---                                      
+$0 # End of cursor                         

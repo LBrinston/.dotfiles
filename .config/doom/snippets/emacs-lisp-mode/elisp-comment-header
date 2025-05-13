@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: elisp comment header
+# key: ;;-h
+# --
+;; -- ${1} ----
+${0}

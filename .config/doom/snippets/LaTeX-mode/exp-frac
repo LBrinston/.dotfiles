@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: exp-frac 
+# key: e^f
+# --
+e^{${1:-}j\frac{$2\pi}{$3}}$0
