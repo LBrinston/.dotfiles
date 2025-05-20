@@ -52,7 +52,7 @@ which contain configuration files that should be tangled"
 (defun my-font-available-p (font-name)
   (find-font (font-spec :name font-name)))
 
-(defvar my-font-size 24
+(defvar my-font-size 20
   "My preferred font size")
 
 ;; -- Pick the preferred font otherwise do nothing and let Doom select it's fallbacks
@@ -92,6 +92,13 @@ which contain configuration files that should be tangled"
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
 ;; refresh your font settings. If Emacs still can't find your font, it likely
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
+
+;;TODO: figure out per-theme overrides
+;;TODO: comment-face toggle function: 1. readable vs background colout
+;; -- Default is too hard to read
+(custom-set-faces!
+  `(font-lock-comment-face :foreground "#f5f5f5")
+  )
 
 ;; Emacs - Check for Prefered Fonts
 ;; borrowed from tecosaur:
