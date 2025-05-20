@@ -1037,3 +1037,8 @@ prompt) during export, e.g. conversion of org to say html."
        :request "launch"
        :name "My App"))
 )
+
+(after! eglot
+  :config
+  (set-eglot-client! 'cc-mode '("clangd" "-j=3" "--clang-tidy"))
+  )

@@ -1936,7 +1936,7 @@ In Doom Emacs ~init.el~ servers as the area for _module_ activation. This is a s
 :END:
 #+begin_src emacs-lisp
 :completion
-;;company           ; the ultimate code completion backend
+(company +tng)           ; the ultimate code completion backend
 (corfu +orderless)  ; complete with cap(f), cape and a flying feather!
 ;;helm              ; the *other* search engine for love and life
 ;;ido               ; the other *other* search engine...
@@ -4052,6 +4052,22 @@ _Debugging - DAP-mode_
        :request "launch"
        :name "My App"))
 )
+#+end_src
+******** C and C++
+
+For c and cpp make use of eglot and clangd. See:[[https://rgoswami.me/posts/emacs-lang-servers/][Doom Emacs and Language Servers]]
+
+#+begin_src emacs-lisp
+(after! eglot
+  :config
+  (set-eglot-client! 'cc-mode '("clangd" "-j=3" "--clang-tidy") "/.local/lsp/bin/") ;; clangd
+
+  ;; -- Per machine lsp locations
+  (when (string= (system-name) "terra")
+    (setq exec-path (append exec-path `(
+                                        (concat(getenv "HOME"))
+                                        ))))
+  )
 #+end_src
 ******* Email
 :PROPERTIES:
