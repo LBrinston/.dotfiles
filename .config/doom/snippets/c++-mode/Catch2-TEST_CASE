@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name:Catch2-TESTCASE
+# key: TC
+# --
+TEST_CASE("$1"){
+$0
+}

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name:Catch2-SECTION
+# key: SEC
+# --
+SECTION("$1"){
+$0
+}
