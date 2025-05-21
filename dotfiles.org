@@ -4246,7 +4246,7 @@ Vterm requires some extra work to get functioning.
 Emacs should offer to do this for you when you first trying to run it.
 ******* 3. Configure =vterm=
 
-vterm is meant to act like a terminal so we want it to go straight to insert mode.
+vterm is meant to act like a terminal so we want it to go straight to insert mode AND we \probably\ want to land in bash (by defaul it vterm looks for sh).
 
 #+begin_src emacs-lisp
 ;; -- Ideally this is state dependent but this creates a nesting depth error for some reason
@@ -4254,7 +4254,10 @@ vterm is meant to act like a terminal so we want it to go straight to insert mod
 ;;   (evil-set-initial-state 'vterm-mode 'insert)
 ;;   )
 (after! vterm
-  (set-evil-initial-state! 'vterm-mode 'insert))
+  (set-evil-initial-state! 'vterm-mode 'insert)
+  (setq vterm-shell
+   `(("/bin/bash" "/bin/sh" "docker")))
+  )
 #+end_src
 ***** Reference
 :PROPERTIES:
