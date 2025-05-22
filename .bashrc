@@ -192,7 +192,7 @@ if dpkg -s bat > /dev/null 2>&1; then
 fi
 
 # Environment variables
-export SEMESTER="spring_2025"
+export SEMESTER="summer_2025"
 export UVIC="$HOME/Documents/UVic"
 
 export ANDROID_USER_HOME="$XDG_DATA_HOME/android:$PATH"
