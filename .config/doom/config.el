@@ -1040,13 +1040,11 @@ prompt) during export, e.g. conversion of org to say html."
 
 (after! eglot
   :config
-  (set-eglot-client! 'cc-mode '("clangd" "-j=3" "--clang-tidy"))
-;; -- Ideally this is state dependent but this creates a nesting depth error for some reason
-;; (when (modulep! :editor evil)
-;;   (evil-set-initial-state 'vterm-mode 'insert)
-;;   )
-(after! vterm
-  (set-evil-initial-state! 'vterm-mode 'insert)
-  (setq vterm-shell
-   `(("/bin/bash" "/bin/sh" "docker")))
+  (set-eglot-client! 'cc-mode '("clangd" "-j=3" "--clang-tidy") "/.local/lsp/bin/") ;; clangd
+
+  ;; -- Per machine lsp locations
+  (when (string= (system-name) "terra")
+    (setq exec-path (append exec-path `(
+                                        (concat(getenv "HOME"))
+                                        ))))
   )
