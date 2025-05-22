@@ -868,6 +868,12 @@ org-download-heading-lvl nil)
 ;;       (tab-mark     ?\t    [?\u00BB ?\t] [?\\ ?\t])))
 ;;   (global-whitespace-mode +1))
 
+(after! tramp
+(add-to-list 'tramp-connection-properties
+             (list (regexp-quote "/sshx:lbrinston@ugls5:")
+                   "remote-shell" "/usr/bin/bin"))
+)
+
 (use-package! jinx
   :defer t
   :hook (text-mode . jinx-mode)
@@ -1040,11 +1046,20 @@ prompt) during export, e.g. conversion of org to say html."
 
 (after! eglot
   :config
-  (set-eglot-client! 'cc-mode '("clangd" "-j=3" "--clang-tidy") "/.local/lsp/bin/") ;; clangd
-
+  (set-eglot-client! 'cc-mode '("clangd" "-j=3" "--clang-tidy" "/.local/lsp/bin/")) ;; clangd
   ;; -- Per machine lsp locations
   (when (string= (system-name) "terra")
     (setq exec-path (append exec-path `(
                                         (concat(getenv "HOME"))
                                         ))))
+  )
+
+;; -- Ideally this is state dependent but this creates a nesting depth error for some reason
+;; (when (modulep! :editor evil)
+;;   (evil-set-initial-state 'vterm-mode 'insert)
+;;   )
+(after! vterm
+  (set-evil-initial-state! 'vterm-mode 'insert)
+  (setq vterm-shell
+   `(("/bin/bash" "/bin/sh" "docker")))
   )

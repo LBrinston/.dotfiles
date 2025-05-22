@@ -67,6 +67,11 @@
          :branch "develop" )
  )
 
+(package! htmlize
+  :recipe (:host github
+           :repo "https://github.com/hniksic/emacs-htmlize"
+           :branch "stable"))
+
 (package! engrave-faces)
 
 (package! org-fragtog
