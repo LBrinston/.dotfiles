@@ -3764,7 +3764,7 @@ Most of the time bash would be prefered.
 (after! tramp
 (add-to-list 'tramp-connection-properties
              (list (regexp-quote "/sshx:lbrinston@ugls5:")
-                   "remote-shell" "/usr/bin/bin"))
+                   "remote-shell" "/usr/local/bin/"))
 )
 #+end_src
 
