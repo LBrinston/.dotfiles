@@ -3752,6 +3752,22 @@ Doom's whitespace-mode is quite minimal. Should you need it to make other forms 
 :PROPERTIES:
 :ID:       bc76542f-8df5-426f-89fd-912c4858c88d
 :END:
+******** TRAMP
+
+Tramp usually defaults to looking for ~/bin/sh~ (sshx too).
+ref:
+- [[https://www.gnu.org/software/emacs/manual/html_node/tramp/Remote-shell-setup.html][(gnu) 4.18 Remote shell setup hints]]
+
+Most of the time bash would be prefered.
+
+#+begin_src emacs-lisp
+(after! tramp
+(add-to-list 'tramp-connection-properties
+             (list (regexp-quote "/sshx:lbrinston@ugls5:")
+                   "remote-shell" "/usr/bin/bin"))
+)
+#+end_src
+
 ******* Term
 :PROPERTIES:
 :ID:       dd238e55-ce08-4a6f-9853-026eb704c563
@@ -4060,8 +4076,7 @@ For c and cpp make use of eglot and clangd. See:[[https://rgoswami.me/posts/emac
 #+begin_src emacs-lisp
 (after! eglot
   :config
-  (set-eglot-client! 'cc-mode '("clangd" "-j=3" "--clang-tidy") "/.local/lsp/bin/") ;; clangd
-
+  (set-eglot-client! 'cc-mode '("clangd" "-j=3" "--clang-tidy" "/.local/lsp/bin/")) ;; clangd
   ;; -- Per machine lsp locations
   (when (string= (system-name) "terra")
     (setq exec-path (append exec-path `(
@@ -4248,7 +4263,8 @@ Emacs should offer to do this for you when you first trying to run it.
 
 vterm is meant to act like a terminal so we want it to go straight to insert mode AND we \probably\ want to land in bash (by defaul it vterm looks for sh).
 
-#+begin_src emacs-lisp
+=(not clear why I'm having to manually specify tangle path here?)=
+#+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/config.el
 ;; -- Ideally this is state dependent but this creates a nesting depth error for some reason
 ;; (when (modulep! :editor evil)
 ;;   (evil-set-initial-state 'vterm-mode 'insert)
