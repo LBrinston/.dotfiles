@@ -11,7 +11,38 @@ project(${1:src-name} LANGUAGES CXX)
 # Enable verbose makefiles
 set(CMAKE_VERBOSE_MAKEFILE true)
 
-# Print out several key variables
+# Enabling Sanitizers
+## -- ASan
+### dep:
+option(ENABLE_ASAN "Enable ASan" flase)
+
+if (ENABLE_ASAN)
+  # Enable Address Sanitizer (ASan)
+  set(CMAKE_CXX_FLAGS "\${CMAKE_CXX_FLAGS} -fsanitize=address")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
+endif()
+## -- End ASan
+
+## -- UBSan
+option(ENABLE_UBSAN "Enable UBSan" false)
+
+if (ENABLE_UBSAN)
+  # Enable UBSanitizer (UBan)
+  set(CMAKE_CXX_FLAGS "\${CMAKE_CXX_FLAGS} -fsanitize=undefined")
+  set(CMAKE_EXE_LINKER_FLAGS "\${CMAKE_EXE_LINK_FLAGS} -fsanitize=undefined")
+endif()
+## -- end UBSan
+# End Sanitizers
+
+# Include libraries
+# target_include_directories(lib)
+# message("Including: ${}")
+
+# Add program target
+add_executable($1 $1.cpp)
+$0
+
+# CMake Output to console
 if((DEFINED CMAKE_BUILD_TYPE) AND (NOT CMAKE_BUILD_TYPE STREQUAL ""))
   message("CMAKE_BUILD_TYPE: \${CMAKE_BUILD_TYPE}")
 else()
@@ -23,10 +54,3 @@ message("CMAKE_CXX_FLAGS_RELEASE: \${CMAKE_CXX_FLAGS_RELEASE}")
 message("CMAKE_CXX_FLAGS_RELWITHDEBINFO: \${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
 message("CMAKE_CXX_FLAGS_RELWITHDEBINFO: \${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
 
-# Include libraries
-# target_include_directories(lib)
-# message("Including: ${}")
-
-# Add program target
-add_executable($1 $1.cpp)
-$0
