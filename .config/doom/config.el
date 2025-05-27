@@ -296,16 +296,14 @@ org-download-heading-lvl nil)
 
   (defun set-assets-dir-path ()
     (interactive)
-    (let ((assets-dir (get-assets-dir-path)))
+    (let ((assets-dir (get-assests-dir-path)))
       (when assets-dir
         (customize-set-variable 'org-yank-image-save-method assets-dir))
       ))
 
-  ;; (advice-add 'set-assets-dir-path :before #'yank-media)
-  (advice-add 'yank-media :before #'set-assets-dir-path)
+  (advice-add 'set-assets-dir-path :before #'yank-media)
 
-
-  ;;(customize-set-variable 'org-yank-image-save-m`ethod (expand-file-name (get-assets-directory-path)))
+  ;;(customize-set-variable 'org-yank-image-save-method (expand-file-name (get-assets-directory-path)))
   (customize-set-variable 'org-yank-image-save-method (expand-file-name "~/.notes/.assets"))
 
   ;; org-yank-image-save-method can accept two args:

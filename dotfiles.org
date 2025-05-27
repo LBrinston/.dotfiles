@@ -200,6 +200,23 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/dotnet
 #+END_SRC
 
+*** rbw - (unofficial) bitwarden cli
+
+rbw is easiest to install via cargo.
+
+_Installation_
+
+#+begin_src shell
+cargo install rbw
+#+end_src
+
+_Setup_
+
+First login to your bitwarden account
+
+_Bash completions_
+
+
 *** gnupg
 
 #+name: GNUPG-SHELL-VAR
@@ -403,7 +420,7 @@ fi
 
 # Bash completion
 # https://github.com/scop/bash-completion/
-source /etc/profile.d/bash_completion.sh
+#<<BASH-COMPLETION.SH>>
 
 # Default Editor
 export EDITOR="emacs -nw"
@@ -463,6 +480,26 @@ alias doom-emacs="emacs --with-profile doom"
 alias de="doom-emacs"
 #<<ADB_HOME>>#
 #+END_SRC
+
+**** bash auto completion
+
+Bash-completion is a tool that allows for easier addition of bash auto-completion via script files that live in ~/etc/profile.d/~.
+
+_Installation_
+
+#+begin_src sh :tangle no
+apt install bash-completion
+#+end_src
+
+_Configuration_
+
+Many cli tools have a ~gen-completions~ option. Redirect these to a file in ~/etc/profile.d~ and source them in your ~/.bashrc~.
+
+#+name: BASH-COMPLETION.SH
+#+begin_src sh :noweb yes
+source /etc/profile.d/bash_completion.sh
+#+end_src
+
 *** .profile
 
 The original initialization for Bourne shell (aka. ~sh~).
@@ -3773,7 +3810,7 @@ Most of the time bash would be prefered.
 (after! tramp
 (add-to-list 'tramp-connection-properties
              (list (regexp-quote "/sshx:lbrinston@ugls5:")
-                   "remote-shell" "/usr/bin/bin"))
+                   "remote-shell" "/usr/local/bin/"))
 )
 #+end_src
 
