@@ -494,6 +494,7 @@ org-download-heading-lvl nil)
             (sequence "|" "SUBMITTED(s!)")
             (sequence "|" "CANCALLED(c@)" "DELEGATED(e!)")
             (sequence "IDEA")
+            (sequence "PRJ")
             (sequence "REMINDER(!r)")
             (sequence "CALL" "|" "CALLED(!)")
             (seqeunce "EMAIL(m!)" "|" "EMAILED(!)")
@@ -518,11 +519,14 @@ org-download-heading-lvl nil)
             ("CANCELLED" . ( :foreground "gray"         :weight bold))
             ("TO-FIND"   . ( :foreground "yellow1"      :weight bold))
             ("EMACS"     . ( :foreground "purple"       :weight bold))
+            ("PRJ"       . ( :foreground "orange2"
+            :weight bold))
       )
     )
 
 (after! org
   (setq org-log-done 'time)
+  (setq org-log-note-clock-out t)
   (setq org-log-into-drawer "LOGBOOK") ; places state transitions into LOGBOOK drawer
 
   (setq org-agenda-skip-scheduled-if-done t
@@ -626,6 +630,10 @@ org-download-heading-lvl nil)
 ("sr" "Reading" entry (file+headline "~/.notes/agenda-school.org" "Spring 2025")
  "* TODO %^{ECE441|ENGR297|ENGR446} - %^{Reading} - %^{Chapter|Pages|Section} \nSCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
+
+;; ("sl" "499 log" entry (file+headline "~/.notes/agenda-school.org" "work-log")
+;;  "* TODO %^{ECE441|ENGR297|ENGR446} - %^{Reading} - %^{Chapter|Pages|Section} \nSCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+;;  :empty-lines-after 1 :prepend t)
 
 ;; -- Journal
 ("j" "Journal" entry (file+olp+datetree "~/.notes/journal.org")
