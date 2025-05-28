@@ -200,6 +200,23 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/dotnet
 #+END_SRC
 
+*** rbw - (unofficial) bitwarden cli
+
+rbw is easiest to install via cargo.
+
+_Installation_
+
+#+begin_src shell
+cargo install rbw
+#+end_src
+
+_Setup_
+
+First login to your bitwarden account
+
+_Bash completions_
+
+
 *** gnupg
 
 #+name: GNUPG-SHELL-VAR
@@ -403,7 +420,7 @@ fi
 
 # Bash completion
 # https://github.com/scop/bash-completion/
-source /etc/profile.d/bash_completion.sh
+#<<BASH-COMPLETION.SH>>
 
 # Default Editor
 export EDITOR="emacs -nw"
@@ -463,6 +480,26 @@ alias doom-emacs="emacs --with-profile doom"
 alias de="doom-emacs"
 #<<ADB_HOME>>#
 #+END_SRC
+
+**** bash auto completion
+
+Bash-completion is a tool that allows for easier addition of bash auto-completion via script files that live in ~/etc/profile.d/~.
+
+_Installation_
+
+#+begin_src sh :tangle no
+apt install bash-completion
+#+end_src
+
+_Configuration_
+
+Many cli tools have a ~gen-completions~ option. Redirect these to a file in ~/etc/profile.d~ and source them in your ~/.bashrc~.
+
+#+name: BASH-COMPLETION.SH
+#+begin_src sh :noweb yes
+source /etc/profile.d/bash_completion.sh
+#+end_src
+
 *** .profile
 
 The original initialization for Bourne shell (aka. ~sh~).
@@ -1941,7 +1978,7 @@ In Doom Emacs ~init.el~ servers as the area for _module_ activation. This is a s
 ;;helm              ; the *other* search engine for love and life
 ;;ido               ; the other *other* search engine...
 ;;ivy               ; a search engine for love and life
-vertico           ; the search engine of the future
+(vertico +icons )           ; the search engine of the future
 #+end_src
 
 ****** UI
@@ -3099,6 +3136,7 @@ There appears to be two issues:
             (sequence "|" "SUBMITTED(s!)")
             (sequence "|" "CANCALLED(c@)" "DELEGATED(e!)")
             (sequence "IDEA")
+            (sequence "PRJ")
             (sequence "REMINDER(!r)")
             (sequence "CALL" "|" "CALLED(!)")
             (seqeunce "EMAIL(m!)" "|" "EMAILED(!)")
@@ -3123,6 +3161,8 @@ There appears to be two issues:
             ("CANCELLED" . ( :foreground "gray"         :weight bold))
             ("TO-FIND"   . ( :foreground "yellow1"      :weight bold))
             ("EMACS"     . ( :foreground "purple"       :weight bold))
+            ("PRJ"       . ( :foreground "orange2"
+            :weight bold))
       )
     )
 #+END_SRC
@@ -3132,6 +3172,7 @@ There appears to be two issues:
 #+begin_src emacs-lisp :noweb yes
 (after! org
   (setq org-log-done 'time)
+  (setq org-log-note-clock-out t)
   (setq org-log-into-drawer "LOGBOOK") ; places state transitions into LOGBOOK drawer
 
   (setq org-agenda-skip-scheduled-if-done t
@@ -3281,6 +3322,11 @@ School related capture groups.
 ("sr" "Reading" entry (file+headline "~/.notes/agenda-school.org" "Spring 2025")
  "* TODO %^{ECE441|ENGR297|ENGR446} - %^{Reading} - %^{Chapter|Pages|Section} \nSCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
+
+;; ("sl" "499 log" entry (file+headline "~/.notes/agenda-school.org" "work-log")
+;;  "* TODO %^{ECE441|ENGR297|ENGR446} - %^{Reading} - %^{Chapter|Pages|Section} \nSCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+;;  :empty-lines-after 1 :prepend t)
+
 #+end_src
 
 If I am honest with myself I am terrible at remembering to journal. But maybe! just maybe. I will someday.

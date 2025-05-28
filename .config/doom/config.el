@@ -222,7 +222,7 @@ which contain configuration files that should be tangled"
       :config
       ;; -- Link Formatting
       (setq org-download-link-format "[[file:%s]]\n")
-      
+
       ;; -- Where to save the images
       ;; Default so that we *could* provide a file-local-var
       (setq-default
@@ -233,14 +233,14 @@ which contain configuration files that should be tangled"
           nil)
       ;;(concat ".assests/images/" (file-name-base))
       org-download-heading-lvl nil)
-      
+
       (setq org-download-abbreviate-filename-function #'file-relative-name)
-      
+
       (setq org-download-timestamp "%Y%m%d-%H%M%S_")
-      
+
       (setq org-download-screenshot-method
             "gnome-screenshot -a -f %sa")
-      
+
       ;; This will remove the #+DOWNLOADED annotation
       ;;(setq org-download-annotate-function (lambda (_) "Return empty string" ""))
       )
@@ -304,13 +304,12 @@ org-download-heading-lvl nil)
 
   (defun set-assets-dir-path ()
     (interactive)
-    (let ((assets-dir (get-assets-dir-path)))
+    (let ((assets-dir (get-assests-dir-path)))
       (when assets-dir
         (customize-set-variable 'org-yank-image-save-method assets-dir))
       ))
 
-  ;; (advice-add 'set-assets-dir-path :before #'yank-media)
-  (advice-add 'yank-media :before #'set-assets-dir-path)
+  (advice-add 'set-assets-dir-path :before #'yank-media)
 
 
   ;; (customize-set-variable 'org-yank-image-save-method (expand-file-name (get-assets-dir-path)))
@@ -503,6 +502,7 @@ org-download-heading-lvl nil)
             (sequence "|" "SUBMITTED(s!)")
             (sequence "|" "CANCALLED(c@)" "DELEGATED(e!)")
             (sequence "IDEA")
+            (sequence "PRJ")
             (sequence "REMINDER(!r)")
             (sequence "CALL" "|" "CALLED(!)")
             (seqeunce "EMAIL(m!)" "|" "EMAILED(!)")
@@ -527,11 +527,14 @@ org-download-heading-lvl nil)
             ("CANCELLED" . ( :foreground "gray"         :weight bold))
             ("TO-FIND"   . ( :foreground "yellow1"      :weight bold))
             ("EMACS"     . ( :foreground "purple"       :weight bold))
+            ("PRJ"       . ( :foreground "orange2"
+            :weight bold))
       )
     )
 
 (after! org
   (setq org-log-done 'time)
+  (setq org-log-note-clock-out t)
   (setq org-log-into-drawer "LOGBOOK") ; places state transitions into LOGBOOK drawer
 
   (setq org-agenda-skip-scheduled-if-done t
@@ -635,6 +638,10 @@ org-download-heading-lvl nil)
 ("sr" "Reading" entry (file+headline "~/.notes/agenda-school.org" "Spring 2025")
  "* TODO %^{ECE441|ENGR297|ENGR446} - %^{Reading} - %^{Chapter|Pages|Section} \nSCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
+
+;; ("sl" "499 log" entry (file+headline "~/.notes/agenda-school.org" "work-log")
+;;  "* TODO %^{ECE441|ENGR297|ENGR446} - %^{Reading} - %^{Chapter|Pages|Section} \nSCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+;;  :empty-lines-after 1 :prepend t)
 
 ;; -- Journal
 ("j" "Journal" entry (file+olp+datetree "~/.notes/journal.org")
