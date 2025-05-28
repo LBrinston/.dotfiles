@@ -286,11 +286,19 @@ org-download-heading-lvl nil)
         (let* ((directory (file-name-directory file-path))
                (assets-dir (concat directory ".assets")))
           (unless (file-directory-p assets-dir)
-            (when (yes-or-no-p (format "Create assets directory at %s? " assets-dir))
-              (make-directory assets-dir t)
-              )
-            (setq assets-dir (expand-file-name "~/.notes/assets/"))
-            (message "Using default dir: %s" assets-dir)
+
+            ;; (when (yes-or-no-p (format "Create assets directory at %s? " assets-dir))
+            ;;   (make-directory assets-dir t)
+            ;;   )
+            ;; (setq assets-dir (expand-file-name "~/.notes/assets/"))
+            ;; (message "Using default dir: %s" assets-dir)
+
+            (if (yes-or-no-p (format "Create assets directory at %s? " assets-dir))
+                (make-directory assets-dir t)
+              (setq assets-dir (expand-file-name "~/.notes/assets/"))
+              (message "Using default dir: %s" assets-dir))
+
+
             )
           assets-dir)))))
 
@@ -305,7 +313,8 @@ org-download-heading-lvl nil)
   (advice-add 'yank-media :before #'set-assets-dir-path)
 
 
-  ;;(customize-set-variable 'org-yank-image-save-m`ethod (expand-file-name (get-assets-directory-path)))
+  ;; (customize-set-variable 'org-yank-image-save-method (expand-file-name (get-assets-dir-path)))
+  ;; -- Only hardcode for debugging purposes
   (customize-set-variable 'org-yank-image-save-method (expand-file-name "~/.notes/.assets"))
 
   ;; org-yank-image-save-method can accept two args:

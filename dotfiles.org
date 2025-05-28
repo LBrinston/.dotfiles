@@ -2746,24 +2746,26 @@ Org-mode has a ~yank-media~ command since 9.something. It seems to more or less 
         (let* ((directory (file-name-directory file-path))
                (assets-dir (concat directory ".assets")))
           (unless (file-directory-p assets-dir)
-            (when (yes-or-no-p (format "Create assets directory at %s? " assets-dir))
-              (make-directory assets-dir t)
-              )
-            (setq assets-dir (expand-file-name "~/.notes/assets/"))
-            (message "Using default dir: %s" assets-dir)
+            (if (yes-or-no-p (format "Create assets directory at %s? " assets-dir))
+                (make-directory assets-dir t)
+              (setq assets-dir (expand-file-name "~/.notes/assets/"))
+              (message "Using default dir: %s" assets-dir))
             )
           assets-dir)))))
 
   (defun set-assets-dir-path ()
     (interactive)
-    (let ((assets-dir (get-assests-dir-path)))
+    (let ((assets-dir (get-assets-dir-path)))
       (when assets-dir
         (customize-set-variable 'org-yank-image-save-method assets-dir))
       ))
 
-  (advice-add 'set-assets-dir-path :before #'yank-media)
+  ;; (advice-add 'set-assets-dir-path :before #'yank-media)
+  (advice-add 'yank-media :before #'set-assets-dir-path)
 
-  ;;(customize-set-variable 'org-yank-image-save-method (expand-file-name (get-assets-directory-path)))
+
+  ;; (customize-set-variable 'org-yank-image-save-method (expand-file-name (get-assets-dir-path)))
+  ;; -- Only hardcode for debugging purposes
   (customize-set-variable 'org-yank-image-save-method (expand-file-name "~/.notes/.assets"))
 
   ;; org-yank-image-save-method can accept two args:
