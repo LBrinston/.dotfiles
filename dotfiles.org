@@ -1,8 +1,12 @@
 #+title: dotfiles
 #+author: Liam Brinston
 #+date: 2025-01-02 14:19:44
+#+STARTUP: show2levels
 
 * Dotfile management
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
 
 Personal dotfile management, and documentation using org-mode, GNU stow, and git.
 
