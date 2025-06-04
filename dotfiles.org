@@ -4407,7 +4407,11 @@ vterm is meant to act like a terminal so we want it to go straight to insert mod
         (or (executable-find "bash")
             (executable-find "sh")
             (executable-find "docker")
-            "/bin/sh")))
+            "/bin/sh"))
+  (setq vterm-tramp-shells '(("docker" "/bin/bash")
+                             ("ssh" "/bin/bash")
+                             ("sshx" "/bin/bash")
+                             ("sudo" "/bin/bash"))))
 #+end_src
 ***** Reference
 :PROPERTIES:
