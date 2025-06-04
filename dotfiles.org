@@ -3883,10 +3883,23 @@ Most of the time bash would be prefered.
 
 #+begin_src emacs-lisp
 (after! tramp
-(add-to-list 'tramp-connection-properties
-             (list (regexp-quote "/sshx:lbrinston@ugls5:")
-                   "remote-shell" "/usr/local/bin/"))
-)
+  ;; (add-to-list 'tramp-connection-properties
+  ;;              (list (regexp-quote "/sshx:lbrinston@ugls5:")
+  ;;                    "remote-shell" "/usr/local/bin"))
+  (add-to-list 'tramp-connection-properties
+               (list (regexp-quote "/sshx:jdoe:")
+                     "remote-shell" "/usr/bin/bash"))
+  ;; Additional sshx-specific properties
+  (add-to-list 'tramp-connection-properties
+               (list (regexp-quote "/sshx:jdoe:")
+                     "login-shell" "/bin/bash"))
+
+  ;; Ensure sshx uses proper shell arguments
+  ;; This is a flag passed to shell
+  ;; -c run next arg as command string (this is how we pass a command to a remote host)
+  (add-to-list 'tramp-connection-properties
+               (list (regexp-quote "/sshx:jdoe:")
+                     "shell-command-switch" "-c")))
 #+end_src
 
 ******* Term
