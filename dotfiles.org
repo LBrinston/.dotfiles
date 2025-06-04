@@ -2067,7 +2067,7 @@ Window select gets use =ace-window=
 doom              ; what makes DOOM look the way it does
 doom-dashboard    ; a nifty splash screen for Emacs
 ;;doom-quit         ; DOOM quit-message prompts when you quit Emacs
-;;(emoji +unicode)  ; 🙂
+(emoji +unicode)  ; 🙂
 hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
 indent-guides     ; highlighted indent columns
 ;;ligatures         ; ligatures and symbols to make your code pretty again
@@ -2496,6 +2496,11 @@ I'm really just storing the header here. I think it makes sense for the package 
  ((my-font-available-p "IBM Plex Sans")
   (setq doom-symbol-font (font-spec :family "IBM Plex Sans" :size my-font-size))
   ))
+(cond
+ ((my-font-available-p "IBM Plex Sans")
+  (setq doom-unicode-font (font-spec :family "IBM Plex Sans" :size my-font-size))
+  ))
+
 
 ;; ;; -- Doom emoji font
 ;; (setq doom-font (font-spec :family "Fira Mono" :size 20)
