@@ -165,6 +165,14 @@ if [ $LIVE_COUNTER -eq 1 ]; then
     fi
 fi
 
+# If starship is install then let's use it
+if which starship > /dev/null; then
+    echo "Starship detected! 🚀"
+    eval "$(starship init bash)"
+else
+    echo "No starship detected."
+fi;
+
 # Checking CPU architecture
 # cut -f 2 d ":" remove the part of the line before :
 # awk '{$1=$1}1' removes the space from the beginning of the line
@@ -191,8 +199,12 @@ if dpkg -s bat > /dev/null 2>&1; then
     export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
 fi
 
+export LC_ALL=en_CA.UTF-8
+export LANG=en_CA.UTF-8
+export LANGUAGE=En_CA:en_GB:en
+
 # Environment variables
-export SEMESTER="summer_2025"
+export SEMESTER="spring_2025"
 export UVIC="$HOME/Documents/UVic"
 
 export ANDROID_USER_HOME="$XDG_DATA_HOME/android:$PATH"

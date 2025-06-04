@@ -42,6 +42,18 @@ endif()
 add_executable($1 $1.cpp)
 $0
 
+## -- Compiler options
+target_compile_options(your_target PRIVATE
+  -Wall           # Enable all warnings
+  -Wextra         # Extra warnings
+  -Werror         # Treat warnings as errors
+  -pedantic-errors # Enforce strict standard compliance
+  -Wconversion    # Warn on implicit conversions
+  -Wshadow        # Warn on variable shadowing
+  -Wunused        # Warn on unused variables/values
+)
+##
+
 # CMake Output to console
 if((DEFINED CMAKE_BUILD_TYPE) AND (NOT CMAKE_BUILD_TYPE STREQUAL ""))
   message("CMAKE_BUILD_TYPE: \${CMAKE_BUILD_TYPE}")

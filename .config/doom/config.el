@@ -78,6 +78,11 @@ which contain configuration files that should be tangled"
  ((my-font-available-p "IBM Plex Sans")
   (setq doom-symbol-font (font-spec :family "IBM Plex Sans" :size my-font-size))
   ))
+(cond
+ ((my-font-available-p "IBM Plex Sans")
+  (setq doom-unicode-font (font-spec :family "IBM Plex Sans" :size my-font-size))
+  ))
+
 
 ;; ;; -- Doom emoji font
 ;; (setq doom-font (font-spec :family "Fira Mono" :size 20)
@@ -222,7 +227,7 @@ which contain configuration files that should be tangled"
       :config
       ;; -- Link Formatting
       (setq org-download-link-format "[[file:%s]]\n")
-
+      
       ;; -- Where to save the images
       ;; Default so that we *could* provide a file-local-var
       (setq-default
@@ -233,14 +238,14 @@ which contain configuration files that should be tangled"
           nil)
       ;;(concat ".assests/images/" (file-name-base))
       org-download-heading-lvl nil)
-
+      
       (setq org-download-abbreviate-filename-function #'file-relative-name)
-
+      
       (setq org-download-timestamp "%Y%m%d-%H%M%S_")
-
+      
       (setq org-download-screenshot-method
             "gnome-screenshot -a -f %sa")
-
+      
       ;; This will remove the #+DOWNLOADED annotation
       ;;(setq org-download-annotate-function (lambda (_) "Return empty string" ""))
       )
@@ -286,30 +291,22 @@ org-download-heading-lvl nil)
         (let* ((directory (file-name-directory file-path))
                (assets-dir (concat directory ".assets")))
           (unless (file-directory-p assets-dir)
-
-            ;; (when (yes-or-no-p (format "Create assets directory at %s? " assets-dir))
-            ;;   (make-directory assets-dir t)
-            ;;   )
-            ;; (setq assets-dir (expand-file-name "~/.notes/assets/"))
-            ;; (message "Using default dir: %s" assets-dir)
-
             (if (yes-or-no-p (format "Create assets directory at %s? " assets-dir))
                 (make-directory assets-dir t)
               (setq assets-dir (expand-file-name "~/.notes/assets/"))
               (message "Using default dir: %s" assets-dir))
-
-
             )
           assets-dir)))))
 
   (defun set-assets-dir-path ()
     (interactive)
-    (let ((assets-dir (get-assests-dir-path)))
+    (let ((assets-dir (get-assets-dir-path)))
       (when assets-dir
         (customize-set-variable 'org-yank-image-save-method assets-dir))
       ))
 
-  (advice-add 'set-assets-dir-path :before #'yank-media)
+  ;; (advice-add 'set-assets-dir-path :before #'yank-media)
+  (advice-add 'yank-media :before #'set-assets-dir-path)
 
 
   ;; (customize-set-variable 'org-yank-image-save-method (expand-file-name (get-assets-dir-path)))
@@ -357,6 +354,12 @@ org-download-heading-lvl nil)
          ("C-c s l" . org-super-links-store-link)
          ("C-c s C-l" . org-super-links-insert-link)
          )
+  )
+
+(use-package! htmlize
+  :defer t
+  :hook (mhtml-mode . htmlize)
+  ;; TODO Other stuff?
   )
 
 ;;(after! org
@@ -884,11 +887,33 @@ org-download-heading-lvl nil)
 ;;       (tab-mark     ?\t    [?\u00BB ?\t] [?\\ ?\t])))
 ;;   (global-whitespace-mode +1))
 
+(after! evil-multiedit
+  (evil-multiedit-default-keybinds) ; for now we cheat and just the defaults
+
+  ;; - For later
+  ;; (map!
+  ;;  :leader
+  ;;  :prefix
+  ;;  :n :desc
+  ;;  )
+  )
+
 (after! tramp
-(add-to-list 'tramp-connection-properties
-             (list (regexp-quote "/sshx:lbrinston@ugls5:")
-                   "remote-shell" "/usr/bin/bin"))
-)
+  ;; (add-to-list 'tramp-connection-properties
+  ;;              (list (regexp-quote "/sshx:lbrinston@ugls5:")
+  ;;                    "remote-shell" "/usr/local/bin"))
+  (add-to-list 'tramp-connection-properties
+               (list (regexp-quote "/sshx:jdoe:")
+                     "remote-shell" "/usr/bin/bash"))
+  ;; Additional sshx-specific properties
+  (add-to-list 'tramp-connection-properties
+               (list (regexp-quote "/sshx:jdoe:")
+                     "login-shell" "/bin/bash"))
+
+  ;; Ensure sshx uses proper shell arguments
+  (add-to-list 'tramp-connection-properties
+               (list (regexp-quote "/sshx:jdoe:")
+                     "shell-command-switch" "-c")))
 
 (use-package! jinx
   :defer t
@@ -1071,11 +1096,15 @@ prompt) during export, e.g. conversion of org to say html."
   )
 
 ;; -- Ideally this is state dependent but this creates a nesting depth error for some reason
-;; (when (modulep! :editor evil)
-;;   (evil-set-initial-state 'vterm-mode 'insert)
-;;   )
 (after! vterm
-  (set-evil-initial-state! 'vterm-mode 'insert)
+  (when (modulep! :editor evil)
+    (set-evil-initial-state! 'vterm-mode 'insert))
   (setq vterm-shell
-   `(("/bin/bash" "/bin/sh" "docker")))
-  )
+        (or (executable-find "bash")
+            (executable-find "sh")
+            (executable-find "docker")
+            "/bin/sh"))
+  (setq vterm-tramp-shells '(("docker" "/bin/bash")
+                             ("ssh" "/bin/bash")
+                             ("sshx" "/bin/bash")
+                             ("sudo" "/bin/bash"))))
