@@ -2101,7 +2101,7 @@ fold              ; (nigh) universal code folding
 (format +onsave)  ; automated prettiness
 ;;god               ; run Emacs commands without modifier keys
 ;;lispy             ; vim for lisp, for people who don't like vim
-;;multiple-cursors  ; editing in many places at once
+multiple-cursors  ; editing in many places at once
 ;;objed             ; text object editing for the innocent
 ;;parinfer          ; turn lisp into python, sort of
 ;;rotate-text       ; cycle region at point between text candidates
@@ -3867,6 +3867,34 @@ Doom's whitespace-mode is quite minimal. Should you need it to make other forms 
 ;;       (newline-mark ?\n    [182 ?\n])
 ;;       (tab-mark     ?\t    [?\u00BB ?\t] [?\\ ?\t])))
 ;;   (global-whitespace-mode +1))
+#+end_src
+
+******** (package) evil-multiedit
+
+evil-multiedit is enabled by uncommenting ~multiple-cursors~ in packages.el
+
+reference:
+- D: clear the region
+- C: clear to end-of-region and go into insert mode
+- A: go into insert mode at end-of-region
+- I: go into insert mode at start-of-region
+- V: select the region
+- P: replace the iedit region with the contents of the clipboard
+- $: go to end-of-region
+- 0/^: go to start-of-region
+- gg/G: go to the first/last region
+
+#+begin_src emacs-lisp
+(after! evil-multiedit
+  (evil-multiedit-default-keybinds) ; for now we cheat and just the defaults
+
+  ;; - For later
+  ;; (map!
+  ;;  :leader
+  ;;  :prefix
+  ;;  :n :desc
+  ;;  )
+  )
 #+end_src
 
 ******* Emacs
