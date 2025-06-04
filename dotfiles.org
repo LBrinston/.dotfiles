@@ -502,6 +502,10 @@ if dpkg -s bat > /dev/null 2>&1; then
     export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
 fi
 
+export LC_ALL=en_CA.UTF-8
+export LANG=en_CA.UTF-8
+export LANGUAGE=En_CA:en_GB:en
+
 # Environment variables
 export SEMESTER="spring_2025"
 export UVIC="$HOME/Documents/UVic"
