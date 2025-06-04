@@ -228,6 +228,69 @@ _Bash completions_
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 #+END_SRC
 
+*** (term) starship
+
+[[curl -sS https://starship.rs/install.sh | sh][starship - cross-shell prompt]]
+
+Let's have a nice prompt as a treat.
+
+1. Source it
+
+#+name:STARSHIP-BASH
+#+BEGIN_SRC bash
+# If starship is install then let's use it
+if which starship > /dev/null; then
+    echo "Starship detected! 🚀"
+    eval "$(starship init bash)"
+else
+    echo "No starship detected."
+fi;
+#+END_SRC
+
+2. Configure it
+
+#+BEGIN_SRC toml :tangle ~/.dotfiles/.config/starship.toml
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Inserts a blank line between shell prompts
+add_newline = true
+
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$fill\
+$cmd_duration $job $time\
+$line_break\
+$character"""
+
+[fill]
+symbol = " "
+
+[directory]
+style = "blue"
+read_only = " "
+truncation_length = 6
+truncate_to_repo = false
+
+[character]
+success_symbol = '[➜](bold green)'
+error_symbol = '[●](bold red)'
+# vlcmd_symbol = '[➜](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
+
+[git_branch]
+# symbol = ""
+format = "[$symbol$branch]($style)"
+style  = "bright-white"
+
+# Disable the package module, hiding it from the prompt completely
+[package]
+disabled = true
+#+END_SRC
+
 *** nala
 
 Nala is a shinier front end to ~libapt-pkg~ made in python.
@@ -410,6 +473,8 @@ if [ $LIVE_COUNTER -eq 1 ]; then
         fi
     fi
 fi
+
+#<<STARSHIP-BASH>>
 
 # Checking CPU architecture
 # cut -f 2 d ":" remove the part of the line before :
