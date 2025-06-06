@@ -8,10 +8,47 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 # Specify project and identify languages used
 project(${1:src-name} LANGUAGES CXX)
 
+# Specify project and identify languages used
+project(${1:prj-name}
+  DESCRIPTION "$2"
+  LANGUAGES CXX)
+
 # Enable verbose makefiles
 set(CMAKE_VERBOSE_MAKEFILE true)
 
-# Enabling Sanitizers
+## Global Compiler Flags ######################################################
+
+# Use a list so we can have mult-line and comment stripping
+set(WARNING_FLAGS_LIST
+  #-Wall            # Enable all warnings
+  -Wextra           # Extra warnings
+  -Werror           # Treat warnings as errors
+  -pedantic-errors  # Enforce strict standard compliance
+  -Wconversion      # Warn on implicit conversions
+  -Wshadow          # Warn on variable shadowing
+  #-Wunused         # Warn on unused variables/values
+)
+string(JOIN " " WARNING_FLAGS ${WARNING_FLAGS_LIST})
+string(APPEND CMAKE_CXX_FLAGS "${WARNING_FLAGS}")
+
+## -- Conditional flags
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  message(STATUS "Using Clang compiler")
+  # target_compile_options(test_mandelbrot PRIVATE
+  #   -fconstexpr-steps=100000000
+  # )
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  message(STATUS "Using GCC compiler")
+  # target_compile_options(test_mandelbrot PRIVATE
+  #   -fconstexpr-ops-limit=1000000000
+  #   -fconstexpr-loop-limit=100000000
+  # )
+else()
+  message(STATUS "Unknown compiler, no extra constexpr flags")
+endif()
+###############################################################################
+
+## Sanitizers #################################################################
 ## -- ASan
 ### dep:
 option(ENABLE_ASAN "Enable ASan" flase)
@@ -19,7 +56,7 @@ option(ENABLE_ASAN "Enable ASan" flase)
 if (ENABLE_ASAN)
   # Enable Address Sanitizer (ASan)
   set(CMAKE_CXX_FLAGS "\${CMAKE_CXX_FLAGS} -fsanitize=address")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
+  set(CMAKE_EXE_LINKER_FLAGS "\${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
 endif()
 ## -- End ASan
 
@@ -32,27 +69,19 @@ if (ENABLE_UBSAN)
   set(CMAKE_EXE_LINKER_FLAGS "\${CMAKE_EXE_LINK_FLAGS} -fsanitize=undefined")
 endif()
 ## -- end UBSan
-# End Sanitizers
+###############################################################################
 
 # Include libraries
 # target_include_directories(lib)
-# message("Including: ${}")
+# message("Including: \${}")
 
-# Add program target
-add_executable($1 $1.cpp)
+## Build Targets ##############################################################
+# --
+add_executable($3:target app/test_$3.cpp)
+target_include_directories($3 PUBLIC \${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(test_$3 Catch2::Catch2WithMain)
+###############################################################################
 $0
-
-## -- Compiler options
-target_compile_options(your_target PRIVATE
-  -Wall           # Enable all warnings
-  -Wextra         # Extra warnings
-  -Werror         # Treat warnings as errors
-  -pedantic-errors # Enforce strict standard compliance
-  -Wconversion    # Warn on implicit conversions
-  -Wshadow        # Warn on variable shadowing
-  -Wunused        # Warn on unused variables/values
-)
-##
 
 # CMake Output to console
 if((DEFINED CMAKE_BUILD_TYPE) AND (NOT CMAKE_BUILD_TYPE STREQUAL ""))
