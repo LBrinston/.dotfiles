@@ -2733,11 +2733,34 @@ But =org-appear= solves this nicely.
 
 ******** bullets
 
+Org bullets is nice but [[https://github.com/integral-dw/org-superstar-mode][(gh) org-superstar]] might be a bit more flexible.
+
 #+begin_src emacs-lisp
-(user-package! org-bullets
-:config
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-)
+(after! org-superstar
+
+ ;; Provide a list of bullets to use
+  ;; sticking with defaults for now
+  ;; (setq org-superstar-headline-bultets-list '(?\d))
+
+  (setq org-superstar-special-todo-items t)
+  (setq org-superstar-remove-leading-stars t)
+  (setq org-hide-leading-stars t)
+  (setq org-ellipsis " ▾ ")
+
+  (setq org-superstar-item-bullet-alist
+        '((?* . ?•)
+          (?+ . ?➤)
+          (?- . ?•)))
+  ;; Not sure how keen I am on this
+  ;; left for reference
+  ;; (setq org-superstar-todo-bullet-alist
+  ;;       '(("TODO" . ?☐)
+  ;;         ("NEXT" . ?✒)
+  ;;         ("HOLD" . ?✰)
+  ;;         ("WAITING" . ?☕)
+  ;;         ("CANCELLED" . ?✘)
+  ;;         ("DONE" . ?✔)))
+  )
 #+end_src
 
 ******* Org-Babel
