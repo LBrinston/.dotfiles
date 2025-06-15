@@ -3093,6 +3093,74 @@ ref: [[https://emacs.stackexchange.com/questions/66178/how-to-execute-shell-comm
   ;; TODO Other stuff?
   )
 #+end_src
+******** org \rarr odt \rarr docx
+
+For the most part org \rarr to odt works very well. There a few small things that do need configuration
+
+#+begin_src emacs-lisp :noweb yes
+(after! org
+<<LaTeXML>>
+<<ODT-LINK-FILTER>>
+  )
+#+end_src
+
+_Equations_
+
+LibreOffice uses MathML instead of LaTeX so a converter is needed. The simplest one is LaTeXML which can be installed via apt (for a slightly older versoin) or direct from [[https://math.nist.gov/~BMiller/LaTeXML/get.html][LaTeXML]].
+
+#+name: LaTeXML
+#+begin_src emacs-lisp :tangle no
+;; Set LaTeXML as the equation converter
+;; dep: LaTeXML (apt or site)
+(setq org-latex-to-mathml-convert-command
+      "latexmlmath %i --presentationmathml=%o")
+#+end_src
+
+_Templates_
+
+If you want to setup specify odt templates this is done via the ~ODT_STYLE_FILE~ var that you can set at the top of an org-file. It is a path to an .ott file.
+
+The [[https://orgmode.org/manual/Applying-custom-styles.html][org-manual 13.12.5]] provides some simple directions on creation a ott template - "the easy way" (the hard part is understanding how LibreOffice's notion of styles maps to docx).
+
+_Filters/Transforms_
+
+This is where things get more complicated. The org-exporter does have a notion of filters discussed in the [[https://orgmode.org/manual/Advanced-Export-Configuration.html][13.17 Advance Export Configuration]] section of the manual.
+
+Ideally we set these per file as need with a file-local variable like this:
+~-,*- org-export-filter-link-functions: (my-custom-link-filter); -*-~
+=Note=: the , at the beginning is to escape org markup.
+
+#+name: ODT-LINK-FILTER
+#+begin_src emacs-lisp :tangle no
+;; WIP - needs testing and configuration
+;; Define path mappings
+(setq org-link-path-mappings
+      '(("/mount/shared" . "R:")
+        ("/home/shared" . "S:")
+        ("/mnt/fileserver" . "\\\\fileserver")))
+
+;; Custom function to convert file links for ODT export
+(defun my-org-odt-link-converter (path desc format)
+  "Convert file paths for Windows when exporting to ODT."
+  (when (and (string= format "odt")
+             (string-match "^file:" path))
+    (let ((file-path (substring path 5))) ; Remove "file:" prefix
+      ;; Apply path mappings
+      (dolist (mapping org-link-path-mappings)
+        (when (string-prefix-p (car mapping) file-path)
+          (setq file-path (replace-regexp-in-string
+                          (regexp-quote (car mapping))
+                          (cdr mapping)
+                          file-path))))
+      ;; Convert forward slashes to backslashes for Windows
+      (setq file-path (replace-regexp-in-string "/" "\\\\" file-path))
+      ;; Return the converted path
+      (concat "file:" file-path))))
+
+;; Hook it into the ODT exporter
+;; Want to do this conditionally
+;; (setq org-export-filter-link-functions '(my-org-odt-link-converter))
+#+end_src
 
 ******* LaTeX
 
