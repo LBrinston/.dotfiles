@@ -163,6 +163,11 @@ which contain configuration files that should be tangled"
   (setq org-appear-autosubmarkers t)  ; Show sub- and superscripts
   )
 
+(user-package! org-bullets
+:config
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+)
+
 (setq org-src-window-setup 'reorganize-frame)
 (setq org-src-tab-acts-natively t)
 
@@ -360,6 +365,41 @@ org-download-heading-lvl nil)
   :defer t
   :hook (mhtml-mode . htmlize)
   ;; TODO Other stuff?
+  )
+
+(after! org
+;; Set LaTeXML as the equation converter
+;; dep: LaTeXML (apt or site)
+(setq org-latex-to-mathml-convert-command
+      "latexmlmath %i --presentationmathml=%o")
+;; WIP - needs testing and configuration
+;; Define path mappings
+(setq org-link-path-mappings
+      '(("/mount/shared" . "R:")
+        ("/home/shared" . "S:")
+        ("/mnt/fileserver" . "\\\\fileserver")))
+
+;; Custom function to convert file links for ODT export
+(defun my-org-odt-link-converter (path desc format)
+  "Convert file paths for Windows when exporting to ODT."
+  (when (and (string= format "odt")
+             (string-match "^file:" path))
+    (let ((file-path (substring path 5))) ; Remove "file:" prefix
+      ;; Apply path mappings
+      (dolist (mapping org-link-path-mappings)
+        (when (string-prefix-p (car mapping) file-path)
+          (setq file-path (replace-regexp-in-string
+                          (regexp-quote (car mapping))
+                          (cdr mapping)
+                          file-path))))
+      ;; Convert forward slashes to backslashes for Windows
+      (setq file-path (replace-regexp-in-string "/" "\\\\" file-path))
+      ;; Return the converted path
+      (concat "file:" file-path))))
+
+;; Hook it into the ODT exporter
+;; Want to do this conditionally
+;; (setq org-export-filter-link-functions '(my-org-odt-link-converter))
   )
 
 ;;(after! org
@@ -911,6 +951,8 @@ org-download-heading-lvl nil)
                      "login-shell" "/bin/bash"))
 
   ;; Ensure sshx uses proper shell arguments
+  ;; This is a flag passed to shell
+  ;; -c run next arg as command string (this is how we pass a command to a remote host)
   (add-to-list 'tramp-connection-properties
                (list (regexp-quote "/sshx:jdoe:")
                      "shell-command-switch" "-c")))

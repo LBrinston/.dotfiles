@@ -176,6 +176,7 @@ which contain configuration files that should be tangled"
 #+end_src
 
 * dotfiles
+
 *** android
 
 For the handful of times a year I need to use ~adb~
@@ -3013,7 +3014,6 @@ Org-mode has a ~yank-media~ command since 9.something. It seems to more or less 
   )
 #+END_SRC
 
-
 ******* Headings & Links
 :PROPERTIES:
 :ID:       7b519273-d75a-446a-86b6-e0763c79ea4c
@@ -3075,7 +3075,6 @@ May need to sanitize special characters...
 ref: [[https://emacs.stackexchange.com/questions/66178/how-to-execute-shell-command-with-piping-in-elisp][(st-ex) how to execute shell command with piping in Elisp?]]
 
 ******* Export
-
 
 ******** (package) HTMLize
 
