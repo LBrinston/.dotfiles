@@ -2730,6 +2730,15 @@ But =org-appear= solves this nicely.
   )
 #+end_src
 
+******** bullets
+
+#+begin_src emacs-lisp
+(user-package! org-bullets
+:config
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+)
+#+end_src
+
 ******* Org-Babel
 
 I usually want to be able to reference the org file I am working from when editing a src-bock and preferably things TAB as expected for the language.
