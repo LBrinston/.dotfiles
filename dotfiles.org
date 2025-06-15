@@ -3688,6 +3688,37 @@ This one is purely for testing purposes.
 )
 #+end_src
 
+******** DOCT: Declarative Org Capture Templates
+
+The default way of writing templates can be hard to read and write. Maybe this will be easier.
+
+[[https://github.com/progfolio/doct][(gh) DOCT repo]]
+
+#+name: DOCT-PACKAGE
+#+begin_src emacs-lisp
+(package! doct
+  :recipe (:host github :repo "progfolio/doct")
+  :pin "5cab660dab653ad88c07b0493360252f6ed1d898")
+#+end_src
+
+Usuage of doct still involves using ~setq~ on ~set-org-capture-templates~ but what is passed to it is wrapped in ~(doct '(...))~. Presumably this means that doct' ingests the quote list written in declarative syntax and spit returns to ~org-capture-templates~ the default syntax.
+
+#+begin_src emacs-lisp
+(use-package! doct
+  :commands doct)
+
+;; (after org!
+;;        (setq org-capture-templates
+;;              (doct `(("Personal todo" :keys "t"
+;;                       :icon ("nf-oct-checklist" :set "octicon" :color "green")
+;;                       :file +org-capture-todo-file
+;;                       :prepend t
+;;                       :headline "Inbox"
+;;                       :type entry
+;;                       :template ("* TODO %?"
+;;                                  "%i %a"))))))
+#+end_src
+
 ******** Refile
 
 #+BEGIN_SRC emacs-lisp
