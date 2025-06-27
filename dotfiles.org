@@ -3468,6 +3468,8 @@ There appears to be two issues:
             (sequence "CALL" "|" "CALLED(!)")
             (seqeunce "EMAIL(m!)" "|" "EMAILED(!)")
             (sequence "GROC" "|" "DONE")
+            ;; -- Stuff?
+            (sequence "BUY" "|" "SELL")
             ;; -- Media
             (sequence "TO-FIND" "|" "FOUND")
             (sequence "TO-READ" "|" "READ")
@@ -3488,8 +3490,9 @@ There appears to be two issues:
             ("CANCELLED" . ( :foreground "gray"         :weight bold))
             ("TO-FIND"   . ( :foreground "yellow1"      :weight bold))
             ("EMACS"     . ( :foreground "purple"       :weight bold))
-            ("PRJ"       . ( :foreground "orange2"
-            :weight bold))
+            ("PRJ"       . ( :foreground "orange2"      :weight bold))
+            ("BUY"       . ( :foreground "spring green" :weight bold))
+            ("SELL"      . ( :foreground "deep pink"    :weight bold))
       )
     )
 #+END_SRC
