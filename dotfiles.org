@@ -227,7 +227,7 @@ xremap just takes a yaml file that can live in the location of your choice (does
 
 Key names can be looked up in the [[https://github.com/emberian/evdev/blob/1d020f11b283b0648427a2844b6b980f1a268221/src/scancodes.rs#L26-L572][scancodes.rs]]. The scancode names are typically prefixed as KEY_ in uppercase however, in the yaml file names are case-insensitive and the KEY_ may be dropped.
 
-#+begin_src yaml :tangle ~/.config/xremap/config.yml
+#+begin_src yaml :tangle ~/.dotfiles/.config/xremap/config.yml
 modmap:
   - name: main remaps
     remap:
@@ -243,7 +243,7 @@ _Running as a daemon_
 
 Here the ExecStart expects xremap to be in /usr/bin/local which if xremap was installed with cargo may not be where the binary is actually located.
 
-#+begin_src conf :tangle ~/.config/systemd/user/xremap.service
+#+begin_src conf :tangle ~/.dotfiles/.config/systemd/user/xremap.service
 [Unit]
 Description=Xremap
 After=default.target
@@ -258,7 +258,7 @@ StandardError=journal
 WantedBy=default.target
 #+end_src
 
-#+begin_src conf :tangle ~/.config/autostart/xremap.desktop
+#+begin_src conf :tangle ~/.dotfiles/.config/autostart/xremap.desktop
 [Desktop Entry]
 Name=Xremap
 Type=Application
@@ -281,7 +281,6 @@ _Setup_
 First login to your bitwarden account
 
 _Bash completions_
-
 
 *** gnupg
 
