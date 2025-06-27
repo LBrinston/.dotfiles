@@ -2882,23 +2882,38 @@ There are two solutions to this:
 
   =Note=: For this to work reliably you _must_ include the ~:noweb-prefix no~ header in your babel blocks otherwise noweb will attempt to honor #comment first.
 
+  Original
    #+BEGIN_SRC emacs-lisp
-   (after! org
-     ;; Note:
-     (defun org-babel-noweb-wrap (&optional regexp)
-       "Return regexp matching a Noweb reference.
+   ;; (after! org
+   ;;   ;; Note:
+   ;;   (defun org-babel-noweb-wrap (&optional regexp)
+   ;;     "Return regexp matching a Noweb reference.
 
-   Match any reference, or only those matching REGEXP, if non-nil.
+   ;; Match any reference, or only those matching REGEXP, if non-nil.
 
-   When matching, reference is stored in match group 1."
-       (rx-to-string
-        `(and (or "<<" "#<<")
-              (group
-               (not (or " " "\t" "\n"))
-               (? (*? any) (not (or " " "\t" "\n"))))
-              (or ">>" ">>#"))))
-     )
+   ;; When matching, reference is stored in match group 1."
+   ;;     (rx-to-string
+   ;;      `(and (or "<<" "#<<")
+   ;;            (group
+   ;;             (not (or " " "\t" "\n"))
+   ;;             (? (*? any) (not (or " " "\t" "\n"))))
+   ;;            (or ">>" ">>#"))))
+   ;;   )
    #+END_SRC
+
+[2025-06-26 Thu] - Updated for Emacs 30.1
+#+begin_src emacs-lisp
+(after! org
+  (defun org-babel-noweb-wrap (&optional regexp)
+    "Return regexp matching a Noweb reference."
+    (let ((result (rx-to-string
+                   `(and (or "<<" "#<<")
+                         (group
+                          (not (or " " "\t" "\n"))
+                          (? (*? any) (not (or " " "\t" "\n"))))
+                         (or ">>" ">>#")))))
+      result)))
+#+end_src
 
 Both solutions found here: [[https://emacs.stackexchange.com/questions/63643/noweb-references-in-sh-blocks-breaks-the-syntax-highlighting][(stackexchange)Noweb ref in sh blocks breaks syntax highlighting]]
 

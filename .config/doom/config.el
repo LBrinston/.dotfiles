@@ -163,10 +163,31 @@ which contain configuration files that should be tangled"
   (setq org-appear-autosubmarkers t)  ; Show sub- and superscripts
   )
 
-(user-package! org-bullets
-:config
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-)
+(after! org-superstar
+
+ ;; Provide a list of bullets to use
+  ;; sticking with defaults for now
+  ;; (setq org-superstar-headline-bultets-list '(?\d))
+
+  (setq org-superstar-special-todo-items t)
+  (setq org-superstar-remove-leading-stars t)
+  (setq org-hide-leading-stars t)
+  (setq org-ellipsis " ▾ ")
+
+  (setq org-superstar-item-bullet-alist
+        '((?* . ?•)
+          (?+ . ?➤)
+          (?- . ?•)))
+  ;; Not sure how keen I am on this
+  ;; left for reference
+  ;; (setq org-superstar-todo-bullet-alist
+  ;;       '(("TODO" . ?☐)
+  ;;         ("NEXT" . ?✒)
+  ;;         ("HOLD" . ?✰)
+  ;;         ("WAITING" . ?☕)
+  ;;         ("CANCELLED" . ?✘)
+  ;;         ("DONE" . ?✔)))
+  )
 
 (setq org-src-window-setup 'reorganize-frame)
 (setq org-src-tab-acts-natively t)
@@ -175,21 +196,32 @@ which contain configuration files that should be tangled"
   ;; (org-babel-lob-ingest (expand-file-name "~/.config/doom/lib-babel.org"))
   )
 
-   (after! org
-     ;; Note:
-     (defun org-babel-noweb-wrap (&optional regexp)
-       "Return regexp matching a Noweb reference.
+   ;; (after! org
+   ;;   ;; Note:
+   ;;   (defun org-babel-noweb-wrap (&optional regexp)
+   ;;     "Return regexp matching a Noweb reference.
 
-   Match any reference, or only those matching REGEXP, if non-nil.
+   ;; Match any reference, or only those matching REGEXP, if non-nil.
 
-   When matching, reference is stored in match group 1."
-       (rx-to-string
-        `(and (or "<<" "#<<")
-              (group
-               (not (or " " "\t" "\n"))
-               (? (*? any) (not (or " " "\t" "\n"))))
-              (or ">>" ">>#"))))
-     )
+   ;; When matching, reference is stored in match group 1."
+   ;;     (rx-to-string
+   ;;      `(and (or "<<" "#<<")
+   ;;            (group
+   ;;             (not (or " " "\t" "\n"))
+   ;;             (? (*? any) (not (or " " "\t" "\n"))))
+   ;;            (or ">>" ">>#"))))
+   ;;   )
+
+(after! org
+  (defun org-babel-noweb-wrap (&optional regexp)
+    "Return regexp matching a Noweb reference."
+    (let ((result (rx-to-string
+                   `(and (or "<<" "#<<")
+                         (group
+                          (not (or " " "\t" "\n"))
+                          (? (*? any) (not (or " " "\t" "\n"))))
+                         (or ">>" ">>#")))))
+      result)))
 
 (after! org
   (require 'ansi-color)
@@ -550,6 +582,8 @@ org-download-heading-lvl nil)
             (sequence "CALL" "|" "CALLED(!)")
             (seqeunce "EMAIL(m!)" "|" "EMAILED(!)")
             (sequence "GROC" "|" "DONE")
+            ;; -- Stuff?
+            (sequence "BUY" "|" "SELL")
             ;; -- Media
             (sequence "TO-FIND" "|" "FOUND")
             (sequence "TO-READ" "|" "READ")
@@ -570,8 +604,9 @@ org-download-heading-lvl nil)
             ("CANCELLED" . ( :foreground "gray"         :weight bold))
             ("TO-FIND"   . ( :foreground "yellow1"      :weight bold))
             ("EMACS"     . ( :foreground "purple"       :weight bold))
-            ("PRJ"       . ( :foreground "orange2"
-            :weight bold))
+            ("PRJ"       . ( :foreground "orange2"      :weight bold))
+            ("BUY"       . ( :foreground "spring green" :weight bold))
+            ("SELL"      . ( :foreground "deep pink"    :weight bold))
       )
     )
 
@@ -751,6 +786,20 @@ org-download-heading-lvl nil)
  :empty-lines-after 1)
 ))
 )
+
+(use-package! doct
+  :commands doct)
+
+;; (after org!
+;;        (setq org-capture-templates
+;;              (doct `(("Personal todo" :keys "t"
+;;                       :icon ("nf-oct-checklist" :set "octicon" :color "green")
+;;                       :file +org-capture-todo-file
+;;                       :prepend t
+;;                       :headline "Inbox"
+;;                       :type entry
+;;                       :template ("* TODO %?"
+;;                                  "%i %a"))))))
 
 (after! org
   (setq org-default-notes-file "~/.notes/capture.org")
