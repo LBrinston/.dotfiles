@@ -92,6 +92,10 @@
           )
   )
 
+(package! doct
+  :recipe (:host github :repo "progfolio/doct")
+  :pin "5cab660dab653ad88c07b0493360252f6ed1d898")
+
 (package! olivetti
   :recipe(:host github
           :repo "rnkn/olivetti"

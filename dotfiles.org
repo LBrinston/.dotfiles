@@ -2,6 +2,7 @@
 #+author: Liam Brinston
 #+date: 2025-01-02 14:19:44
 #+STARTUP: show2levels
+#+STARTUP: noindent
 
 * Dotfile management
 :PROPERTIES:
@@ -3758,7 +3759,7 @@ The default way of writing templates can be hard to read and write. Maybe this w
 [[https://github.com/progfolio/doct][(gh) DOCT repo]]
 
 #+name: DOCT-PACKAGE
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle ./.config/doom/packages.el
 (package! doct
   :recipe (:host github :repo "progfolio/doct")
   :pin "5cab660dab653ad88c07b0493360252f6ed1d898")
