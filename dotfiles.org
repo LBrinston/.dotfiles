@@ -205,6 +205,67 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/dotnet
 #+END_SRC
 
+*** xremap - keyboard remapping
+
+[[https://github.com/xremap/xremap][(gh) xremap]]
+xremap is a rust based keyboard remapping tool.
+
+_Install_ - cargo
+
+#+begin_src bash :tangle no
+cargo install xremap --features x11     # X11
+#cargo install xremap --features gnome   # GNOME Wayland
+#cargo install xremap --features kde     # KDE-Plasma Wayland
+#cargo install xremap --features wlroots # Sway, Wayfire, etc.
+#cargo install xremap --features hypr    # Hyprland
+#cargo install xremap                    # Others
+#+end_src
+
+_Configuration_
+
+xremap just takes a yaml file that can live in the location of your choice (doesn't have a standard conf dir).
+
+Key names can be looked up in the [[https://github.com/emberian/evdev/blob/1d020f11b283b0648427a2844b6b980f1a268221/src/scancodes.rs#L26-L572][scancodes.rs]]. The scancode names are typically prefixed as KEY_ in uppercase however, in the yaml file names are case-insensitive and the KEY_ may be dropped.
+
+#+begin_src yaml :tangle ~/.config/xremap/config.yml
+modmap:
+  - name: main remaps
+    remap:
+     rightalt: rightctrl
+     rightctrl: rightalt
+     CapsLock:
+       held: leftctrl
+       alone: esc
+       alone_timeout_millis: 150
+#+end_src
+
+_Running as a daemon_
+
+Here the ExecStart expects xremap to be in /usr/bin/local which if xremap was installed with cargo may not be where the binary is actually located.
+
+#+begin_src conf :tangle ~/.config/systemd/user/xremap.service
+[Unit]
+Description=Xremap
+After=default.target
+
+[Service]
+ExecStart=/usr/bin/xremap --watch=device %h/.config/xremap/config.yml
+Restart=always
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target
+#+end_src
+
+#+begin_src conf :tangle ~/.config/autostart/xremap.desktop
+[Desktop Entry]
+Name=Xremap
+Type=Application
+Exec=systemctl --user start xremap
+Terminal=false
+#+end_src
+
 *** rbw - (unofficial) bitwarden cli
 
 rbw is easiest to install via cargo.
