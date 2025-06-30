@@ -665,6 +665,9 @@ fi
 # https://github.com/scop/bash-completion/
 #<<BASH-COMPLETION.SH>>
 
+# Vterm Syncrhonization with emacs
+#<<VTERM_BASH_CONF>>
+
 # Default Editor
 export EDITOR="emacs -nw"
 export VISUAL="doom-emacs"
@@ -4779,6 +4782,30 @@ vterm is meant to act like a terminal so we want it to go straight to insert mod
                              ("sshx" "/bin/bash")
                              ("sudo" "/bin/bash"))))
 #+end_src
+
+_shell synchronization with emacs_
+
+vterm does require a little configuration on the shell side if you wish to keep your vterm and emacs in sync (eg. you cd somewhere in vterm and the try to open a file in the dir from emacs).
+
+#+NAME: VTERM_BASH_CONF
+#+begin_src bash
+vterm_printf() {
+    if [ -n "$TMUX" ] \
+        && { [ "${TERM%%-*}" = "tmux" ] \
+            || [ "${TERM%%-*}" = "screen" ]; }; then
+        # Tell tmux to pass the escape sequences through
+        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+    elif [ "${TERM%%-*}" = "screen" ]; then
+        # GNU screen (screen, screen-256color, screen-256color-bce)
+        printf "\eP\e]%s\007\e\\" "$1"
+    else
+        printf "\e]%s\e\\" "$1"
+    fi
+}
+#+end_src
+
+Fish has a different function, see [[https://github.com/akermu/emacs-libvterm][(gh) emacs-vterm - shell-side configuration]]
+
 ***** Reference
 :PROPERTIES:
 :ID:       9f117960-0294-4f2a-a6da-1f44dd91d5fa
