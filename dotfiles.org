@@ -114,6 +114,11 @@ If not set or empty a default of ~$HOME/.local/share~ should be used.
 
 Which applications support ~XDG_~ ? That can be challenging to determine. There is some tooling out there to help save you from crawling the web to determine if every dotfile in ~$HOME~ can be moved. For example ~xdg-ninja~
 
+~$XDG_RUNTIME_DIR~
+Must be owned by user with: 0700
+Used for non-essiential, user-specific data files such as sockets, named pipes, etc.
+Subject to periodic cleanup.
+
 #+NAME: XDG-SHELL-VAR
 #+BEGIN_SRC bash
 # XDG Base Directory Specification Variables
