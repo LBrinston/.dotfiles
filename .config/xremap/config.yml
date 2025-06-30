@@ -1,3 +1,4 @@
+# For key-to-key remapping
 modmap:
   - name: main remaps
     remap:
@@ -7,3 +8,5 @@ modmap:
        held: leftctrl
        alone: esc
        alone_timeout_millis: 150
+# For key seq mappings
+#keymap:
