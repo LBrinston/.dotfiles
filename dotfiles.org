@@ -229,6 +229,7 @@ xremap just takes a yaml file that can live in the location of your choice (does
 Key names can be looked up in the [[https://github.com/emberian/evdev/blob/1d020f11b283b0648427a2844b6b980f1a268221/src/scancodes.rs#L26-L572][scancodes.rs]]. The scancode names are typically prefixed as KEY_ in uppercase however, in the yaml file names are case-insensitive and the KEY_ may be dropped.
 
 #+begin_src yaml :tangle ~/.dotfiles/.config/xremap/config.yml
+# For key-to-key remapping
 modmap:
   - name: main remaps
     remap:
@@ -238,6 +239,8 @@ modmap:
        held: leftctrl
        alone: esc
        alone_timeout_millis: 150
+# For key seq mappings
+#keymap:
 #+end_src
 
 _Running as a daemon_
@@ -267,6 +270,25 @@ Exec=systemctl --user start xremap
 Terminal=false
 #+end_src
 
+=Note=:
+The above setups xremap as a _user service_ so if you go looking for it to check if it's running you need to call:
+src_shell{systemctl --user status xremap.service}
+
+
+**** Issues
+
+1. xremap can only see limited subset of devices
+   This is either:
+   1. A permission issue
+      Make sure you're user is in the input group
+      #+begin_src shell
+      sudo gpasswd -a YOUR_USER input
+      echo 'KERNEL=="uinput", GROUP="input", TAG+="uaccess"' | sudo tee /etc/udev/rules.d/input.rules
+      #+end_src
+      2. A competing remapper - eg. gnome-tweaks input-remapper
+         #+begin_src
+         sudo systemctl disable input-remapper
+         #+end_src
 *** rbw - (unofficial) bitwarden cli
 
 rbw is easiest to install via cargo.
