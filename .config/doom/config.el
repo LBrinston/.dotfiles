@@ -1021,7 +1021,7 @@ org-download-heading-lvl nil)
 (use-package! jinx
   :defer t
   :hook (text-mode . jinx-mode)
-  :bind (("M-$"   . jinx-correct)
+  :bind (("M-$"   . jinx-correct-nearest)
          ("C-M-$" . jinx-languages)
          )
   ;;:config
