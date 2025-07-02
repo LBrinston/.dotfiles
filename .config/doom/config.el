@@ -391,7 +391,21 @@ org-download-heading-lvl nil)
          ("C-c s l" . org-super-links-store-link)
          ("C-c s C-l" . org-super-links-insert-link)
          )
+  ;; TODO - configure link formatting?
   )
+(map!
+ :leader
+ :prefix ("m l b" . "Backlink")
+ :n :desc "org-super-links-store-link" "s" #'org-super-links-store-link
+ :prefix ("m l b" . "Backlink")
+ :n :desc "org-super-links-insert-link" "i" #'org-super-links-insert-link
+ :prefix ("m l b" . "Backlink")
+ :n :desc "org-super-links-link" "S" #'org-super-links-link
+ :prefix ("m l b" . "Backlink")
+ :n :desc "org-super-links-link" "d" #'org-super-links-delete-link
+ :prefix ("m l b" . "Backlink")
+ :n :desc "org-super-links-convert-to-super" "c" #'org-super-links-convert-link-to-super
+ )
 
 (use-package! htmlize
   :defer t
