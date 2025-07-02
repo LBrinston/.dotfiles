@@ -3937,6 +3937,20 @@ _Normal mode_
 
 But if I query this via =SPC h k= Doom informs me that "This lambda is an interactive function" BUT does list ~evil-motion-state-map~ under "Key Bindings" which does include a number of ~avy~ functions.
 
+******* Apheleia
+
+#+begin_src emacs-lisp
+(after! aphelia
+  (map! :leader
+        "b f" #'apheleia-format-buffer)
+  ;; deps: yq (obvs)
+  (add-to-list 'apheleia-formatters
+               '(yq . ("yq" "eval" "." "--prettyPrint" "--inplace")))
+  (add-to-list 'apheleia-mode-alist
+               '(yaml-mode . yq))
+  )
+#+end_src
+
 ******* Project.el
 
 You can set porject "indicator" files like this (by default it uses VC files to "guess"):

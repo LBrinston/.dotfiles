@@ -867,6 +867,16 @@ org-download-heading-lvl nil)
    ;;#'avy-goto-line
    )
 
+(after! aphelia
+  (map! :leader
+        "b f" #'apheleia-format-buffer)
+  ;; deps: yq (obvs)
+  (add-to-list 'apheleia-formatters
+               '(yq . ("yq" "eval" "." "--prettyPrint" "--inplace")))
+  (add-to-list 'apheleia-mode-alist
+               '(yaml-mode . yq))
+  )
+
 (setq projectile-mode-line-function '(lambda () (format " Proj[%s]" (projectile-project-name))))
 
 (setq projectile-per-project-compilation-buffer t)
