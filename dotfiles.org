@@ -3939,15 +3939,26 @@ But if I query this via =SPC h k= Doom informs me that "This lambda is an intera
 
 ******* Apheleia
 
+Apheleia is an emacs package for wrangling formatters (so it seems). It's primary defaulty choice is prettier but can be made to work with other thing such as yq.
+
+It is worth check ~apheleia-formatters~ for your formatter of choice (=note=: it may be specified like yq as something like yq-yaml, yq-csv, etc). If it's there some sane default flags to have it play nice with emacs buffers have probably already been choosen.
+
+=Note:=
+Apheleia understands unquotes _file, filename, and input_ as different types of inputs to a formatter. I think input is literally emacs feeding the contents of a buffer to said formatter.
+
 #+begin_src emacs-lisp
 (after! aphelia
   (map! :leader
         "b f" #'apheleia-format-buffer)
-  ;; deps: yq (obvs)
-  (add-to-list 'apheleia-formatters
-               '(yq . ("yq" "eval" "." "--prettyPrint" "--inplace")))
-  (add-to-list 'apheleia-mode-alist
-               '(yaml-mode . yq))
+
+  ;; Add the yq formatter
+  ;; NOTE: this is effectively what is already in the apheleia-formatters
+  (setf (alist-get 'yq apheleia-formatters)
+        '("yq" "--prettyPrint" "--no-colors" "--no-doc" "--input-format" "yaml"
+          "--output-format" "yaml" (apheleia-formatters-indent nil "--indent")))
+
+  (setf (alist-get 'yaml-mode apheleia-mode-alist)
+        '(yq))
   )
 #+end_src
 
