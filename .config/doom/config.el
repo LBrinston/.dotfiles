@@ -1048,9 +1048,19 @@ org-download-heading-lvl nil)
   )
 
 (after! tramp
-  ;; (add-to-list 'tramp-connection-properties
-  ;;              (list (regexp-quote "/sshx:lbrinston@ugls5:")
-  ;;                    "remote-shell" "/usr/local/bin"))
+
+  ;; -- Tramp connection configuration
+  ;; How tramp iniates logins
+
+  ;; Try to force bash instead of shell
+  (add-to-list 'tramp-connection-properties
+               (list (regexp-quote "\\(/ssh\\|/sshx\\):lbrinston@ugls5:")
+                     "remote-shell" "/usr/bin/bash"))
+  ;; Try to force a login shell
+  (add-to-list 'tramp-connection-properties
+               (list (regexp-quote "\\(/ssh\\|/sshx\\):lbrinston@ugls5:")
+                     "login-args" '(("-l"))))
+
   (add-to-list 'tramp-connection-properties
                (list (regexp-quote "/sshx:jdoe:")
                      "remote-shell" "/usr/bin/bash"))
@@ -1064,17 +1074,58 @@ org-download-heading-lvl nil)
   ;; -c run next arg as command string (this is how we pass a command to a remote host)
   (add-to-list 'tramp-connection-properties
                (list (regexp-quote "/sshx:jdoe:")
-                     "shell-command-switch" "-c")))
+                     "shell-command-switch" "-c"))
+
+  ;; -- recentf behaviour
+  ;; Classicly TRAMP isn't terribly smart and triggers recentf when a connection is established
+  ;; but doesn't know the difference between local and remote.
+
+  ;; Disable automatic cleanup
+  (setq recentf-auto-cleanup 'never)
+  (setq recentf-keep '(file-exists-p file-readable-p))
+
+  ;; Don't track remote files in recentf at all
+  (defun my-recentf-exclude-remote (file)
+    "Exclude remote files from recentf."
+    (tramp-tramp-file-p file))
+
+  (add-to-list 'recentf-exclude 'my-recentf-exclude-remote)
+
+;; Just completely disable the problematic function
+(advice-add 'tramp-recentf-cleanup :override (lambda (&rest args) nil))
+
+  ;; -- Making TRAMP faster (hopefully)
+  (setq remote-file-name-inhibit-locks t
+        tramp-use-scp-direct-remote-copying t
+        remote-file-name-inhibit-auto-save-visited t)
+
+  (setq tramp-copy-size-limit (* 1024 1024) ;; 1MB
+        tramp-verbose 2)
+
+  ;; -- Using direct asynchronous processes
+  ;; Under consideration - this doesn't play nice with LSPs
+
+  ;; (connection-local-set-profile-variables
+  ;;  'remote-direct-async-process
+  ;;  '((tramp-direct-async-process . t)))
+
+  ;; (connection-local-set-profiles
+  ;;  '(:application tramp :protocol "scp")
+  ;;  'remote-direct-async-process)
+
+  ;; (setq magit-tramp-pipe-stty-settings 'pty) ; necessary for magit to play nice with async
+  )
 
 (use-package! jinx
   :defer t
   :hook (text-mode . jinx-mode)
-  :bind (("M-$"   . jinx-correct-nearest)
-         ("C-M-$" . jinx-languages)
-         )
   ;;:config
   ;; consider setting jinx-exclude-faces
   )
+(map! :after jinx
+      :map jinx-mode-map
+      "M-$" #'jinx-correct-nearest
+      "C-M-$" #'jinx-languages)
 
 (use-package! writegood-mode
   :hook (org-mode . writegood-mode)

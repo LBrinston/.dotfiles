@@ -4322,9 +4322,19 @@ Most of the time bash would be prefered.
 
 #+begin_src emacs-lisp
 (after! tramp
-  ;; (add-to-list 'tramp-connection-properties
-  ;;              (list (regexp-quote "/sshx:lbrinston@ugls5:")
-  ;;                    "remote-shell" "/usr/local/bin"))
+
+  ;; -- Tramp connection configuration
+  ;; How tramp iniates logins
+
+  ;; Try to force bash instead of shell
+  (add-to-list 'tramp-connection-properties
+               (list (regexp-quote "\\(/ssh\\|/sshx\\):lbrinston@ugls5:")
+                     "remote-shell" "/usr/bin/bash"))
+  ;; Try to force a login shell
+  (add-to-list 'tramp-connection-properties
+               (list (regexp-quote "\\(/ssh\\|/sshx\\):lbrinston@ugls5:")
+                     "login-args" '(("-l"))))
+
   (add-to-list 'tramp-connection-properties
                (list (regexp-quote "/sshx:jdoe:")
                      "remote-shell" "/usr/bin/bash"))
@@ -4338,8 +4348,50 @@ Most of the time bash would be prefered.
   ;; -c run next arg as command string (this is how we pass a command to a remote host)
   (add-to-list 'tramp-connection-properties
                (list (regexp-quote "/sshx:jdoe:")
-                     "shell-command-switch" "-c")))
+                     "shell-command-switch" "-c"))
+
+  ;; -- recentf behaviour
+  ;; Classicly TRAMP isn't terribly smart and triggers recentf when a connection is established
+  ;; but doesn't know the difference between local and remote.
+
+  ;; Disable automatic cleanup
+  (setq recentf-auto-cleanup 'never)
+  (setq recentf-keep '(file-exists-p file-readable-p))
+
+  ;; Don't track remote files in recentf at all
+  (defun my-recentf-exclude-remote (file)
+    "Exclude remote files from recentf."
+    (tramp-tramp-file-p file))
+
+  (add-to-list 'recentf-exclude 'my-recentf-exclude-remote)
+
+;; Just completely disable the problematic function
+(advice-add 'tramp-recentf-cleanup :override (lambda (&rest args) nil))
+
+  ;; -- Making TRAMP faster (hopefully)
+  (setq remote-file-name-inhibit-locks t
+        tramp-use-scp-direct-remote-copying t
+        remote-file-name-inhibit-auto-save-visited t)
+
+  (setq tramp-copy-size-limit (* 1024 1024) ;; 1MB
+        tramp-verbose 2)
+
+  ;; -- Using direct asynchronous processes
+  ;; Under consideration - this doesn't play nice with LSPs
+
+  ;; (connection-local-set-profile-variables
+  ;;  'remote-direct-async-process
+  ;;  '((tramp-direct-async-process . t)))
+
+  ;; (connection-local-set-profiles
+  ;;  '(:application tramp :protocol "scp")
+  ;;  'remote-direct-async-process)
+
+  ;; (setq magit-tramp-pipe-stty-settings 'pty) ; necessary for magit to play nice with async
+  )
 #+end_src
+
+See: [[id:b37a31a8-fc1b-4bbd-9b0c-8112535930e0][Making TRAMP go Brrrr...]] for more details on speeding up  TRAMP
 
 ******* Term
 :PROPERTIES:
@@ -4876,20 +4928,47 @@ vterm_printf() {
 
 Fish has a different function, see [[https://github.com/akermu/emacs-libvterm][(gh) emacs-vterm - shell-side configuration]]
 
+
 ***** Reference
 :PROPERTIES:
 :ID:       9f117960-0294-4f2a-a6da-1f44dd91d5fa
 :END:
+
+
+
 1. [[https://practical.li/doom-emacs/install/doom-configuration/#indent][Practical.li/doom-emacs]]
 2. [[https://github.com/doomemacs/doomemacs/blob/master/docs/getting_started.org#common-mistakes-when-configuring-doom-emacs][Common mistakes when configuring Doom Emacs]]
 3. [[https://hieuphay.com/doom-emacs-config/][Hieu Phay - My Doom Emacs Configuration - 4.1.4 Previewing LaTeX fragments]]
 4. [[https://karthinks.com/software/emacs-window-management-almanac/][Karthinks - Emacs Window Almanac]]
 5. [[https://tecosaur.github.io/emacs-config/][tecosaur - Doom Emacs, Configuration]]
+****** [[https://coredumped.dev/2025/06/18/making-tramp-go-brrrr./][Making TRAMP go Brrrr...]] :emacs:TRAMP:config:ref:
+:PROPERTIES:
+:ID:       b37a31a8-fc1b-4bbd-9b0c-8112535930e0
+:END:
+:BACKLINKS:
+[2025-07-05 Sat 11:10] <- [[id:efff4c49-5fc3-43e7-8e97-0bac704d4e1f][TRAMP]]
+:END:
+
+
+
 **** my-emacs
 
 # Local Variables:
 # jinx-local-words: "config"
 # End:
+*** pico-SDK
+
+#+name: PICO-SDK-VAR
+#+begin_src shell
+export PICO_SDK_PATH=/opt/pico-sdk
+#+end_src
+
+The full command actually looks like this:
+#+begin_src shell :tangle no
+echo 'export PICO_SDK_PATH=/opt/pico-sdk' | sudo tee -a /etc/profile.d/pico-sdk.sh
+#+end_src
+Which is too awkward to handle via babel.
+
 *** rust
 **** cargo
 
