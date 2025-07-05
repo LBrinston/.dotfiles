@@ -165,7 +165,7 @@ which contain configuration files that should be tangled"
 
 (after! org-superstar
 
- ;; Provide a list of bullets to use
+  ;; Provide a list of bullets to use
   ;; sticking with defaults for now
   ;; (setq org-superstar-headline-bultets-list '(?\d))
 
@@ -187,7 +187,31 @@ which contain configuration files that should be tangled"
   ;;         ("WAITING" . ?☕)
   ;;         ("CANCELLED" . ?✘)
   ;;         ("DONE" . ?✔)))
-  )
+  (defun my/set-org-heading-sizes ()
+    "Set org heading sizes after theme loads."
+    (let* ((variable-tuple
+            (cond ((x-list-fonts "JuliaMono")       '(:font "JuliaMono"))
+                  ((x-list-fonts "Overpass")        '(:font "Overpass"))
+                  ((x-list-fonts "IBM Plex Sans")   '(:font "IBM Plex Sans"))
+                  ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+                  (nil (warn "Cannot find a Sans Serif Font."))))
+           (base-font-color (face-foreground 'default nil 'default))
+           (headline `(:inherit default :weight bold :foreground ,base-font-color)))
+
+      (custom-theme-set-faces
+       'user
+       `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
+       `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
+       `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
+       `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
+       `(org-level-5 ((t (,@headline ,@variable-tuple))))
+       `(org-level-6 ((t (,@headline ,@variable-tuple))))
+       `(org-level-7 ((t (,@headline ,@variable-tuple))))
+       `(org-level-8 ((t (,@headline ,@variable-tuple))))
+       `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil)))))))
+
+  (add-hook 'doom-load-theme-hook #'my/set-org-heading-sizes)
+  ); after!
 
 (setq org-src-window-setup 'reorganize-frame)
 (setq org-src-tab-acts-natively t)
