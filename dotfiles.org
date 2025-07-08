@@ -203,7 +203,6 @@ alias adb='HOME="$XDG_DATA_HOME"/android adb'
 #+BEGIN_SRC bash
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 #+END_SRC
-
 *** dotnet
 
 #+name: DOTNET-SHELL-VAR
@@ -355,7 +354,6 @@ Terminal=false
 The above setups xremap as a _user service_ so if you go looking for it to check if it's running you need to call:
 src_shell{systemctl --user status xremap.service}
 
-
 **** Issues
 
 1. xremap can only see limited subset of devices
@@ -370,6 +368,7 @@ src_shell{systemctl --user status xremap.service}
          #+begin_src
          sudo systemctl disable input-remapper
          #+end_src
+
 *** rbw - (unofficial) bitwarden cli
 
 rbw is easiest to install via cargo.
@@ -796,6 +795,7 @@ export PATH="/opt/arm-none-eabi/bin:$PATH"
 #<<CUDA-SHELL-VAR>>#
 #<<WGET-SHELL-VAR>>#
 #<<WINE-SHELL-VAR>>#
+#<<PICO-SDK-VAR>>#
 #+END_SRC
 **** .bash_profile
 
@@ -811,7 +811,6 @@ alias doom-emacs="emacs --with-profile doom"
 alias de="doom-emacs"
 #<<ADB_HOME>>#
 #+END_SRC
-
 **** bash auto completion
 
 Bash-completion is a tool that allows for easier addition of bash auto-completion via script files that live in ~/etc/profile.d/~.
@@ -2952,8 +2951,8 @@ Org bullets is nice but [[https://github.com/integral-dw/org-superstar-mode][(gh
 
   (add-hook 'doom-load-theme-hook #'my/set-org-heading-sizes) ;; Apply if we switch themes
   (add-hook 'org-mode-hook #'my/set-org-heading-sizes) ;; Apply if we enter org-mode
-  (my/set-org-heading-sizes)) ;; Apply on startup (doom sets themes directly on start - doom-load-theme-hook is only called on switching themes)
-); after!
+  (my/set-org-heading-sizes) ;; Apply on startup (doom sets themes directly on start - doom-load-theme-hook is only called on switching themes)
+  ); after!
 #+end_src
 
 ******* Org-Babel
@@ -2964,7 +2963,6 @@ I usually want to be able to reference the org file I am working from when editi
 (setq org-src-window-setup 'reorganize-frame)
 (setq org-src-tab-acts-natively t)
 #+END_SRC
-
 ******** The Library of Babel
 
 Babel blocks can be includes from other files via "the Library of Babel". To do so we must tell Emacs which file/s to use via this function:
@@ -3955,6 +3953,15 @@ Usuage of doct still involves using ~setq~ on ~set-org-capture-templates~ but wh
         )
   )
 #+END_SRC
+******* org-sidetree
+
+#+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
+;; (package! org-side-tree
+;;   ;; :recipe(:host github
+;;   ;;         :repo "localauthor/org-side-tree"
+;;   ;;         )
+;;   )
+#+end_src
 
 ****** Advice - not the lisp kind
 :PROPERTIES:
@@ -4384,11 +4391,10 @@ reference:
   )
 #+end_src
 
-******* Emacs
+******* TRAMP
 :PROPERTIES:
-:ID:       bc76542f-8df5-426f-89fd-912c4858c88d
+:ID:       efff4c49-5fc3-43e7-8e97-0bac704d4e1f
 :END:
-******** TRAMP
 
 Tramp usually defaults to looking for ~/bin/sh~ (sshx too).
 ref:
@@ -4993,7 +4999,16 @@ vterm is meant to act like a terminal so we want it to go straight to insert mod
   (setq vterm-tramp-shells '(("docker" "/bin/bash")
                              ("ssh" "/bin/bash")
                              ("sshx" "/bin/bash")
-                             ("sudo" "/bin/bash"))))
+                             ("sudo" "/bin/bash")))
+
+  ;; TODO - Figure out how to put vterm into copy mode on i -> m or n -> m
+
+;; (map!
+;;  :map vterm-mode-map
+;;  "C-y" #'vterm-yank
+;;  )
+
+  )
 #+end_src
 
 _shell synchronization with emacs_
@@ -5018,7 +5033,6 @@ vterm_printf() {
 #+end_src
 
 Fish has a different function, see [[https://github.com/akermu/emacs-libvterm][(gh) emacs-vterm - shell-side configuration]]
-
 
 ***** Reference
 :PROPERTIES:

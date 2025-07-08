@@ -155,7 +155,7 @@ matlab            ; I added this
 ;;ocaml             ; an objective camel
 (org +pandoc +noter +pretty)               ; organize your plain life in plain text
 ;;php               ; perl's insecure younger brother
-;;plantuml          ; diagrams for confusing people more
+plantuml          ; diagrams for confusing people more
 graphviz          ; diagrams for confusing yourself even more
 ;;purescript        ; javascript, but functional
 (python +lsp)            ; beautiful is better than ugly

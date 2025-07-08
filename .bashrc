@@ -263,3 +263,4 @@ export OCTAVE_HISTFILE="$XDG_STATE_HOME/octave_hist"
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
 alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
 export WINEPREFIX="$XDG_DATA_HOME"/wine
+export PICO_SDK_PATH=/opt/pico-sdk
