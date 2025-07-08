@@ -2508,7 +2508,7 @@ matlab            ; I added this
 ;;ocaml             ; an objective camel
 (org +pandoc +noter +pretty)               ; organize your plain life in plain text
 ;;php               ; perl's insecure younger brother
-;;plantuml          ; diagrams for confusing people more
+plantuml          ; diagrams for confusing people more
 graphviz          ; diagrams for confusing yourself even more
 ;;purescript        ; javascript, but functional
 (python +lsp)            ; beautiful is better than ugly
@@ -4785,6 +4785,21 @@ For c and cpp make use of eglot and clangd. See:[[https://rgoswami.me/posts/emac
                                         ))))
   )
 #+end_src
+******** PlantUML
+
+[[https://github.com/skuro/plantuml-mode][(gh) PlantUML-mode]]
+
+PlantUML can probably be installed by package manager! But watchout if you src_shell{which plantuml} {{{results(=/usr/bin/plantuml=)}}} \larr it might lie to you. If you src_shell{file -b "/usr/bin/plantuml"} you will learn that this is actually a shell script! Which is hiding the location of the jar file:
+src_shell{grep jar /usr/bin/plantuml} {{{results(=$JAVA -Djava.net.useSystemProxies=true $HEADLESS -jar /usr/share/plantuml/plantuml.jar "$@"=)}}}
+
+#+begin_src emacs-lisp
+(after! babel
+  (setq org-plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
+  (setq plantuml-default-exec-mode 'jar)
+  ;; (setq plantuml-default-exec-mode 'binary)
+  )
+#+end_src
+
 ******* Email
 :PROPERTIES:
 :ID:       0a7e277f-b7ae-423f-9e70-c305be171ea2
