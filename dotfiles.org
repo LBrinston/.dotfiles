@@ -227,28 +227,104 @@ cargo install xremap --features x11     # X11
 #cargo install xremap                    # Others
 #+end_src
 
-_Configuration_
+**** Configuration
 
 xremap just takes a yaml file that can live in the location of your choice (doesn't have a standard conf dir).
 
 Key names can be looked up in the [[https://github.com/emberian/evdev/blob/1d020f11b283b0648427a2844b6b980f1a268221/src/scancodes.rs#L26-L572][scancodes.rs]]. The scancode names are typically prefixed as KEY_ in uppercase however, in the yaml file names are case-insensitive and the KEY_ may be dropped.
 
+Configuration can be done at the per application level.
+src_shell{wmctrl -x -l} to lookup application names.
+
+=Note:=
+xremap will take the first matching definition it finds. This means that if you want a general key binding to apply to all applications exception for one you can stack that applications definition ontop of the general definition like so:
+#+begin_src yaml :tangle no
+# Emacs-style word-forward and word-back
+keymap:
+  - name: override to make libreoffice-writer go to end of word but before final space like emacs
+    application:
+      only: libreoffice-writter
+    remap:
+      Alt-f:
+        - right
+        - C-right
+        - left
+  - name: generic for all apps
+    remap:
+      Alt-f: C-right
+      Alt-b: C-left
+#+end_src
+TODO: Add xremap keymap to reload xremap config
+
 #+begin_src yaml :tangle ~/.dotfiles/.config/xremap/config.yml
 # For key-to-key remapping
 modmap:
   - name: main remaps
+    application:
+      not: gnome-terminal-server.Gnome-terminal
     remap:
-     rightalt: rightctrl
-     rightctrl: rightalt
-     CapsLock:
-       held: leftctrl
-       alone: esc
-       alone_timeout_millis: 150
+      rightalt: rightctrl
+      rightctrl: rightalt
+      CapsLock:
+        held: leftctrl
+        alone: esc
+        alone_timeout_millis: 150
+  # - name: auto-shift
+  #   remap:
+  #     KEY_1:
+  #       held:
+  #         - KEY_LEFTSHIFT
+  #         - KEY_1
+  #       alone: KEY_1
+  #       alone_timeout_millis: 80
+  #     KEY_2:
+  #       held:
+  #         - KEY_LEFTSHIFT
+  #         - KEY_2
+  #       alone: KEY_2
+  #       alone_time_millis: 50
+  #     KEY_3:
+  #       held:
+  #         - KEY_LEFTSHIFT
+  #         - KEY_3
+  #       alone: KEY_3
+  #       alone_time_millis: 50
+  #     KEY_4:
+  #       held:
+  #         - KEY_LEFTSHIFT
+  #         - KEY_4
+  #       alone: KEY_4
+  #       alone_time_millis: 20
+  - name: terminal
+    application:
+      only: gnome-terminal-server.Gnome-terminal
+    remap:
+      rightalt: rightctrl
+      rightctrl: rightalt
+      CapsLock:
+        held: leftctrl
+        alone: esc
+        alone_timeout_millis: 150
 # For key seq mappings
-#keymap:
+keymap:
+  - name: general keybindings
+    remap:
+      super-i:
+        launch:
+          - librewolf
+      super-x:
+        remap:
+          r:
+            # launch: ["systemctl", "--user", "restart", "xremap.service"]
+            # launch: ["bash", "-c", "systemctl --user restart xremap.service && notify-send 'xremap restarted successfully'"]
+            # launch: ["bash", "-c", "notify-send 'Restarting xremap...' && sleep 0.5 && systemctl --user restart xremap.service &"]
+            launch:
+              - bash
+              - -c
+              - notify-send 'Restarting xremap...'
 #+end_src
 
-_Running as a daemon_
+**** Running as a daemon
 
 Here the ExecStart expects xremap to be in /usr/bin/local which if xremap was installed with cargo may not be where the binary is actually located.
 

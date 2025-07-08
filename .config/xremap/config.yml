@@ -1,12 +1,65 @@
 # For key-to-key remapping
 modmap:
   - name: main remaps
+    application:
+      not: gnome-terminal-server.Gnome-terminal
     remap:
-     rightalt: rightctrl
-     rightctrl: rightalt
-     CapsLock:
-       held: leftctrl
-       alone: esc
-       alone_timeout_millis: 150
+      rightalt: rightctrl
+      rightctrl: rightalt
+      CapsLock:
+        held: leftctrl
+        alone: esc
+        alone_timeout_millis: 150
+  # - name: auto-shift
+  #   remap:
+  #     KEY_1:
+  #       held:
+  #         - KEY_LEFTSHIFT
+  #         - KEY_1
+  #       alone: KEY_1
+  #       alone_timeout_millis: 80
+  #     KEY_2:
+  #       held:
+  #         - KEY_LEFTSHIFT
+  #         - KEY_2
+  #       alone: KEY_2
+  #       alone_time_millis: 50
+  #     KEY_3:
+  #       held:
+  #         - KEY_LEFTSHIFT
+  #         - KEY_3
+  #       alone: KEY_3
+  #       alone_time_millis: 50
+  #     KEY_4:
+  #       held:
+  #         - KEY_LEFTSHIFT
+  #         - KEY_4
+  #       alone: KEY_4
+  #       alone_time_millis: 20
+  - name: terminal
+    application:
+      only: gnome-terminal-server.Gnome-terminal
+    remap:
+      rightalt: rightctrl
+      rightctrl: rightalt
+      CapsLock:
+        held: leftctrl
+        alone: esc
+        alone_timeout_millis: 150
 # For key seq mappings
-#keymap:
+keymap:
+  - name: general keybindings
+    remap:
+      super-i:
+        launch:
+          - librewolf
+      super-x:
+        remap:
+          r:
+            # launch: ["systemctl", "--user", "restart", "xremap.service"]
+            # launch: ["bash", "-c", "systemctl --user restart xremap.service && notify-send 'xremap restarted successfully'"]
+            # launch: ["bash", "-c", "notify-send 'Restarting xremap...' && sleep 0.5 && systemctl --user restart xremap.service &"]
+            launch:
+              - bash
+              - -c
+              - notify-send 'Restarting xremap...'
