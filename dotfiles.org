@@ -3341,6 +3341,9 @@ For the most part org \rarr to odt works very well. There a few small things tha
 
 #+begin_src emacs-lisp :noweb yes
 (after! org
+  ;; HTML can do 6 so can we!
+  (setq org-export-headline-levels 6)
+
   ;; Advice - ask where to save exported org-file
   ;; slight modification of: https://stackoverflow.com/a/47850858
 (defun org-export-output-file-name-modified (orig-fun extension &optional subtreep pub-dir)
