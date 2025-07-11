@@ -3981,6 +3981,20 @@ Usuage of doct still involves using ~setq~ on ~set-org-capture-templates~ but wh
            :files (:defaults (:exclude "helm-org-ql.el"))))
 #+end_src
 
+******* org-import
+
+[[https://github.com/tecosaur/org-pandoc-import][(gh) org-pandoc-import repo]]
+
+#+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
+(package! org-pandoc-import
+  :recipe (:host github
+           :repo "tecosaur/org-pandoc-import"
+           :files ("*.el" "filters" "preprocessors")))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package! org-pandoc-import
+  :after org)
 #+end_src
 
 ****** Advice - not the lisp kind
