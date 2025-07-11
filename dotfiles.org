@@ -3973,6 +3973,14 @@ Usuage of doct still involves using ~setq~ on ~set-org-capture-templates~ but wh
 ;;   ;;         :repo "localauthor/org-side-tree"
 ;;   ;;         )
 ;;   )
+******* org-ql
+
+#+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
+(package! org-ql
+  :recipe (:host github :repo "alphapapa/org-ql"
+           :files (:defaults (:exclude "helm-org-ql.el"))))
+#+end_src
+
 #+end_src
 
 ****** Advice - not the lisp kind
