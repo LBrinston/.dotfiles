@@ -3335,12 +3335,21 @@ ref: [[https://emacs.stackexchange.com/questions/66178/how-to-execute-shell-comm
   ;; TODO Other stuff?
   )
 #+end_src
-******** org \rarr odt \rarr docx
+******** org-export: org \rarr odt \rarr docx
 
 For the most part org \rarr to odt works very well. There a few small things that do need configuration
 
 #+begin_src emacs-lisp :noweb yes
 (after! org
+  ;; Advice - ask where to save exported org-file
+  ;; slight modification of: https://stackoverflow.com/a/47850858
+(defun org-export-output-file-name-modified (orig-fun extension &optional subtreep pub-dir)
+  (unless pub-dir
+    (setq pub-dir (read-directory-name "Export directory: " "exported-org-files/"))
+    (unless (file-directory-p pub-dir)
+      (make-directory pub-dir)))
+  (apply orig-fun extension subtreep pub-dir nil))
+(advice-add 'org-export-output-file-name :around #'org-export-output-file-name-modified)
 <<LaTeXML>>
 <<ODT-LINK-FILTER>>
   )
