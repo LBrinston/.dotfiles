@@ -3631,45 +3631,49 @@ There appears to be two issues:
 (<fast-key>/!) - creates a note with timestamp only on transition back?
 
 #+BEGIN_SRC emacs-lisp
-	 (setq org-todo-keywords
-          '(
-            ;; -- General
-            (sequence "TODO(t!)" "IN-PROG(i!)" "WAITING(w@/!)" "|" "DONE(d!)")
-            (sequence "|" "SUBMITTED(s!)")
-            (sequence "|" "CANCALLED(c@)" "DELEGATED(e!)")
-            (sequence "IDEA")
-            (sequence "PRJ")
-            (sequence "REMINDER(!r)")
-            (sequence "CALL" "|" "CALLED(!)")
-            (seqeunce "EMAIL(m!)" "|" "EMAILED(!)")
-            (sequence "GROC" "|" "DONE")
-            ;; -- Stuff?
-            (sequence "BUY" "|" "SELL")
-            ;; -- Media
-            (sequence "TO-FIND" "|" "FOUND")
-            (sequence "TO-READ" "|" "READ")
-            (sequence "TO-WATCH" "|" "WATCHED")
-            ;; -- Emacs
-            (sequence "EMACS")
-            (sequence "EMACS-PACKAGE")
-            (sequence "EMACS-CONFIG")
-            )
-          )
-
-    (setq org-todo-keyword-faces
-          '(("TODO"      . ( :foreground "red"          :weight bold))
-            ("IN-PROG"   . ( :foreground "orange"       :weight bold))
-            ("WAITING"   . ( :foreground "yellow"       :weight bold))
-            ("DONE"      . ( :foreground "green"        :weight bold))
-            ("IDEA"      . ( :foreground "deepskyblue1" :weight bold))
-            ("CANCELLED" . ( :foreground "gray"         :weight bold))
-            ("TO-FIND"   . ( :foreground "yellow1"      :weight bold))
-            ("EMACS"     . ( :foreground "purple"       :weight bold))
-            ("PRJ"       . ( :foreground "orange2"      :weight bold))
-            ("BUY"       . ( :foreground "spring green" :weight bold))
-            ("SELL"      . ( :foreground "deep pink"    :weight bold))
+(setq org-todo-keywords
+      '(
+        ;; -- General
+        (sequence "TODO(t!)" "IN-PROG(i!)" "WAITING(w@/!)" "|" "DONE(d!)")
+        (sequence "|" "SUBMITTED(s!)")
+        (sequence "|" "CANCALLED(c@)" "DELEGATED(e!)")
+        (sequence "IDEA")
+        (sequence "PRJ")
+        (sequence "REMINDER(!r)")
+        (sequence "CALL" "|" "CALLED(!)")
+        (seqeunce "EMAIL(m!)" "|" "EMAILED(!)")
+        (sequence "GROC" "|" "DONE")
+        ;; -- Stuff?
+        (sequence "BUY" "|" "SELL")
+        ;; -- Media
+        (sequence "TO-FIND" "|" "FOUND")
+        (sequence "TO-READ" "|" "READ")
+        (sequence "TO-WATCH" "|" "WATCHED")
+        ;; -- Emacs
+        (sequence "EMACS")
+        (sequence "EMACS-PACKAGE")
+        (sequence "EMACS-CONFIG")
+        ;; -- Work
+        (sequence "APPLY" "|" "APPLIED")
+        )
       )
-    )
+
+(setq org-todo-keyword-faces
+      '(("TODO"      . ( :foreground "red"          :weight bold))
+        ("IN-PROG"   . ( :foreground "orange"       :weight bold))
+        ("WAITING"   . ( :foreground "yellow"       :weight bold))
+        ("DONE"      . ( :foreground "green"        :weight bold))
+        ("IDEA"      . ( :foreground "deepskyblue1" :weight bold))
+        ("CANCELLED" . ( :foreground "gray"         :weight bold))
+        ("TO-FIND"   . ( :foreground "yellow1"      :weight bold))
+        ("EMACS"     . ( :foreground "purple"       :weight bold))
+        ("PRJ"       . ( :foreground "orange2"      :weight bold))
+        ("BUY"       . ( :foreground "spring green" :weight bold))
+        ("SELL"      . ( :foreground "deep pink"    :weight bold))
+        ("APPLY"     . ( :foreground "red1"         :weight bold))
+        ("APPLIED"   . ( :foreground "green yellow" :weight bold))
+        )
+      )
 #+END_SRC
 
 ******* Agenda
@@ -3907,8 +3911,11 @@ _Work related_
 #+begin_src emacs-lisp
 ;; -- Work
 ("w" "Work")
+("wa" "Job Application" entry (file+headline "~/.notes/employment.org" "2025 Job Hunt")
+ "* APPLY [[%x][%^{Application Name}]]\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
 ("wt" "Work TODO" entry (file+headline "~/.notes/work-agenda.org" "Tasks")
- "* TODO %^{Poject Name} - %^{Task description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ "* TODO %^{Project Name} - %^{Task description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
 ("wn" "Work Note" entry (file+headline "~/.notes/work-agenda.org" "Improvements")
  "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
