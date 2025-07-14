@@ -3089,6 +3089,9 @@ Dealing with images in org mode really requires pixel scrolling.
   (when (display-graphic-p)
     (pixel-scroll-precision-mode t)
     )
+
+  ;; Center all images unless other-wise instructed
+  (setq org-image-align 'center)
   )
 #+END_SRC
 
@@ -3683,6 +3686,9 @@ There appears to be two issues:
       org-agenda-block-separator #x2501
       org-agenda-compact-blocks t
       org-agenda-start-with-log-mode t)
+
+  ;; Performance
+  (setq org-agenda-inhibit-startup t) ; Prevents agenda from triggering startup directives
   ) ; after! org
 #+end_src
 
