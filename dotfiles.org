@@ -4465,6 +4465,11 @@ Most of the time bash would be prefered.
 #+begin_src emacs-lisp
 (after! tramp
 
+;; Hopefully disable tramp cache
+;; -- https://emacs.stackexchange.com/questions/12904/tramp-history-files
+;; TODO Find more robust method
+(setq tramp-persistency-file-name "/tmp/.tramp")
+
   ;; -- Tramp connection configuration
   ;; How tramp iniates logins
 
