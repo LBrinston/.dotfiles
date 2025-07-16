@@ -4377,6 +4377,7 @@ Possible alternative that allows setting predefined layouts:
                 (define-key yas/keymap [tab] 'yas/next-field)))
 
   )
+)
 #+end_src
 
 Some keybinding is necessary to ensure that snippets can be navigated as expected (with tab). Fix found on [[https://github.com/doomemacs/doomemacs/issues/7733][on this github issue.]]
