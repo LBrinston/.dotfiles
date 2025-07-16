@@ -2405,10 +2405,6 @@ vterm             ; the best terminal emulation in Emacs
 :BACKLINKS:
 [2025-01-19 Sun 11:54] <- [[id:7c0745b0-1dc9-424d-b920-1760ad6837e7][Checkers]]
 :END:
-
-I much prefer [[*Spellcheck - ~Jinx~]] to flyspell.
-Syntax is primarily flycheck although some functionality is turned off/alterted if ~lsp-ui-mode~ is turned on.
-
 #+begin_src emacs-lisp
 :checkers
 syntax              ; tasing you for every semicolon you forget
