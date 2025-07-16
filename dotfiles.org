@@ -4889,7 +4889,7 @@ For c and cpp make use of eglot and clangd. See:[[https://rgoswami.me/posts/emac
 #+begin_src emacs-lisp
 (after! eglot
   :config
-  (set-eglot-client! 'cc-mode '("clangd" "-j=3" "--clang-tidy" "/.local/lsp/bin/")) ;; clangd
+  (set-eglot-client! 'cc-mode '("clangd-12" "-j=3" "--clang-tidy" "/.local/lsp/bin/")) ;; clangd
   ;; -- Per machine lsp locations
   (when (string= (system-name) "terra")
     (setq exec-path (append exec-path `(
