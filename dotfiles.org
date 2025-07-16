@@ -4437,6 +4437,19 @@ reference:
   ;;  )
   )
 #+end_src
+******** Flymake
+
+#+begin_src emacs-lisp
+;; Different faces for different severities
+(after! flymake
+  (set-face-attribute 'flymake-error nil :underline '(:style wave :color "red"))
+  (set-face-attribute 'flymake-warning nil :underline '(:style wave :color "orange"))
+  (set-face-attribute 'flymake-note nil :underline '(:style wave :color "blue"))
+
+    (setq flymake-diagnostic-at-point-display-diagnostic-function
+        'flymake-diagnostic-at-point-display-diagnostic-buffer)
+  )
+#+end_src
 
 ******* TRAMP
 :PROPERTIES:
