@@ -4826,6 +4826,31 @@ pip install 'python-lsp-server[all]'
   ;; (setq lsp-pylsp-plugins-yapf-enabled t)
   ;; (setq lsp-pylsp-plugins-autopep8-enabled t)
   ;; (setq lsp-pylsp-plugins-black-enabled nil)
+
+
+(setq gc-cons-threshold (* 100 1024 1024)
+      read-process-output-max (* 1024 1024)
+      treemacs-space-between-root-nodes nil
+      company-idle-delay 0.0
+      company-minimum-prefix-length 1
+      lsp-idle-delay 0.1)  ;; clangd is fast
+
+  (setq lsp-headerline-breadcrumb-enable t)
+  (setq lsp-modeline-code-actions-enable t)
+  (setq lsp-enable-suggest-server-download nil)
+  (setq lsp-warn-no-matched-clients nil)
+  (setq lsp-idle-delay 0.1)
+  ;; (gc-cons-threshold (* 100 1024 1024))
+  ;; -- Args for clangd
+  (setq lsp-clients-clangd-args
+   '("-j=4"
+     "--header-insertion=never"
+     "--all-scopes-completion"
+     "--background-index"
+     "--clang-tidy"
+     "--compile-commands-dir=build"
+     "--cross-file-rename"
+     "--suggest-missing-includes"))
   )  ;; Disable LSP indentation
 #+end_src
 
