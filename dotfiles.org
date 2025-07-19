@@ -3318,22 +3318,6 @@ ref: [[https://emacs.stackexchange.com/questions/66178/how-to-execute-shell-comm
 
 ******* Export
 
-******** (package) HTMLize
-
-#+begin_src emacs-lisp :tangle ./.config/doom/packages.el
-(package! htmlize
-  :recipe (:host github
-           :repo "https://github.com/hniksic/emacs-htmlize"
-           :branch "stable"))
-#+end_src
-
-#+begin_src emacs-lisp
-(use-package! htmlize
-  :defer t
-  :hook (mhtml-mode . htmlize)
-  ;; TODO Other stuff?
-  )
-#+end_src
 ******** org-export: org \rarr odt \rarr docx
 
 For the most part org \rarr to odt works very well. There a few small things that do need configuration
