@@ -4824,7 +4824,8 @@ pip install 'python-lsp-server[all]'
   ;; (gc-cons-threshold (* 100 1024 1024))
   ;; -- Args for clangd
   (setq lsp-clients-clangd-args
-   '("-j=4"
+   '(
+     ;;"-j=4" ;; for some reason this doesn't override the default -j=2 that is passed from somewhere
      "--header-insertion=never"
      "--all-scopes-completion"
      "--background-index"
