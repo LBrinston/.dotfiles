@@ -502,24 +502,10 @@ org-download-heading-lvl nil)
   ;;       '("latexmk -pdflatex='%latex -shell-escape -bibtex -interaction=nonstopmode' -pdf -output-directory=%o -f %f"))
 
   ;; Default packages
-  (setq org-export-headline-levels 5
-        org-latex-default-packages-alist
-        '(("AUTO" "inputenc" t ("pdflatex" "lualatex"))
-          ("T1" "fontenc" t ("pdflatex"))
-          ;;Microtype
-          ;;- pdflatex: full microtype features, fast, however no fontspec
-          ;;- lualatex: good microtype feature support, however slow to compile
-          ;;- xelatex: only protrusion support, fast compilation
-          ("activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10"
-           "microtype" nil ("pdflatex"))
-          ("activate={true,nocompatibility},final,tracking=true,factor=1100,stretch=10,shrink=10"
-           "microtype" nil ("lualatex"))
-          ("protrusion={true,nocompatibility},final,factor=1100,stretch=10,shrink=10"
-           "microtype" nil ("xelatex"))
-          ("dvipsnames,svgnames" "xcolor" nil)
-          ("colorlinks=true, linkcolor=DarkBlue, citecolor=BrickRed, urlcolor=DarkGreen" "hyperref" nil)
-          )
-        )
+  (setq org-export-headline-levels 5)
+  ;; NOTE -- DO NOT change the default-packages-alist
+  ;; NOTE -- _BE CAREFULE_ trying to configure org-latex-packages-alist
+  (add-to-list 'org-latex-packages-alist '("" "xcolor" t))
   )
 
 (use-package! engrave-faces
