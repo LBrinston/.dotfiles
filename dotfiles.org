@@ -4491,14 +4491,8 @@ Most of the time bash would be prefered.
   (setq recentf-keep '(file-exists-p file-readable-p))
 
   ;; Don't track remote files in recentf at all
-  (defun my-recentf-exclude-remote (file)
-    "Exclude remote files from recentf."
-    (tramp-tramp-file-p file))
-
-  (add-to-list 'recentf-exclude 'my-recentf-exclude-remote)
-
-;; Just completely disable the problematic function
-(advice-add 'tramp-recentf-cleanup :override (lambda (&rest args) nil))
+  (after! recentf
+    (add-to-list 'recentf-keep #'file-remote-p))
 
   ;; -- Making TRAMP faster (hopefully)
   (setq remote-file-name-inhibit-locks t
