@@ -2883,9 +2883,11 @@ But =org-appear= solves this nicely.
   )
 #+end_src
 
+#+name: org-appear-conf
 #+begin_src emacs-lisp
 (use-package! org-appear
-  :hook (org-mode . org-appear-mode)  ; Remember: hook implies
+  :hook '(org-mode . org-appear-mode)  ; Remember: hook implies
+  ;;:hook (org-mode . org-appear-mode)  ; Remember: hook implies
   :config
   (setq org-appear-autoemphasis   t)  ; Show bold, italics, verbatim, etc.
   (setq org-appear-autolinks      t)  ; Show links
