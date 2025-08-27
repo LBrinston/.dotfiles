@@ -4555,22 +4555,36 @@ External dependencies:
 
 #+begin_src emacs-lisp
 (use-package! jinx
-;; :hook (emacs-startup . global-jinx-mode)
-:hook ((prog-mode . jinx-mode)
-       (org-mode  . jinx-mode)
-       (text-mode . jinx-mode))
-;; :config
+  ;; :hook (emacs-startup . global-jinx-mode)
+  :hook ((prog-mode . jinx-mode)
+         (org-mode  . jinx-mode)
+         (text-mode . jinx-mode))
+  ;; :config
+  ;; (add-hook 'emacs-startup-hook #'global-jinx-mode)
+
+  ;; consider setting jinx-exclude-faces
+  :init
+  (add-hook 'org-mode-hook #'jinx-mode)
+  (add-hook 'text-mode-hook #'jinx-mode)
+  :config
+  (global-jinx-mode 1)
+
+
+  ;; This sounds neat but I should learn to use the abbrev system to start
+  ;;   (defun jinx--add-to-abbrev (overlay word)
+  ;;     "Add abbreviation to `global-abbrev-table'.
+  ;; The misspelled word is taken from OVERLAY.  WORD is the corrected word."
+  ;;     (let ((abbrev (buffer-substring-no-properties
+  ;;                     (overlay-start overlay)
+  ;;                     (overlay-end overlay))))
+  ;;       (message "Abbrev: %s -> %s" abbrev word)
+  ;;       (define-abbrev global-abbrev-table abbrev word)))
+
+  ;;   (advice-add 'jinx--correct-replace :before #'jinx--add-to-abbrev)
+
+  )
+
 ;; (add-hook 'emacs-startup-hook #'global-jinx-mode)
-
-;; consider setting jinx-exclude-faces
-:init
-(add-hook 'org-mode-hook #'jinx-mode)
-(add-hook 'text-mode-hook #'jinx-mode)
-:config
-(global-jinx-mode 1)
-)
-
-(add-hook 'emacs-startup-hook #'global-jinx-mode)
 
 (map!
  :map jinx-mode-map
