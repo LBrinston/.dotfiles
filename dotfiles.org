@@ -3727,6 +3727,22 @@ Type can take numerous predefined symbols or a user-defined function.
         )
   )
 #+end_src
+******** (package) casual-suite
+
+[[https://github.com/kickingvegas/casual-suite][(gh) casual-suite]]
+
+#+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
+(package! casual-suite)
+#+end_src
+
+#+begin_src emacs-lisp
+(after! org-mode
+  (keymap-set org-agenda-mode-map "C-o" #'casual-agenda-tmenu)
+  ;; bindings to make jumping consistent between Org Agenda and Casual Agenda
+  (keymap-set org-agenda-mode-map "M-j" #'org-agenda-clock-goto)
+  (keymap-set org-agenda-mode-map "J" #'bookmark-jump)
+  )
+#+end_src
 
 ******** (package) org-super-agenda
 
