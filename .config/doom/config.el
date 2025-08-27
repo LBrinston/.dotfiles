@@ -150,13 +150,15 @@ which contain configuration files that should be tangled"
 ;; Prevents getting an annoying error
 (autoload 'org-eldoc-get-src-lang "org-eldoc")
 
+(after! org-mode
 (setq org-hide-emphasis-markers t
       org-use-sub-superscripts "{}"
       )
-(setopt org-pretty-entities t)
+(setopt org-pretty-entities t))
 
 (use-package! org-appear
-  :hook (org-mode . org-appear-mode)  ; Remember: hook implies
+  :hook '(org-mode . org-appear-mode)  ; Remember: hook implies
+  ;;:hook (org-mode . org-appear-mode)  ; Remember: hook implies
   :config
   (setq org-appear-autoemphasis   t)  ; Show bold, italics, verbatim, etc.
   (setq org-appear-autolinks      t)  ; Show links
@@ -696,8 +698,15 @@ org-download-heading-lvl nil)
         )
   )
 
+(after! org-mode
+  (keymap-set org-agenda-mode-map "C-o" #'casual-agenda-tmenu)
+  ;; bindings to make jumping consistent between Org Agenda and Casual Agenda
+  (keymap-set org-agenda-mode-map "M-j" #'org-agenda-clock-goto)
+  (keymap-set org-agenda-mode-map "J" #'bookmark-jump)
+  )
+
 (after! org
-  (setq org-super-agenda-grousp
+  (setq org-super-agenda-groups
         '(
           (:name "Planning"
            :tag "planning"
@@ -1071,14 +1080,8 @@ org-download-heading-lvl nil)
   (setq recentf-keep '(file-exists-p file-readable-p))
 
   ;; Don't track remote files in recentf at all
-  (defun my-recentf-exclude-remote (file)
-    "Exclude remote files from recentf."
-    (tramp-tramp-file-p file))
-
-  (add-to-list 'recentf-exclude 'my-recentf-exclude-remote)
-
-;; Just completely disable the problematic function
-(advice-add 'tramp-recentf-cleanup :override (lambda (&rest args) nil))
+  (after! recentf
+    (add-to-list 'recentf-keep #'file-remote-p))
 
   ;; -- Making TRAMP faster (hopefully)
   (setq remote-file-name-inhibit-locks t
@@ -1103,15 +1106,41 @@ org-download-heading-lvl nil)
   )
 
 (use-package! jinx
-  :defer t
-  :hook (text-mode . jinx-mode)
-  ;;:config
+  ;; :hook (emacs-startup . global-jinx-mode)
+  :hook ((prog-mode . jinx-mode)
+         (org-mode  . jinx-mode)
+         (text-mode . jinx-mode))
+  ;; :config
+  ;; (add-hook 'emacs-startup-hook #'global-jinx-mode)
+
   ;; consider setting jinx-exclude-faces
+  :init
+  (add-hook 'org-mode-hook #'jinx-mode)
+  (add-hook 'text-mode-hook #'jinx-mode)
+  :config
+  (global-jinx-mode 1)
+
+
+  ;; This sounds neat but I should learn to use the abbrev system to start
+  ;;   (defun jinx--add-to-abbrev (overlay word)
+  ;;     "Add abbreviation to `global-abbrev-table'.
+  ;; The misspelled word is taken from OVERLAY.  WORD is the corrected word."
+  ;;     (let ((abbrev (buffer-substring-no-properties
+  ;;                     (overlay-start overlay)
+  ;;                     (overlay-end overlay))))
+  ;;       (message "Abbrev: %s -> %s" abbrev word)
+  ;;       (define-abbrev global-abbrev-table abbrev word)))
+
+  ;;   (advice-add 'jinx--correct-replace :before #'jinx--add-to-abbrev)
+
   )
-(map! :after jinx
-      :map jinx-mode-map
-      "M-$" #'jinx-correct-nearest
-      "C-M-$" #'jinx-languages)
+
+;; (add-hook 'emacs-startup-hook #'global-jinx-mode)
+
+(map!
+ :map jinx-mode-map
+ "M-$" #'jinx-correct-nearest
+ "C-M-$" #'jinx-languages)
 
 (use-package! writegood-mode
   :hook (org-mode . writegood-mode)

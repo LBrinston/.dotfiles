@@ -86,6 +86,8 @@
          )
   )
 
+(package! casual-suite)
+
 (package! org-super-agenda
   :recipe(:host github
           :repo "/alphapapa/org-super-agenda"
@@ -115,7 +117,9 @@
 
   )
 
-(package! jinx)
+(package! jinx
+:recipe (:host github :repo "/minad/jinx")
+  )
 
 (package! matlab-mode
   :recipe(:type git
