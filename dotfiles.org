@@ -3756,7 +3756,7 @@ Type can take numerous predefined symbols or a user-defined function.
 
 #+BEGIN_SRC emacs-lisp
 (after! org
-  (setq org-super-agenda-grousp
+  (setq org-super-agenda-groups
         '(
           (:name "Planning"
            :tag "planning"
