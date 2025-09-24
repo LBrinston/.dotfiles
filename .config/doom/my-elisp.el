@@ -1,3 +1,4 @@
+;; [[file:~/.dotfiles/dotfiles.org::*Structure][Structure:1]]
 ;;; my-elisp.el --- Description -*- lexical-binding: t; -*-
 ;;
 ;; Author: Me T-T
@@ -26,7 +27,7 @@
       (save-excursion
         ;; Go back to the beginning of the buffer
         (goto-char (point-min))
-        (widen) ; remove any narrowing  just in case buffer is already open
+        (widen) ; remove any narrowing - just in case buffer is already open
         (message "Scanning buffer: %s" (buffer-name))
 
         ;; Loop until no more matches are found
@@ -57,8 +58,11 @@
     (message "Output Files: %S" output-files))
   )
 
+(provide 'my-elisp)
+;;; my-elisp.el ends here
+;; Structure:1 ends here
 
-;; [[file:~/.notes/emacs.org::*Emac's function or script to look for and pull a title for a link?][Emac's function or script to look for and pull a title for a link?:4]]
+;; [[file:~/.dotfiles/dotfiles.org::*Step 2. Wrap the shell script in an elisp function][Step 2. Wrap the shell script in an elisp function:1]]
 (defun shell-for-title (url)
   (interactive "sURL: ")
   "Calls a bash script to retrieve a title from the passed URL. Returns a formatted org-mode link"
@@ -68,7 +72,4 @@
     (when (called-interactively-p 'interactive)
       (insert link))
     link))
-;; Emac's function or script to look for and pull a title for a link?:4 ends here
-
-(provide 'my-elisp)
-;;; my-elisp.el ends here
+;; Step 2. Wrap the shell script in an elisp function:1 ends here

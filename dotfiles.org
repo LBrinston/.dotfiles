@@ -2262,7 +2262,6 @@ Category=Editor
 
 In Doom Emacs ~init.el~ servers as the area for _module_ activation. This is a simplified form of configuration where you simply comment in/out various packages that have predefined /sane/ defaults.
 
-****** Header
 :PROPERTIES:
 :ID:       87186222-09f3-4958-9e50-9b0ca6eff78a
 :END:
@@ -2283,291 +2282,191 @@ In Doom Emacs ~init.el~ servers as the area for _module_ activation. This is a s
 ;;
 ;;      Alternatively, press 'gd' (or 'C-c c d') on a module to browse its
 ;;      directory (for easy access to its source code).
+
+(doom!
+ :input
+ ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh
+ ;;chinese
+ ;;japanese
+ ;;layout            ; auie,ctsrnm is the superior home row
+
+ :completion
+ ;;(company +tng)           ; the ultimate code completion backend
+ (corfu +orderless)  ; complete with cap(f), cape and a flying feather!
+ ;;helm              ; the *other* search engine for love and life
+ ;;ido               ; the other *other* search engine...
+ ;;ivy               ; a search engine for love and life
+ (vertico +icons )           ; the search engine of the future
+
+ :ui
+ ;;deft              ; notational velocity for Emacs
+ doom              ; what makes DOOM look the way it does
+ doom-dashboard    ; a nifty splash screen for Emacs
+ ;;doom-quit         ; DOOM quit-message prompts when you quit Emacs
+ (emoji +unicode)  ; 🙂
+ hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
+ indent-guides     ; highlighted indent columns
+ ;;ligatures         ; ligatures and symbols to make your code pretty again
+ ;;minimap           ; show a map of the code on the side
+ modeline          ; snazzy, Atom-inspired modeline, plus API
+ ;;nav-flash         ; blink cursor line after big motions
+ ;;neotree           ; a project drawer, like NERDTree for vim
+ ophints           ; highlight the region an operation acts on
+ (popup +defaults)   ; tame sudden yet inevitable temporary windows
+ ;;tabs              ; a tab bar for Emacs
+ treemacs          ; a project drawer, like neotree but cooler
+ ;;unicode           ; extended unicode support for various languages
+ (vc-gutter +pretty) ; vcs diff in the fringe
+ vi-tilde-fringe   ; fringe tildes to mark beyond EOB
+ window-select     ; visually switch windows
+ workspaces        ; tab emulation, persistence & separate workspaces
+ ;;zen               ; distraction-free coding or writing
+
+ :editor
+ (evil +everywhere); come to the dark side, we have cookies
+ file-templates    ; auto-snippets for empty files
+ fold              ; (nigh) universal code folding
+ (format +onsave)  ; automated prettiness
+ ;;god               ; run Emacs commands without modifier keys
+ ;;lispy             ; vim for lisp, for people who don't like vim
+ multiple-cursors  ; editing in many places at once
+ ;;objed             ; text object editing for the innocent
+ ;;parinfer          ; turn lisp into python, sort of
+ ;;rotate-text       ; cycle region at point between text candidates
+ snippets          ; my elves. They type so I don't have to
+ ;;word-wrap         ; soft wrapping with language-aware indent
+
+ :emacs
+ dired             ; making dired pretty [functional]
+ electric          ; smarter, keyword-based electric-indent
+ ;;eww               ; the internet is gross
+ ;;ibuffer           ; interactive buffer management
+ undo              ; persistent, smarter undo for your inevitable mistakes
+ vc                ; version-control and Emacs, sitting in a tree
+
+ :term
+ ;;eshell            ; the elisp shell that works everywhere
+ ;;shell             ; simple shell REPL for Emacs
+ ;;term              ; basic terminal emulator for Emacs
+ vterm             ; the best terminal emulation in Emacs
+
+ :checkers
+ syntax              ; tasing you for every semicolon you forget
+ ;;(spell +flyspell) ; tasing you for misspelling mispelling
+ grammar           ; tasing grammar mistake every you make
+
+ :tools
+ ;;ansible
+ biblio            ; Writes a PhD for you (citation needed)
+ ;;collab            ; buffers with friends
+ (debugger)          ; FIXME stepping through code, to help you add bugs
+ ;;direnv
+ ;;docker
+ ;;editorconfig      ; let someone else argue about tabs vs spaces
+ ;;ein               ; tame Jupyter notebooks with emacs
+ (eval +overlay)     ; run code, run (also, repls)
+ lookup              ; navigate your code and its documentation
+ (lsp +peek)               ; M-x vscode
+ ;; (lsp +eglot)               ; M-x vscode
+ magit             ; a git porcelain for Emacs
+ ;;make              ; run make tasks from Emacs
+ ;;pass              ; password manager for nerds
+ pdf               ; pdf enhancements
+ ;;prodigy           ; FIXME managing external services & code builders
+ ;;terraform         ; infrastructure as code
+ ;;tmux              ; an API for interacting with tmux
+ tree-sitter       ; syntax and parsing, sitting in a tree...
+ ;;upload            ; map local to remote projects via ssh/ftp
+
+ :os
+ (:if (featurep :system 'macos) macos)  ; improve compatibility with macOS
+ tty               ; improve the terminal Emacs experience
+
+ :lang
+ ;;agda              ; types of types of types of types...
+ ;;beancount         ; mind the GAAP
+ (cc +lsp)         ; C > C++ == 1
+ ;;clojure           ; java with a lisp
+ ;;common-lisp       ; if you've seen one lisp, you've seen them all
+ ;;coq               ; proofs-as-programs
+ ;;crystal           ; ruby at the speed of c
+ ;;csharp            ; unity, .NET, and mono shenanigans
+ ;;data              ; config/data formats
+ ;;(dart +flutter)   ; paint ui and not much else
+ ;;dhall
+ ;;elixir            ; erlang done right
+ ;;elm               ; care for a cup of TEA?
+ emacs-lisp        ; drown in parentheses
+ ;;erlang            ; an elegant language for a more civilized age
+ ;;ess               ; emacs speaks statistics
+ ;;factor
+ ;;faust             ; dsp, but you get to keep your soul
+ ;;fortran           ; in FORTRAN, GOD is REAL (unless declared INTEGER)
+ ;;fsharp            ; ML stands for Microsoft's Language
+ ;;fstar             ; (dependent) types and (monadic) effects and Z3
+ ;;gdscript          ; the language you waited for
+ ;;(go +lsp)         ; the hipster dialect
+ ;;(graphql +lsp)    ; Give queries a REST
+ ;;(haskell +lsp)    ; a language that's lazier than I am
+ ;;hy                ; readability of scheme w/ speed of python
+ ;;idris             ; a language you can depend on
+ ;;json              ; At least it ain't XML
+ ;;(java +lsp)       ; the poster child for carpal tunnel syndrome
+ ;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
+ ;;julia             ; a better, faster MATLAB
+ ;;kotlin            ; a better, slicker Java(Script)
+ latex             ; writing papers in Emacs has never been so fun
+ ;;lean              ; for folks with too much to prove
+ ;;ledger            ; be audit you can be
+ lua               ; one-based indices? one-based indices
+ markdown          ; writing docs for people to ignore
+ matlab            ; I added this
+ ;;nim               ; python + lisp at the speed of c
+ nix               ; I hereby declare "nix geht mehr!"
+ ;;ocaml             ; an objective camel
+ (org +pandoc +noter +pretty)               ; organize your plain life in plain text
+ ;;php               ; perl's insecure younger brother
+ plantuml          ; diagrams for confusing people more
+ graphviz          ; diagrams for confusing yourself even more
+ ;;purescript        ; javascript, but functional
+ (python +lsp)            ; beautiful is better than ugly
+ ;;qt                ; the 'cutest' gui framework ever
+ ;;racket            ; a DSL for DSLs
+ ;;raku              ; the artist formerly known as perl6
+ ;;rest              ; Emacs as a REST client
+ ;;rst               ; ReST in peace
+ ;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
+ (rust +lsp)       ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+ ;;scala             ; java, but good
+ ;;(scheme +guile)   ; a fully conniving family of lisps
+ (sh +lsp)                ; she sells {ba,z,fi}sh shells on the C xor
+ ;;sml
+ ;;solidity          ; do you need a blockchain? No.
+ ;;swift             ; who asked for emoji variables?
+ ;;terra             ; Earth and Moon in alignment for performance.
+ ;;web               ; the tubes
+ yaml              ; JSON, but readable
+ ;;zig               ; C, but simpler
+
+ :email
+ ;;(mu4e +org +gmail)
+ ;;notmuch
+ ;;(wanderlust +gmail)
+
+ :app
+ calendar
+ ;;emms
+ ;;everywhere        ; *leave* Emacs!? You must be joking
+ ;;irc               ; how neckbeards socialize
+ ;;(rss +org)        ; emacs as an RSS reader
+
+ :config
+ ;;literate
+ (default +bindings +smartparens)
+ );end DOOM!
 #+end_src
 
-****** DOOM! Input
-:PROPERTIES:
-:ID:       d6134a6b-7aca-45d0-baaa-45940751fa86
-:END:
-#+begin_src emacs-lisp
-
-(doom! :input
-       ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh
-       ;;chinese
-       ;;japanese
-       ;;layout            ; auie,ctsrnm is the superior home row
-#+end_src
-****** Completion
-:PROPERTIES:
-:ID:       3085ca42-32ca-4f49-a8ce-8146ec26f514
-:END:
-#+begin_src emacs-lisp
-:completion
-(company +tng)           ; the ultimate code completion backend
-(corfu +orderless)  ; complete with cap(f), cape and a flying feather!
-;;helm              ; the *other* search engine for love and life
-;;ido               ; the other *other* search engine...
-;;ivy               ; a search engine for love and life
-(vertico +icons )           ; the search engine of the future
-#+end_src
-
-****** UI
-:PROPERTIES:
-:ID:       dbfa8a16-b468-4cc2-b3ae-b6995c1bbcee
-:END:
-
-Window select gets use =ace-window=
-
-#+begin_src emacs-lisp
-:ui
-;;deft              ; notational velocity for Emacs
-doom              ; what makes DOOM look the way it does
-doom-dashboard    ; a nifty splash screen for Emacs
-;;doom-quit         ; DOOM quit-message prompts when you quit Emacs
-(emoji +unicode)  ; 🙂
-hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
-indent-guides     ; highlighted indent columns
-;;ligatures         ; ligatures and symbols to make your code pretty again
-;;minimap           ; show a map of the code on the side
-modeline          ; snazzy, Atom-inspired modeline, plus API
-;;nav-flash         ; blink cursor line after big motions
-;;neotree           ; a project drawer, like NERDTree for vim
-ophints           ; highlight the region an operation acts on
-(popup +defaults)   ; tame sudden yet inevitable temporary windows
-;;tabs              ; a tab bar for Emacs
-treemacs          ; a project drawer, like neotree but cooler
-;;unicode           ; extended unicode support for various languages
-(vc-gutter +pretty) ; vcs diff in the fringe
-vi-tilde-fringe   ; fringe tildes to mark beyond EOB
-window-select     ; visually switch windows
-workspaces        ; tab emulation, persistence & separate workspaces
-;;zen               ; distraction-free coding or writing
-#+end_src
-
-****** Editor
-:PROPERTIES:
-:ID:       1383cdfe-d4bd-446e-8b6f-cd0b90965568
-:END:
-
-The evil +everywhere seems to strike a remarkably good balance between typical Emacs keybindings and vim (at least if you have a passing familiarity with both).
-#+begin_src emacs-lisp
-:editor
-(evil +everywhere); come to the dark side, we have cookies
-file-templates    ; auto-snippets for empty files
-fold              ; (nigh) universal code folding
-(format +onsave)  ; automated prettiness
-;;god               ; run Emacs commands without modifier keys
-;;lispy             ; vim for lisp, for people who don't like vim
-multiple-cursors  ; editing in many places at once
-;;objed             ; text object editing for the innocent
-;;parinfer          ; turn lisp into python, sort of
-;;rotate-text       ; cycle region at point between text candidates
-snippets          ; my elves. They type so I don't have to
-;;word-wrap         ; soft wrapping with language-aware indent
-#+end_src
-
-****** Emacs
-:PROPERTIES:
-:ID:       f645eee7-6280-400f-9552-81d96bdccbf4
-:END:
-
-~eww~ = Emacs Web Wowser - it's literally a browser. I'll should try it at some point.
-
-#+begin_src emacs-lisp
-:emacs
-dired             ; making dired pretty [functional]
-electric          ; smarter, keyword-based electric-indent
-;;eww               ; the internet is gross
-;;ibuffer           ; interactive buffer management
-undo              ; persistent, smarter undo for your inevitable mistakes
-vc                ; version-control and Emacs, sitting in a tree
-#+end_src
-
-****** Term
-:PROPERTIES:
-:ID:       12ef4152-de26-418b-ae16-3fe4ced88cff
-:END:
-
-I think I've only used eshell? So why not try something different.
-
-#+begin_src emacs-lisp
-:term
-;;eshell            ; the elisp shell that works everywhere
-;;shell             ; simple shell REPL for Emacs
-;;term              ; basic terminal emulator for Emacs
-vterm             ; the best terminal emulation in Emacs
-#+end_src
-
-****** Checkers - syntax & spelling
-:PROPERTIES:
-:ID:       09d981c3-8990-4f68-b469-405e52787fc6
-:END:
-:BACKLINKS:
-[2025-01-19 Sun 11:54] <- [[id:7c0745b0-1dc9-424d-b920-1760ad6837e7][Checkers]]
-:END:
-#+begin_src emacs-lisp
-:checkers
-syntax              ; tasing you for every semicolon you forget
-;;(spell +flyspell) ; tasing you for misspelling mispelling
-grammar           ; tasing grammar mistake every you make
-#+end_src
-
-****** Tools
-:PROPERTIES:
-:ID:       1d5eac28-143c-45bc-9d18-7b2bac8e15c4
-:END:
-
-#+begin_src emacs-lisp
-:tools
-;;ansible
-biblio            ; Writes a PhD for you (citation needed)
-;;collab            ; buffers with friends
-(debugger +lsp)          ; FIXME stepping through code, to help you add bugs
-;;direnv
-;;docker
-;;editorconfig      ; let someone else argue about tabs vs spaces
-;;ein               ; tame Jupyter notebooks with emacs
-(eval +overlay)     ; run code, run (also, repls)
-lookup              ; navigate your code and its documentation
-(lsp +peek)               ; M-x vscode
-magit             ; a git porcelain for Emacs
-;;make              ; run make tasks from Emacs
-;;pass              ; password manager for nerds
-pdf               ; pdf enhancements
-;;prodigy           ; FIXME managing external services & code builders
-;;terraform         ; infrastructure as code
-;;tmux              ; an API for interacting with tmux
-tree-sitter       ; syntax and parsing, sitting in a tree...
-;;upload            ; map local to remote projects via ssh/ftp
-#+end_src
-****** Modules
-:PROPERTIES:
-:ID:       d2b43460-566e-4d85-b976-a5633cb2c57c
-:END:
-
-#+begin_src emacs-lisp
-:os
-(:if (featurep :system 'macos) macos)  ; improve compatibility with macOS
-tty               ; improve the terminal Emacs experience
-#+end_src
-
-****** Languages - Programming
-:PROPERTIES:
-:ID:       e404f581-9a0f-45d2-958f-6d19bb4db560
-:END:
-
-Here we enable programming languages - this applies to =prog-mode= and =org-babel-blocks=. Notice that you can add =+lsp= to configure a language server protocol.
-
-#+begin_src emacs-lisp
-:lang
-;;agda              ; types of types of types of types...
-;;beancount         ; mind the GAAP
-(cc +lsp)         ; C > C++ == 1
-;;clojure           ; java with a lisp
-;;common-lisp       ; if you've seen one lisp, you've seen them all
-;;coq               ; proofs-as-programs
-;;crystal           ; ruby at the speed of c
-;;csharp            ; unity, .NET, and mono shenanigans
-;;data              ; config/data formats
-;;(dart +flutter)   ; paint ui and not much else
-;;dhall
-;;elixir            ; erlang done right
-;;elm               ; care for a cup of TEA?
-emacs-lisp        ; drown in parentheses
-;;erlang            ; an elegant language for a more civilized age
-;;ess               ; emacs speaks statistics
-;;factor
-;;faust             ; dsp, but you get to keep your soul
-;;fortran           ; in FORTRAN, GOD is REAL (unless declared INTEGER)
-;;fsharp            ; ML stands for Microsoft's Language
-;;fstar             ; (dependent) types and (monadic) effects and Z3
-;;gdscript          ; the language you waited for
-;;(go +lsp)         ; the hipster dialect
-;;(graphql +lsp)    ; Give queries a REST
-;;(haskell +lsp)    ; a language that's lazier than I am
-;;hy                ; readability of scheme w/ speed of python
-;;idris             ; a language you can depend on
-;;json              ; At least it ain't XML
-;;(java +lsp)       ; the poster child for carpal tunnel syndrome
-;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
-;;julia             ; a better, faster MATLAB
-;;kotlin            ; a better, slicker Java(Script)
-latex             ; writing papers in Emacs has never been so fun
-;;lean              ; for folks with too much to prove
-;;ledger            ; be audit you can be
-lua               ; one-based indices? one-based indices
-markdown          ; writing docs for people to ignore
-matlab            ; I added this
-;;nim               ; python + lisp at the speed of c
-;;nix               ; I hereby declare "nix geht mehr!"
-;;ocaml             ; an objective camel
-(org +pandoc +noter +pretty)               ; organize your plain life in plain text
-;;php               ; perl's insecure younger brother
-plantuml          ; diagrams for confusing people more
-graphviz          ; diagrams for confusing yourself even more
-;;purescript        ; javascript, but functional
-(python +lsp)            ; beautiful is better than ugly
-;;qt                ; the 'cutest' gui framework ever
-;;racket            ; a DSL for DSLs
-;;raku              ; the artist formerly known as perl6
-;;rest              ; Emacs as a REST client
-;;rst               ; ReST in peace
-;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
-(rust +lsp)       ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
-;;scala             ; java, but good
-;;(scheme +guile)   ; a fully conniving family of lisps
-sh                ; she sells {ba,z,fi}sh shells on the C xor
-;;sml
-;;solidity          ; do you need a blockchain? No.
-;;swift             ; who asked for emoji variables?
-;;terra             ; Earth and Moon in alignment for performance.
-;;web               ; the tubes
-yaml              ; JSON, but readable
-;;zig               ; C, but simpler
-#+end_src
-****** Email
-:PROPERTIES:
-:ID:       1894fb8f-d868-48b9-b570-9ca858906068
-:END:
-
-I'm no in quite that deep yet
-
-#+begin_src emacs-lisp
-:email
-;;(mu4e +org +gmail)
-;;notmuch
-;;(wanderlust +gmail)
-#+end_src
-****** App
-:PROPERTIES:
-:ID:       0a11fef1-5a91-4538-b25b-a94945ec3e8b
-:END:
-#+begin_src emacs-lisp
-:app
-calendar
-;;emms
-;;everywhere        ; *leave* Emacs!? You must be joking
-;;irc               ; how neckbeards socialize
-;;(rss +org)        ; emacs as an RSS reader
-#+end_src
-
-****** Config
-:PROPERTIES:
-:ID:       2751c693-d07e-4496-95e3-a3db344ec23c
-:END:
-
-~literate~ has explicit support. Apparently this setups automatic tangle of =$DOOMDIR/config.org= to =$DOOMDIR/config.el=. This saves having to specify a file I suppose but does not provide any support for =package.el= or =init.el= (which is apparently load much earlier).
-
-It seems like like this however is intended to work with
-
-#+begin_src emacs-lisp
-:config
-;;literate
-(default +bindings +smartparens)
-);end DOOM!
-#+end_src
-
-***** Doctor - =doctor.el=
+***** Doctor         - =doctor.el=
 
 The ~doom doctor~ shell command can ingest ~doctor.el~ files to help diagnose issues with packages and/or config. Originally discovered and borrowed from reading [[https://tecosaur.github.io/emacs-config/config.html#config-doctor][tecosaur's config]].
 
@@ -2655,7 +2554,6 @@ I'm really just storing the header here. I think it makes sense for the package 
 :header-args: :tangle ~/.dotfiles/.config/doom/config.el
 :ID:       cde6812f-ce92-4a0a-8369-062f2edb7ab6
 :END:
-
 ****** Header
 :PROPERTIES:
 :ID:       e0138b53-59de-4fdd-a037-b5cfac4b4e82
@@ -2839,7 +2737,7 @@ Dependencies:
 :ID:       0be0430d-bede-46a5-96b8-f9ec42891c13
 :END:
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :noweb yes
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/.notes/")
@@ -2861,26 +2759,25 @@ According [[https://github.com/doomemacs/doomemacs/issues/7633][this issue]] it 
 I prefer to hide the emphasis markers.
 
 #+begin_src emacs-lisp
+(after! org-mode
 (setq org-hide-emphasis-markers t
       org-use-sub-superscripts "{}"
       )
-(setopt org-pretty-entities t)
+(setopt org-pretty-entities t))
 #+end_src
 
 However, at times this can make editing certain things challenging.
 But =org-appear= solves this nicely.
 
-******** =org-appear=
+******* (package) =org-appear=
 :PROPERTIES:
 :ID:       4fcbed90-9b55-4b66-9f58-28d25ba1f2b8
 :END:
 
-#+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
+#+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el :comments link
 (package! org-appear
   :recipe(:host github
-          :repo "awth13/org-appear"
-          )
-  )
+          :repo "awth13/org-appear"))
 #+end_src
 
 #+name: org-appear-conf
@@ -2895,7 +2792,7 @@ But =org-appear= solves this nicely.
   )
 #+end_src
 
-******** bullets
+******* (package) =org-superstar=
 
 Org bullets is nice but [[https://github.com/integral-dw/org-superstar-mode][(gh) org-superstar]] might be a bit more flexible.
 
@@ -2953,7 +2850,7 @@ Org bullets is nice but [[https://github.com/integral-dw/org-superstar-mode][(gh
   ); after!
 #+end_src
 
-******* Org-Babel
+******* (builtin) =org-babel=
 
 I usually want to be able to reference the org file I am working from when editing a src-bock and preferably things TAB as expected for the language.
 
@@ -2969,6 +2866,8 @@ WIP - for some reason this creates problems on initialization even though it eva
 #+BEGIN_SRC emacs-lisp
 (after! org
   ;; (org-babel-lob-ingest (expand-file-name "~/.config/doom/lib-babel.org"))
+  ;; When using :comments header I always want an absolute link no relative (default)
+  (setq org-babel-tangle-use-relative-file-links nil)
   )
 #+END_SRC
 
@@ -3011,22 +2910,22 @@ There are two solutions to this:
   =Note=: For this to work reliably you _must_ include the ~:noweb-prefix no~ header in your babel blocks otherwise noweb will attempt to honor #comment first.
 
   Original
-   #+BEGIN_SRC emacs-lisp
-   ;; (after! org
-   ;;   ;; Note:
-   ;;   (defun org-babel-noweb-wrap (&optional regexp)
-   ;;     "Return regexp matching a Noweb reference.
+   #+BEGIN_SRC emacs-lisp :tangle no
+   (after! org
+     ;; Note:
+     (defun org-babel-noweb-wrap (&optional regexp)
+       "Return regexp matching a Noweb reference.
 
-   ;; Match any reference, or only those matching REGEXP, if non-nil.
+   Match any reference, or only those matching REGEXP, if non-nil.
 
-   ;; When matching, reference is stored in match group 1."
-   ;;     (rx-to-string
-   ;;      `(and (or "<<" "#<<")
-   ;;            (group
-   ;;             (not (or " " "\t" "\n"))
-   ;;             (? (*? any) (not (or " " "\t" "\n"))))
-   ;;            (or ">>" ">>#"))))
-   ;;   )
+   When matching, reference is stored in match group 1."
+       (rx-to-string
+        `(and (or "<<" "#<<")
+              (group
+               (not (or " " "\t" "\n"))
+               (? (*? any) (not (or " " "\t" "\n"))))
+              (or ">>" ">>#"))))
+        )
    #+END_SRC
 
 [2025-06-26 Thu] - Updated for Emacs 30.1
@@ -3093,14 +2992,17 @@ Dealing with images in org mode really requires pixel scrolling.
   )
 #+END_SRC
 
-******** =org-download= - screenshots
+******** (depreciated) =org-download= - screenshots
 
 [[https://github.com/abo-abo/org-download][org-download github]]
 
 _External dependencies_:
 A screen snipping tool that you set via ~org-download-screenshot-method~.
 
-#+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
+(Depreciated - replaced with yank-media)
+_Left for reference_
+
+#+begin_src emacs-lisp :tangle no
 (package! org-download
   :recipe(:host github
           :repo "abo-abo/org-download"
@@ -3111,7 +3013,7 @@ A screen snipping tool that you set via ~org-download-screenshot-method~.
 =org-download= takes much of the tedium out of inserting images into =org-mode= but does take a little tweaking to make effortless.
 
 
-#+begin_src emacs-lisp :noweb yes
+#+begin_src emacs-lisp :noweb yes :tangle no
 (after! org
   (use-package! org-download
       :bind (
@@ -3169,7 +3071,7 @@ org-download-heading-lvl nil)
 ;;(setq org-download-annotate-function (lambda (_) "Return empty string" ""))
 #+end_src
 
-******** yank-media (built-in)
+******** (built-in) yank-media
 
 Org-mode has a ~yank-media~ command since 9.something. It seems to more or less achieve what ~org-download~ does. By default it uses the ~org-attach~ machinery
 
@@ -3254,11 +3156,16 @@ Headings and links go together because we will assign a unique ID to every headi
 #+begin_src emacs-lisp
 (after! org
   (require 'org-id)
-  (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 )
+
+(after! org-id
+  (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+  )
 #+end_src
 
 We will also bring in =org-super-links= so that we can have automatic back links.
+
+ref: [[https://emacs.stackexchange.com/questions/51755/org-mode-link-files-with-ids-and-not-filenames][Org-Mode: Link files with IDs and not Filenames - Emacs Stack Exchange]]
 
 ******** =org-super-links=
 :PROPERTIES:
@@ -3319,7 +3226,6 @@ May need to sanitize special characters...
 ref: [[https://emacs.stackexchange.com/questions/66178/how-to-execute-shell-command-with-piping-in-elisp][(st-ex) how to execute shell command with piping in Elisp?]]
 
 ******* Export
-
 ******** org-export: org \rarr odt \rarr docx
 
 For the most part org \rarr to odt works very well. There a few small things that do need configuration
@@ -3402,7 +3308,6 @@ Ideally we set these per file as need with a file-local variable like this:
 #+end_src
 
 ******* LaTeX
-
 ******** LaTeX - previews
 
 First we configure some of the built in options for the preview mode.
@@ -3426,6 +3331,7 @@ First we configure some of the built in options for the preview mode.
         org-latex-preview-throttle 0.2
         org-latex-preview-live-preview-fragments nil
         ;;previewing preamble
+        org-latex-create-formula-image-program 'dvisvgm ;svg looks crisp
         )
   )
 
@@ -3557,7 +3463,7 @@ Then we bring in =org-fragtog= to save from having to constantly toggle previews
   )
 #+end_src
 
-******* Images
+******* Drawing
 ******** (package) org-xopp
 
 _External dependencies:_
@@ -3585,13 +3491,13 @@ There appears to be two issues:
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-(with-eval-after-load 'org
-  (require 'org-xopp)
-  (org-xopp-setup)
-  )
+;; (with-eval-after-load 'org
+;;   (require 'org-xopp)
+;;   (org-xopp-setup)
+;;   )
 #+END_SRC
 
-******* todo-keywords
+******* Org - todo-keywords
 
 =Reminder=:
 (<fast-key>!)  - creates a timestamp on transition to STATE
@@ -3755,24 +3661,24 @@ Type can take numerous predefined symbols or a user-defined function.
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-(after! org
-  (setq org-super-agenda-groups
-        '(
-          (:name "Planning"
-           :tag "planning"
-           )
-          (:name "Today"  ; Optionally specify section name
-           :time-grid t  ; Items that appear on the time grid
-           :todo "TODAY")  ; Items that have this TODO keyword
-          )
-        )
-  (org-super-agenda-mode)
-  )
+;; (after! org
+;;   (setq org-super-agenda-groups
+;;         '(
+;;           (:name "Planning"
+;;            :tag "planning"
+;;            )
+;;           (:name "Today"  ; Optionally specify section name
+;;            :time-grid t  ; Items that appear on the time grid
+;;            :todo "TODAY")  ; Items that have this TODO keyword
+;;           )
+;;         )
+;;   (org-super-agenda-mode)
+;;   )
 #+END_SRC
 
 ******* Capture
 
-******** Templates
+******** (built-in) org-capture-templates
 
 Relevant documentation:
 - [[https://orgmode.org/manual/Template-expansion.html][Org capture template expansion]]
@@ -3920,7 +3826,7 @@ This one is purely for testing purposes.
 )
 #+end_src
 
-******** DOCT: Declarative Org Capture Templates
+******** (package) DOCT: Declarative Org Capture Templates
 
 The default way of writing templates can be hard to read and write. Maybe this will be easier.
 
@@ -3951,7 +3857,7 @@ Usuage of doct still involves using ~setq~ on ~set-org-capture-templates~ but wh
 ;;                                  "%i %a"))))))
 #+end_src
 
-******** Refile
+******** (built-in) org-refile
 
 #+BEGIN_SRC emacs-lisp
 (after! org
@@ -3962,15 +3868,7 @@ Usuage of doct still involves using ~setq~ on ~set-org-capture-templates~ but wh
         )
   )
 #+END_SRC
-******* org-sidetree
-
-#+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
-;; (package! org-side-tree
-;;   ;; :recipe(:host github
-;;   ;;         :repo "localauthor/org-side-tree"
-;;   ;;         )
-;;   )
-******* org-ql
+******* (package) =org-ql=
 
 #+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
 (package! org-ql
@@ -3978,7 +3876,7 @@ Usuage of doct still involves using ~setq~ on ~set-org-capture-templates~ but wh
            :files (:defaults (:exclude "helm-org-ql.el"))))
 #+end_src
 
-******* org-import
+******* (package) =org-import=
 
 [[https://github.com/tecosaur/org-pandoc-import][(gh) org-pandoc-import repo]]
 
@@ -4033,7 +3931,7 @@ Usuage of doct still involves using ~setq~ on ~set-org-capture-templates~ but wh
 ;; they are implemented.
 #+end_src
 
-****** Personal configuration
+****** (Heading) Personal configuration
 :PROPERTIES:
 :ID:       bc3712a0-0ad7-4222-a7a2-ecf26e7ff98b
 :END:
@@ -4042,11 +3940,7 @@ Usuage of doct still involves using ~setq~ on ~set-org-capture-templates~ but wh
 ;; -- Personal Configuration ------------------------------------------------------------------
 #+end_src
 
-******* Input
-:PROPERTIES:
-:ID:       7986cf2a-a721-497d-9c12-0341519d194e
-:END:
-******** (package) =avy= - Jump with a tree!
+****** (package) =avy= - Jump with a tree!
 :PROPERTIES:
 :ID:       830da1ca-97fb-438f-a2af-e63fb4854aca
 :END:
@@ -4077,7 +3971,7 @@ _Normal mode_
 
 But if I query this via =SPC h k= Doom informs me that "This lambda is an interactive function" BUT does list ~evil-motion-state-map~ under "Key Bindings" which does include a number of ~avy~ functions.
 
-******* Apheleia
+****** (builtin) =Apheleia=
 
 Apheleia is an emacs package for wrangling formatters (so it seems). It's primary defaulty choice is prettier but can be made to work with other thing such as yq.
 
@@ -4102,7 +3996,7 @@ Apheleia understands unquotes _file, filename, and input_ as different types of 
   )
 #+end_src
 
-******* Project.el
+****** Project.el
 
 You can set porject "indicator" files like this (by default it uses VC files to "guess"):
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -4111,10 +4005,7 @@ You can set porject "indicator" files like this (by default it uses VC files to 
   (setq project-vc-extra-root-markers '(".project" "CMakeLists.txt"))
   )
 #+END_SRC
-
-******** WireViz
-
-******* Projectile.el
+****** Projectile.el
 
 #+BEGIN_SRC emacs-lisp :tangle no :noweb yes
 (use-package! projectile
@@ -4143,7 +4034,7 @@ The modeline can be set like so (it won't work for TRAMP however):
 (setq projectile-mode-line-function '(lambda () (format " Proj[%s]" (projectile-project-name))))
 #+END_SRC
 
-******** Generic Project Override Functions
+******* Generic Project Override Functions
 
 The following functions can be configured to perform project specific actions.
 
@@ -4161,11 +4052,7 @@ These commands use output buffers that are _shared_ \therefore if called by diff
 (setq projectile-per-project-compilation-buffer t)
 #+END_SRC
 
-******* Completion
-:PROPERTIES:
-:ID:       dc64093f-f5cd-476b-9fec-c243408e3839
-:END:
-******** (package) Consult
+****** (package) Consult
 :PROPERTIES:
 :ID:       d543f813-c091-460c-83ab-3857345cb107
 :END:
@@ -4238,7 +4125,7 @@ Although consult is included in the Doom completion module many of the key bindi
    ;; "M-r"   #'consult-history                ;; orig. previous-matching-history-element
    )
 #+end_src
-******** (package) which-key
+****** (package) which-key
 
 ~which-key~ is used by default in DOOM. Ideally I would like to add my own labels to prefix menus and such but so far I have not been able to figure out how to do so.
 
@@ -4259,11 +4146,7 @@ src_emacs-lisp{(which-key-show-keymap 'doom-leader-map)}
 ;;   )
 #+END_SRC
 
-******* UI
-:PROPERTIES:
-:ID:       22264d97-086c-45ca-b36b-7864ef1ae3f8
-:END:
-******** =ace-window=
+****** =ace-window=
 :PROPERTIES:
 :ID:       ad06a87a-e099-42dc-ac8e-b6621cc8d9bc
 :END:
@@ -4283,56 +4166,7 @@ Perhaps I shouldn't be using =use-package!= with module packages? I'm missing so
 
   )
 #+end_src
-******** =rotate=
-
-Ro-ro-rotate yer windows.
-This actually seems to be handled by the ~evil-rotate-...~ commands (SPC w ...).
-
-Possible alternative that allows setting predefined layouts:
-#+begin_src emacs-lisp :tanlge .config/doom/packages.el
-;; (package! rotate
-;;   ;:pin "4e9ac3ff800880bd9b705794ef0f7c99d72900a6"
-;;   )
-#+end_src
-
-******** =olivetti= - named for a [[https://en.wikipedia.org/wiki/Olivetti][typewriter]]
-
-[2024-11-17 Sun] - adding olivetti for a test drive
-
-#+BEGIN_SRC emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
-(package! olivetti
-  :recipe(:host github
-          :repo "rnkn/olivetti"
-          )
-  )
-
-(package! auto-olivetti
-  :recipe(:host sourcehut
-          :repo "ashton314/auto-olivetti"
-          )
-
-  )
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(use-package! olivetti
-:config
-(setq-default olivetti-body-width 180)
-)
-
-(use-package! auto-olivetti
-:custom
-(auto-olivetti-enabled-modes '(text-mode prog-mode helpful-mode ibuffer-mode image-mode))
-:config
-(auto-olivetti-mode)
-)
-#+END_SRC
-
-******* Editor
-:PROPERTIES:
-:ID:       4779b83a-6887-415e-8611-511568f4e37d
-:END:
-******** yasnippet
+****** yasnippet
 :PROPERTIES:
 :ID:       ced94036-8aaa-4e7c-ad82-7ed66507c291
 :END:
@@ -4377,25 +4211,7 @@ Some keybinding is necessary to ensure that snippets can be navigated as expecte
  )
 #+end_src
 
-******** whitespace-mode
-
-Doom's whitespace-mode is quite minimal. Should you need it to make other forms of white space apparent here is some sample config.
-
-#+begin_src emacs-lisp
-
-;; (use-package! whitespace
-;;   :config
-;;   (setq
-;;     whitespace-style '(face tabs tab-mark spaces space-mark trailing newline newline-mark)
-;;     whitespace-display-mappings '(
-;;       (space-mark   ?\     [?\u00B7]     [?.])
-;;       (space-mark   ?\xA0  [?\u00A4]     [?_])
-;;       (newline-mark ?\n    [182 ?\n])
-;;       (tab-mark     ?\t    [?\u00BB ?\t] [?\\ ?\t])))
-;;   (global-whitespace-mode +1))
-#+end_src
-
-******** (package) evil-multiedit
+****** (package) =evil-multiedit=
 
 evil-multiedit is enabled by uncommenting ~multiple-cursors~ in packages.el
 
@@ -4422,7 +4238,7 @@ reference:
   ;;  )
   )
 #+end_src
-******** Flymake
+****** Flymake
 
 #+begin_src emacs-lisp
 ;; Different faces for different severities
@@ -4436,7 +4252,7 @@ reference:
   )
 #+end_src
 
-******* TRAMP
+****** TRAMP
 :PROPERTIES:
 :ID:       efff4c49-5fc3-43e7-8e97-0bac704d4e1f
 :END:
@@ -4519,18 +4335,7 @@ Most of the time bash would be prefered.
 
 See: [[id:b37a31a8-fc1b-4bbd-9b0c-8112535930e0][Making TRAMP go Brrrr...]] for more details on speeding up  TRAMP
 
-******* Term
-:PROPERTIES:
-:ID:       dd238e55-ce08-4a6f-9853-026eb704c563
-:END:
-******* Checkers
-:PROPERTIES:
-:ID:       7c0745b0-1dc9-424d-b920-1760ad6837e7
-:END:
-
-Personal configuration for language checkers. Some of these are enabled in [[id:09d981c3-8990-4f68-b469-405e52787fc6][Checkers - syntax & spelling]] (such as Languagetool)
-
-******** Spellcheck - ~Jinx~
+****** (package) ~Jinx~ - magical spellcheck
 :PROPERTIES:
 :ID:       9c33fa62-801d-4c8d-8360-1f2d8f35ccea
 :END:
@@ -4585,53 +4390,11 @@ External dependencies:
  "M-$" #'jinx-correct-nearest
  "C-M-$" #'jinx-languages)
 #+end_src
-******** Languagetool
+****** Languagetool
 
 Languagetool is a FOSS alternative to grammarly and needs to be installed manually for Doom to be able to instrument it. It seems to use a Client-Server model and on Linux has to be installed via bash script (see: [[https://github.com/languagetool-org/languagetool][Languagetool github]])
 
-******** Writegood
-
-[[https://github.com/bnbeckwith/writegood-mode][Writegood-mode github]]
-
-#+BEGIN_SRC emacs-lisp
-(use-package! writegood-mode
-  :hook (org-mode . writegood-mode)
-  :config
-  ;; Personal Weasel words
-  ;; (setq personal-weasel-words
-  ;;       '("")
-  ;;       )
-  ;;(setq writegood-weasel-words (concat write-good-weasel-words personal-weasel-words))
-   ;;  (map!
-   ;; :prefix
-   ;; )
-
-  (set-face-attribute 'writegood-weasels-face nil
-                      ;; white weasel (ermine)
-                      :underline '(:style wave :color "white")
-                      :slant 'italic
-                      )
-  (set-face-attribute 'writegood-passive-voice-face nil
-                      ;; white weasel (ermine)
-                      :underline '(:style wave :color "CadetBlue1")
-                      )
-  (set-face-attribute 'writegood-duplicates-face nil
-                      ;; white weasel (ermine)
-                      :underline '(:style wave :color "maroon1")
-                      )
-  )
-#+END_SRC
-
-Ref:
-- [[https://randomgeekery.org/post/2017/08/emacs-writegood-mode/][Emacs-Writegood-mode]]
-- [[http://xahlee.info/emacs/emacs_manual/elisp/Face-Attributes.html][XahLee - Face Attributes]]
-
-******* Tools
-:PROPERTIES:
-:ID:       8fc6d989-9c17-42da-a718-34ce6aa02a5d
-:END:
-
-******** Bibilio
+****** citar
 
 #+BEGIN_SRC emacs-lisp
 ;; biblio
@@ -4642,15 +4405,7 @@ Ref:
   )
 #+END_SRC
 
-******* OS
-:PROPERTIES:
-:ID:       4754f677-9c26-40f8-bfec-e34d1276b01c
-:END:
-******* Languages
-:PROPERTIES:
-:ID:       45e35db0-e9e0-45c8-997d-5971eb581bff
-:END:
-******** Debugging
+****** dap-mode
 #+begin_src emacs-lisp
 ;; -- General dap-mode --
 (after! dap-mode
@@ -4668,7 +4423,11 @@ Ref:
         )
   )
 #+end_src
-******** Matlab
+****** Languages
+:PROPERTIES:
+:ID:       45e35db0-e9e0-45c8-997d-5971eb581bff
+:END:
+******* Matlab
 
 There is a [[https://github.com/MathWorks/Emacs-MATLAB-Mode][Emacs MATLAB-mode]] that can be installed via MELPA and is maintained from someone at Mathworks. It mostly works although I never got the linter working quite right.
 
@@ -4758,7 +4517,7 @@ prompt) during export, e.g. conversion of org to say html."
 
   )
 #+END_SRC
-******** Python
+******* Python
 
 #+BEGIN_SRC emacs-lisp
 ;; -- Python -- ;;
@@ -4876,14 +4635,15 @@ _Debugging - DAP-mode_
        :name "My App"))
 )
 #+end_src
-******** C and C++
+******* C and C++
 
 For c and cpp make use of eglot and clangd. See:[[https://rgoswami.me/posts/emacs-lang-servers/][Doom Emacs and Language Servers]]
 
 #+begin_src emacs-lisp
 (after! eglot
   :config
-  (set-eglot-client! 'cc-mode '("clangd-12" "-j=3" "--clang-tidy" "/.local/lsp/bin/")) ;; clangd
+  ;; clangd /should/ be an alias for most recent version of clangd installed on system (eg. clangd-18)
+  (set-eglot-client! 'cc-mode '("clangd" "-j=3" "--clang-tidy" "/.local/lsp/bin/")) ;; clangd
   ;; -- Per machine lsp locations
   (when (string= (system-name) "terra")
     (setq exec-path (append exec-path `(
@@ -4891,7 +4651,7 @@ For c and cpp make use of eglot and clangd. See:[[https://rgoswami.me/posts/emac
                                         ))))
   )
 #+end_src
-******** PlantUML
+******* PlantUML
 
 [[https://github.com/skuro/plantuml-mode][(gh) PlantUML-mode]]
 
@@ -4906,18 +4666,95 @@ src_shell{grep jar /usr/bin/plantuml} {{{results(=$JAVA -Djava.net.useSystemProx
   )
 #+end_src
 
-******* Email
+****** Highlight-indent-guides (indent-guides module)
+
+Can't seem to get this to take no matter what I try.
+
+#+begin_src emacs-lisp
+;; Indent bars mode
+(setq
+ indent-bars-color '(highlight :face-bg t :blend 0.15)
+ indent-bars-pattern "."
+ indent-bars-width-frac 0.1
+ indent-bars-pad-frac 0.1
+ indent-bars-zigzag nil
+ indent-bars-color-by-depth '(:regexp "outline-\\([0-9]+\\)" :blend 1) ; blend=1: blend with BG only
+ indent-bars-highlight-current-depth '(:blend 0.5) ; pump up the BG blend on current
+ indent-bars-display-on-blank-lines t)
+#+end_src
+
+****** =vterm=
 :PROPERTIES:
-:ID:       0a7e277f-b7ae-423f-9e70-c305be171ea2
+:ID:       9b5a7856-9499-4a60-a5ad-e988b624af17
 :END:
-******* App
+
+Vterm requires some extra work to get functioning.
+******* 1. Install =libvterm=
 :PROPERTIES:
-:ID:       c305d54c-7cf4-4cad-a164-abd895e4e1f7
+:ID:       36129ab7-f925-49e7-8d39-3425f0777ae8
 :END:
-******* Config
+
+#+BEGIN_SRC bash :tangle no
+	sudo apt-get -y install libvterm-dev
+#+END_SRC
+
+******* 2. Compile =libvterm.so=
 :PROPERTIES:
-:ID:       33b70c93-080d-40a0-902c-be7479cf0872
+:ID:       d8a5b148-bc76-4ceb-b71a-a0d6fea92c8f
 :END:
+Emacs should offer to do this for you when you first trying to run it.
+******* 3. Configure =vterm=
+
+vterm is meant to act like a terminal so we want it to go straight to insert mode AND we \probably\ want to land in bash (by defaul it vterm looks for sh).
+
+=(not clear why I'm having to manually specify tangle path here?)=
+#+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/config.el
+;; -- Ideally this is state dependent but this creates a nesting depth error for some reason
+(after! vterm
+  (when (modulep! :editor evil)
+    (set-evil-initial-state! 'vterm-mode 'insert))
+  (setq vterm-shell
+        (or (executable-find "bash")
+            (executable-find "sh")
+            (executable-find "docker")
+            "/bin/sh"))
+  (setq vterm-tramp-shells '(("docker" "/bin/bash")
+                             ("ssh" "/bin/bash")
+                             ("sshx" "/bin/bash")
+                             ("sudo" "/bin/bash")))
+
+  ;; TODO - Figure out how to put vterm into copy mode on i -> m or n -> m
+
+;; (map!
+;;  :map vterm-mode-map
+;;  "C-y" #'vterm-yank
+;;  )
+
+  )
+#+end_src
+
+_shell synchronization with emacs_
+
+vterm does require a little configuration on the shell side if you wish to keep your vterm and emacs in sync (eg. you cd somewhere in vterm and the try to open a file in the dir from emacs).
+
+#+NAME: VTERM_BASH_CONF
+#+begin_src bash :tangle no
+vterm_printf() {
+    if [ -n "$TMUX" ] \
+        && { [ "${TERM%%-*}" = "tmux" ] \
+            || [ "${TERM%%-*}" = "screen" ]; }; then
+        # Tell tmux to pass the escape sequences through
+        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+    elif [ "${TERM%%-*}" = "screen" ]; then
+        # GNU screen (screen, screen-256color, screen-256color-bce)
+        printf "\eP\e]%s\007\e\\" "$1"
+    else
+        printf "\e]%s\e\\" "$1"
+    fi
+}
+#+end_src
+
+Fish has a different function, see [[https://github.com/akermu/emacs-libvterm][(gh) emacs-vterm - shell-side configuration]]
 
 ***** Personal Elisp - =my-elisp.el=
 ****** Structure
@@ -5037,6 +4874,73 @@ _Testing_
 ****** Wrap-text :WIP:
 
 ref: [[https://stackoverflow.com/questions/1760939/how-to-write-an-emacs-function-to-wrap-the-marked-region-with-specified-text][How to write an Emacs function to wrap the marked region with specified text]]
+****** ~shell-for-link-title~ - Emac's function or script to look for and pull a title for a link?
+:PROPERTIES:
+:ID:       eb43813b-989e-4954-baae-99f75ec37ca2
+:END:
+
+    Often this information in the URL in the first place. For Example:
+    https://arstechnica.com/culture/2024/08/infamous-30-logitech-f710-called-out-in-50m-lawsuit-over-titan-sub-implosion/
+
+    A function that takes the link and parses for a title and presents it as an option that could be overwritten would do 95% of what I desire.
+
+******* Step 1. Write a shell script
+
+    Options:
+    1. Regex
+    [[https://stackoverflow.com/questions/27745/getting-parts-of-a-url-regex][This stackover flow post might do the trick.]] I would need to
+    translate to emacs list or write it in python and make that
+    callable by emacs
+
+    2. Shell out to ~grep~ & ~curl~
+
+       This apparently uses Perl (PCRE2) syntax because when I tried the same with ~ripgrep~ I get:
+
+       #+BEGIN_SRC bash :tangle no
+         echo "<title>Taming the buck with a Type III compensator</title>" | grep -oP --regexp='(?<=<title>)(.*?)(?=<\/title>)'
+       #+END_SRC
+
+       #+RESULTS:
+       : Taming the buck with a Type III compensator
+
+I tried this with ~ripgrep~ which supports neither src_shell{error: look-around, including look-ahead and look-behind, is not supported} nor src_shell{PCRE2 is not available in this build of ripgrep} (at least without some fuss).
+
+#+BEGIN_SRC bash :tangle no
+	curl -s https://tomscii.sig7.se/2024/10/Taming-the-buck-with-a-Type-III-compensator | grep -oP --regexp='(?<=<title>)(.*?)(?=<\/title>)'
+#+END_SRC
+
+Next step wrap it in a shell script and call it from a hook:
+
+#+begin_src shell :comments link :tangle ~/scripts/curl-for-title.sh
+#!/usr/bin/env sh
+
+curl -s $1 | grep -oP --regexp='(?<=<title>)(.*?)(?=<\/title>)'
+#+end_src
+
+******* Step 2. Wrap the shell script in an elisp function
+
+=Note=: [2025-09-18 Thu]
+Tried to use this via tramp and it didn't work (unsurprisingly). I guess for it to work in such a situation I would have to:
+1. Detect that I am working over TRAMP
+2. Back propagate the URL to the host where my shell script actually lives.
+3. Send the formatted link back to the remote.
+
+#+begin_src emacs-lisp :comments link :tangle ~/.dotfiles/.config/doom/my-elisp.el
+(defun shell-for-title (url)
+  (interactive "sURL: ")
+  "Calls a bash script to retrieve a title from the passed URL. Returns a formatted org-mode link"
+  ;; string-trim removes any \n
+  (let* ((title (string-trim (shell-command-to-string (concat "curl-for-title.sh " url))))
+         (link (format "[[%s][%s]]" url title)))
+    (when (called-interactively-p 'interactive)
+      (insert link))
+    link))
+#+end_src
+
+4. Give it a hotkey
+
+5. Probably some error checking maybe?
+
 ***** Debugging & Troubleshooting
 ****** Packages
 
@@ -5058,82 +4962,6 @@ This will have doom go package by package and attempt to update. This can yield 
       "https://git.sr.ht/~~ashton314/auto-olivetti"
 #+end_src
 
-***** Extras
-:PROPERTIES:
-:ID:       daf32993-5f39-4a3f-b5ed-14362214c7ea
-:END:
-
-****** =vterm=
-:PROPERTIES:
-:ID:       9b5a7856-9499-4a60-a5ad-e988b624af17
-:END:
-
-Vterm requires some extra work to get functioning.
-******* 1. Install =libvterm=
-:PROPERTIES:
-:ID:       36129ab7-f925-49e7-8d39-3425f0777ae8
-:END:
-#+BEGIN_SRC bash
-	sudo apt-get -y install libvterm-dev
-#+END_SRC
-******* 2. Compile =libvterm.so=
-:PROPERTIES:
-:ID:       d8a5b148-bc76-4ceb-b71a-a0d6fea92c8f
-:END:
-Emacs should offer to do this for you when you first trying to run it.
-******* 3. Configure =vterm=
-
-vterm is meant to act like a terminal so we want it to go straight to insert mode AND we \probably\ want to land in bash (by defaul it vterm looks for sh).
-
-=(not clear why I'm having to manually specify tangle path here?)=
-#+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/config.el
-;; -- Ideally this is state dependent but this creates a nesting depth error for some reason
-(after! vterm
-  (when (modulep! :editor evil)
-    (set-evil-initial-state! 'vterm-mode 'insert))
-  (setq vterm-shell
-        (or (executable-find "bash")
-            (executable-find "sh")
-            (executable-find "docker")
-            "/bin/sh"))
-  (setq vterm-tramp-shells '(("docker" "/bin/bash")
-                             ("ssh" "/bin/bash")
-                             ("sshx" "/bin/bash")
-                             ("sudo" "/bin/bash")))
-
-  ;; TODO - Figure out how to put vterm into copy mode on i -> m or n -> m
-
-;; (map!
-;;  :map vterm-mode-map
-;;  "C-y" #'vterm-yank
-;;  )
-
-  )
-#+end_src
-
-_shell synchronization with emacs_
-
-vterm does require a little configuration on the shell side if you wish to keep your vterm and emacs in sync (eg. you cd somewhere in vterm and the try to open a file in the dir from emacs).
-
-#+NAME: VTERM_BASH_CONF
-#+begin_src bash
-vterm_printf() {
-    if [ -n "$TMUX" ] \
-        && { [ "${TERM%%-*}" = "tmux" ] \
-            || [ "${TERM%%-*}" = "screen" ]; }; then
-        # Tell tmux to pass the escape sequences through
-        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
-    elif [ "${TERM%%-*}" = "screen" ]; then
-        # GNU screen (screen, screen-256color, screen-256color-bce)
-        printf "\eP\e]%s\007\e\\" "$1"
-    else
-        printf "\e]%s\e\\" "$1"
-    fi
-}
-#+end_src
-
-Fish has a different function, see [[https://github.com/akermu/emacs-libvterm][(gh) emacs-vterm - shell-side configuration]]
-
 ***** Reference
 :PROPERTIES:
 :ID:       9f117960-0294-4f2a-a6da-1f44dd91d5fa
@@ -5153,9 +4981,6 @@ Fish has a different function, see [[https://github.com/akermu/emacs-libvterm][(
 :BACKLINKS:
 [2025-07-05 Sat 11:10] <- [[id:efff4c49-5fc3-43e7-8e97-0bac704d4e1f][TRAMP]]
 :END:
-
-
-
 **** my-emacs
 
 # Local Variables:

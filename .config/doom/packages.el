@@ -49,28 +49,17 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;; (unpin! t)
 
+;; [[file:~/.dotfiles/dotfiles.org::*(package) =org-appear=][(package) =org-appear=:1]]
 (package! org-appear
   :recipe(:host github
-          :repo "awth13/org-appear"
-          )
-  )
-
-(package! org-download
-  :recipe(:host github
-          :repo "abo-abo/org-download"
-          :branch "master" )
-  )
+          :repo "awth13/org-appear"))
+;; (package) =org-appear=:1 ends here
 
 (package! org-super-links
  :recipe(:host github
          :repo "toshism/org-super-links"
          :branch "develop" )
  )
-
-(package! htmlize
-  :recipe (:host github
-           :repo "https://github.com/hniksic/emacs-htmlize"
-           :branch "stable"))
 
 (package! engrave-faces)
 
@@ -98,24 +87,14 @@
   :recipe (:host github :repo "progfolio/doct")
   :pin "5cab660dab653ad88c07b0493360252f6ed1d898")
 
-;; (package! org-side-tree
-;;   ;; :recipe(:host github
-;;   ;;         :repo "localauthor/org-side-tree"
-;;   ;;         )
-;;   )
+(package! org-ql
+  :recipe (:host github :repo "alphapapa/org-ql"
+           :files (:defaults (:exclude "helm-org-ql.el"))))
 
-(package! olivetti
-  :recipe(:host github
-          :repo "rnkn/olivetti"
-          )
-  )
-
-(package! auto-olivetti
-  :recipe(:host sourcehut
-          :repo "ashton314/auto-olivetti"
-          )
-
-  )
+(package! org-pandoc-import
+  :recipe (:host github
+           :repo "tecosaur/org-pandoc-import"
+           :files ("*.el" "filters" "preprocessors")))
 
 (package! jinx
 :recipe (:host github :repo "/minad/jinx")

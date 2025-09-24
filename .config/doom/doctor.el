@@ -1,3 +1,4 @@
+;; [[file:~/.dotfiles/dotfiles.org::*Doctor - =doctor.el=][Doctor         - =doctor.el=:1]]
 ;;; doctor.el -*- lexical-bindingL t; no-byte-compile: t; -*-
 ;; Emacs - Check for Prefered Fonts
 ;; borrowed from tecosaur:
@@ -34,3 +35,4 @@
     (warn! "Emacs(client) is not set up as the text/org handler.")))
 (unless (executable-find "latex2text")
   (warn! "Couldn't find latex2text executable (from pylatexenc), will be unable to render LaTeX fragments in org→text exports."))
+;; Doctor         - =doctor.el=:1 ends here

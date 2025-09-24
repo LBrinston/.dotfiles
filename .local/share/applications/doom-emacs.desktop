@@ -1,6 +1,8 @@
+# [[file:~/.dotfiles/dotfiles.org::*Desktop Entry][Desktop Entry:1]]
 [Desktop Entry]
 Type=Application
 Name=Doom-Emacs
 Icon=
 Exec=emacs --with-profile doom
 Category=Editor
+# Desktop Entry:1 ends here

@@ -212,7 +212,9 @@ which contain configuration files that should be tangled"
        `(org-level-8 ((t (,@headline ,@variable-tuple))))
        `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil)))))))
 
-  (add-hook 'doom-load-theme-hook #'my/set-org-heading-sizes)
+  (add-hook 'doom-load-theme-hook #'my/set-org-heading-sizes) ;; Apply if we switch themes
+  (add-hook 'org-mode-hook #'my/set-org-heading-sizes) ;; Apply if we enter org-mode
+  (my/set-org-heading-sizes) ;; Apply on startup (doom sets themes directly on start - doom-load-theme-hook is only called on switching themes)
   ); after!
 
 (setq org-src-window-setup 'reorganize-frame)
@@ -220,23 +222,9 @@ which contain configuration files that should be tangled"
 
 (after! org
   ;; (org-babel-lob-ingest (expand-file-name "~/.config/doom/lib-babel.org"))
+  ;; When using :comments header I always want an absolute link no relative (default)
+  (setq org-babel-tangle-use-relative-file-links nil)
   )
-
-   ;; (after! org
-   ;;   ;; Note:
-   ;;   (defun org-babel-noweb-wrap (&optional regexp)
-   ;;     "Return regexp matching a Noweb reference.
-
-   ;; Match any reference, or only those matching REGEXP, if non-nil.
-
-   ;; When matching, reference is stored in match group 1."
-   ;;     (rx-to-string
-   ;;      `(and (or "<<" "#<<")
-   ;;            (group
-   ;;             (not (or " " "\t" "\n"))
-   ;;             (? (*? any) (not (or " " "\t" "\n"))))
-   ;;            (or ">>" ">>#"))))
-   ;;   )
 
 (after! org
   (defun org-babel-noweb-wrap (&optional regexp)
@@ -266,52 +254,9 @@ which contain configuration files that should be tangled"
   (when (display-graphic-p)
     (pixel-scroll-precision-mode t)
     )
-  )
 
-(after! org
-  (use-package! org-download
-      :bind (
-             :map org-mode-map
-             ("C-c d c" . org-download-clipboard)
-             ("C-c d d" . org-download-delete)
-             )
-      ;; :hook
-      ;; (
-        ;;(dired-mode . org-download-enable) ;;-- this creates problems
-      ;;  )
-      :init
-      ;; -- Formatting
-      (setq org-download-image-attr-list
-            '("#+attr_html: :width 80% :align center"
-              "#+attr_org: :width 50%"
-              "#+attr_latex: :float nil"
-              )
-            )
-      :config
-      ;; -- Link Formatting
-      (setq org-download-link-format "[[file:%s]]\n")
-      
-      ;; -- Where to save the images
-      ;; Default so that we *could* provide a file-local-var
-      (setq-default
-      org-download-method 'directory
-      org-download-image-dir
-      (if (and (buffer-file-name) (file-exists-p (buffer-file-name)))
-            (concat ".assets/images/" (file-name-base (buffer-file-name)))
-          nil)
-      ;;(concat ".assests/images/" (file-name-base))
-      org-download-heading-lvl nil)
-      
-      (setq org-download-abbreviate-filename-function #'file-relative-name)
-      
-      (setq org-download-timestamp "%Y%m%d-%H%M%S_")
-      
-      (setq org-download-screenshot-method
-            "gnome-screenshot -a -f %sa")
-      
-      ;; This will remove the #+DOWNLOADED annotation
-      ;;(setq org-download-annotate-function (lambda (_) "Return empty string" ""))
-      )
+  ;; Center all images unless other-wise instructed
+  (setq org-image-align 'center)
   )
 
 ;; -- Link Formatting
@@ -408,8 +353,11 @@ org-download-heading-lvl nil)
 
 (after! org
   (require 'org-id)
-  (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 )
+
+(after! org-id
+  (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+  )
 
 (use-package! org-super-links
   :after org
@@ -433,13 +381,19 @@ org-download-heading-lvl nil)
  :n :desc "org-super-links-convert-to-super" "c" #'org-super-links-convert-link-to-super
  )
 
-(use-package! htmlize
-  :defer t
-  :hook (mhtml-mode . htmlize)
-  ;; TODO Other stuff?
-  )
-
 (after! org
+  ;; HTML can do 6 so can we!
+  (setq org-export-headline-levels 6)
+
+  ;; Advice - ask where to save exported org-file
+  ;; slight modification of: https://stackoverflow.com/a/47850858
+(defun org-export-output-file-name-modified (orig-fun extension &optional subtreep pub-dir)
+  (unless pub-dir
+    (setq pub-dir (read-directory-name "Export directory: " "exported-org-files/"))
+    (unless (file-directory-p pub-dir)
+      (make-directory pub-dir)))
+  (apply orig-fun extension subtreep pub-dir nil))
+(advice-add 'org-export-output-file-name :around #'org-export-output-file-name-modified)
 ;; Set LaTeXML as the equation converter
 ;; dep: LaTeXML (apt or site)
 (setq org-latex-to-mathml-convert-command
@@ -492,6 +446,7 @@ org-download-heading-lvl nil)
         org-latex-preview-throttle 0.2
         org-latex-preview-live-preview-fragments nil
         ;;previewing preamble
+        org-latex-create-formula-image-program 'dvisvgm ;svg looks crisp
         )
   )
 
@@ -591,50 +546,54 @@ org-download-heading-lvl nil)
     )
   )
 
-(with-eval-after-load 'org
-  (require 'org-xopp)
-  (org-xopp-setup)
-  )
+;; (with-eval-after-load 'org
+;;   (require 'org-xopp)
+;;   (org-xopp-setup)
+;;   )
 
-	 (setq org-todo-keywords
-          '(
-            ;; -- General
-            (sequence "TODO(t!)" "IN-PROG(i!)" "WAITING(w@/!)" "|" "DONE(d!)")
-            (sequence "|" "SUBMITTED(s!)")
-            (sequence "|" "CANCALLED(c@)" "DELEGATED(e!)")
-            (sequence "IDEA")
-            (sequence "PRJ")
-            (sequence "REMINDER(!r)")
-            (sequence "CALL" "|" "CALLED(!)")
-            (seqeunce "EMAIL(m!)" "|" "EMAILED(!)")
-            (sequence "GROC" "|" "DONE")
-            ;; -- Stuff?
-            (sequence "BUY" "|" "SELL")
-            ;; -- Media
-            (sequence "TO-FIND" "|" "FOUND")
-            (sequence "TO-READ" "|" "READ")
-            (sequence "TO-WATCH" "|" "WATCHED")
-            ;; -- Emacs
-            (sequence "EMACS")
-            (sequence "EMACS-PACKAGE")
-            (sequence "EMACS-CONFIG")
-            )
-          )
-
-    (setq org-todo-keyword-faces
-          '(("TODO"      . ( :foreground "red"          :weight bold))
-            ("IN-PROG"   . ( :foreground "orange"       :weight bold))
-            ("WAITING"   . ( :foreground "yellow"       :weight bold))
-            ("DONE"      . ( :foreground "green"        :weight bold))
-            ("IDEA"      . ( :foreground "deepskyblue1" :weight bold))
-            ("CANCELLED" . ( :foreground "gray"         :weight bold))
-            ("TO-FIND"   . ( :foreground "yellow1"      :weight bold))
-            ("EMACS"     . ( :foreground "purple"       :weight bold))
-            ("PRJ"       . ( :foreground "orange2"      :weight bold))
-            ("BUY"       . ( :foreground "spring green" :weight bold))
-            ("SELL"      . ( :foreground "deep pink"    :weight bold))
+(setq org-todo-keywords
+      '(
+        ;; -- General
+        (sequence "TODO(t!)" "IN-PROG(i!)" "WAITING(w@/!)" "|" "DONE(d!)")
+        (sequence "|" "SUBMITTED(s!)")
+        (sequence "|" "CANCALLED(c@)" "DELEGATED(e!)")
+        (sequence "IDEA")
+        (sequence "PRJ")
+        (sequence "REMINDER(!r)")
+        (sequence "CALL" "|" "CALLED(!)")
+        (seqeunce "EMAIL(m!)" "|" "EMAILED(!)")
+        (sequence "GROC" "|" "DONE")
+        ;; -- Stuff?
+        (sequence "BUY" "|" "SELL")
+        ;; -- Media
+        (sequence "TO-FIND" "|" "FOUND")
+        (sequence "TO-READ" "|" "READ")
+        (sequence "TO-WATCH" "|" "WATCHED")
+        ;; -- Emacs
+        (sequence "EMACS")
+        (sequence "EMACS-PACKAGE")
+        (sequence "EMACS-CONFIG")
+        ;; -- Work
+        (sequence "APPLY" "|" "APPLIED")
+        )
       )
-    )
+
+(setq org-todo-keyword-faces
+      '(("TODO"      . ( :foreground "red"          :weight bold))
+        ("IN-PROG"   . ( :foreground "orange"       :weight bold))
+        ("WAITING"   . ( :foreground "yellow"       :weight bold))
+        ("DONE"      . ( :foreground "green"        :weight bold))
+        ("IDEA"      . ( :foreground "deepskyblue1" :weight bold))
+        ("CANCELLED" . ( :foreground "gray"         :weight bold))
+        ("TO-FIND"   . ( :foreground "yellow1"      :weight bold))
+        ("EMACS"     . ( :foreground "purple"       :weight bold))
+        ("PRJ"       . ( :foreground "orange2"      :weight bold))
+        ("BUY"       . ( :foreground "spring green" :weight bold))
+        ("SELL"      . ( :foreground "deep pink"    :weight bold))
+        ("APPLY"     . ( :foreground "red1"         :weight bold))
+        ("APPLIED"   . ( :foreground "green yellow" :weight bold))
+        )
+      )
 
 (after! org
   (setq org-log-done 'time)
@@ -647,6 +606,9 @@ org-download-heading-lvl nil)
       org-agenda-block-separator #x2501
       org-agenda-compact-blocks t
       org-agenda-start-with-log-mode t)
+
+  ;; Performance
+  (setq org-agenda-inhibit-startup t) ; Prevents agenda from triggering startup directives
   ) ; after! org
 
 (after! org-agenda
@@ -705,19 +667,19 @@ org-download-heading-lvl nil)
   (keymap-set org-agenda-mode-map "J" #'bookmark-jump)
   )
 
-(after! org
-  (setq org-super-agenda-groups
-        '(
-          (:name "Planning"
-           :tag "planning"
-           )
-          (:name "Today"  ; Optionally specify section name
-           :time-grid t  ; Items that appear on the time grid
-           :todo "TODAY")  ; Items that have this TODO keyword
-          )
-        )
-  (org-super-agenda-mode)
-  )
+;; (after! org
+;;   (setq org-super-agenda-groups
+;;         '(
+;;           (:name "Planning"
+;;            :tag "planning"
+;;            )
+;;           (:name "Today"  ; Optionally specify section name
+;;            :time-grid t  ; Items that appear on the time grid
+;;            :todo "TODAY")  ; Items that have this TODO keyword
+;;           )
+;;         )
+;;   (org-super-agenda-mode)
+;;   )
 
 (after! org
   (setq org-capture-templates
@@ -803,8 +765,11 @@ org-download-heading-lvl nil)
 
 ;; -- Work
 ("w" "Work")
+("wa" "Job Application" entry (file+headline "~/.notes/employment.org" "2025 Job Hunt")
+ "* APPLY [[%x][%^{Application Name}]]\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
 ("wt" "Work TODO" entry (file+headline "~/.notes/work-agenda.org" "Tasks")
- "* TODO %^{Poject Name} - %^{Task description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ "* TODO %^{Project Name} - %^{Task description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
 ("wn" "Work Note" entry (file+headline "~/.notes/work-agenda.org" "Improvements")
  "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
@@ -841,6 +806,9 @@ org-download-heading-lvl nil)
           (org-agenda-files :maxlevel . 6))
         )
   )
+
+(use-package! org-pandoc-import
+  :after org)
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -889,11 +857,15 @@ org-download-heading-lvl nil)
 (after! aphelia
   (map! :leader
         "b f" #'apheleia-format-buffer)
-  ;; deps: yq (obvs)
-  (add-to-list 'apheleia-formatters
-               '(yq . ("yq" "eval" "." "--prettyPrint" "--inplace")))
-  (add-to-list 'apheleia-mode-alist
-               '(yaml-mode . yq))
+
+  ;; Add the yq formatter
+  ;; NOTE: this is effectively what is already in the apheleia-formatters
+  (setf (alist-get 'yq apheleia-formatters)
+        '("yq" "--prettyPrint" "--no-colors" "--no-doc" "--input-format" "yaml"
+          "--output-format" "yaml" (apheleia-formatters-indent nil "--indent")))
+
+  (setf (alist-get 'yaml-mode apheleia-mode-alist)
+        '(yq))
   )
 
 (setq projectile-mode-line-function '(lambda () (format " Proj[%s]" (projectile-project-name))))
@@ -973,22 +945,6 @@ org-download-heading-lvl nil)
 
   )
 
-;; (package! rotate
-;;   ;:pin "4e9ac3ff800880bd9b705794ef0f7c99d72900a6"
-;;   )
-
-(use-package! olivetti
-:config
-(setq-default olivetti-body-width 180)
-)
-
-(use-package! auto-olivetti
-:custom
-(auto-olivetti-enabled-modes '(text-mode prog-mode helpful-mode ibuffer-mode image-mode))
-:config
-(auto-olivetti-mode)
-)
-
 (use-package! yasnippet
   :defer t
   :config
@@ -1010,6 +966,7 @@ org-download-heading-lvl nil)
                 (define-key yas/keymap [tab] 'yas/next-field)))
 
   )
+)
 
 (map!
  :map org-mode-map
@@ -1019,17 +976,6 @@ org-download-heading-lvl nil)
  ;;:nvi "C-c n" #'yas-next-field
  ;;:nvi "C-c p" #'yas-prev-field
  )
-
-;; (use-package! whitespace
-;;   :config
-;;   (setq
-;;     whitespace-style '(face tabs tab-mark spaces space-mark trailing newline newline-mark)
-;;     whitespace-display-mappings '(
-;;       (space-mark   ?\     [?\u00B7]     [?.])
-;;       (space-mark   ?\xA0  [?\u00A4]     [?_])
-;;       (newline-mark ?\n    [182 ?\n])
-;;       (tab-mark     ?\t    [?\u00BB ?\t] [?\\ ?\t])))
-;;   (global-whitespace-mode +1))
 
 (after! evil-multiedit
   (evil-multiedit-default-keybinds) ; for now we cheat and just the defaults
@@ -1042,7 +988,22 @@ org-download-heading-lvl nil)
   ;;  )
   )
 
+;; Different faces for different severities
+(after! flymake
+  (set-face-attribute 'flymake-error nil :underline '(:style wave :color "red"))
+  (set-face-attribute 'flymake-warning nil :underline '(:style wave :color "orange"))
+  (set-face-attribute 'flymake-note nil :underline '(:style wave :color "blue"))
+
+    (setq flymake-diagnostic-at-point-display-diagnostic-function
+        'flymake-diagnostic-at-point-display-diagnostic-buffer)
+  )
+
 (after! tramp
+
+;; Hopefully disable tramp cache
+;; -- https://emacs.stackexchange.com/questions/12904/tramp-history-files
+;; TODO Find more robust method
+(setq tramp-persistency-file-name "/tmp/.tramp")
 
   ;; -- Tramp connection configuration
   ;; How tramp iniates logins
@@ -1141,33 +1102,6 @@ org-download-heading-lvl nil)
  :map jinx-mode-map
  "M-$" #'jinx-correct-nearest
  "C-M-$" #'jinx-languages)
-
-(use-package! writegood-mode
-  :hook (org-mode . writegood-mode)
-  :config
-  ;; Personal Weasel words
-  ;; (setq personal-weasel-words
-  ;;       '("")
-  ;;       )
-  ;;(setq writegood-weasel-words (concat write-good-weasel-words personal-weasel-words))
-   ;;  (map!
-   ;; :prefix
-   ;; )
-
-  (set-face-attribute 'writegood-weasels-face nil
-                      ;; white weasel (ermine)
-                      :underline '(:style wave :color "white")
-                      :slant 'italic
-                      )
-  (set-face-attribute 'writegood-passive-voice-face nil
-                      ;; white weasel (ermine)
-                      :underline '(:style wave :color "CadetBlue1")
-                      )
-  (set-face-attribute 'writegood-duplicates-face nil
-                      ;; white weasel (ermine)
-                      :underline '(:style wave :color "maroon1")
-                      )
-  )
 
 ;; biblio
 (after! citar
@@ -1283,6 +1217,32 @@ prompt) during export, e.g. conversion of org to say html."
   ;; (setq lsp-pylsp-plugins-yapf-enabled t)
   ;; (setq lsp-pylsp-plugins-autopep8-enabled t)
   ;; (setq lsp-pylsp-plugins-black-enabled nil)
+
+
+(setq gc-cons-threshold (* 100 1024 1024)
+      read-process-output-max (* 1024 1024)
+      treemacs-space-between-root-nodes nil
+      company-idle-delay 0.0
+      company-minimum-prefix-length 1
+      lsp-idle-delay 0.1)  ;; clangd is fast
+
+  (setq lsp-headerline-breadcrumb-enable t)
+  (setq lsp-modeline-code-actions-enable t)
+  (setq lsp-enable-suggest-server-download nil)
+  (setq lsp-warn-no-matched-clients nil)
+  (setq lsp-idle-delay 0.1)
+  ;; (gc-cons-threshold (* 100 1024 1024))
+  ;; -- Args for clangd
+  (setq lsp-clients-clangd-args
+   '(
+     ;;"-j=4" ;; for some reason this doesn't override the default -j=2 that is passed from somewhere
+     "--header-insertion=never"
+     "--all-scopes-completion"
+     "--background-index"
+     "--clang-tidy"
+     "--compile-commands-dir=build"
+     "--cross-file-rename"
+     "--suggest-missing-includes"))
   )  ;; Disable LSP indentation
 
 (after! dap-mode
@@ -1304,6 +1264,7 @@ prompt) during export, e.g. conversion of org to say html."
 
 (after! eglot
   :config
+  ;; clangd /should/ be an alias for most recent version of clangd installed on system (eg. clangd-18)
   (set-eglot-client! 'cc-mode '("clangd" "-j=3" "--clang-tidy" "/.local/lsp/bin/")) ;; clangd
   ;; -- Per machine lsp locations
   (when (string= (system-name) "terra")
@@ -1311,6 +1272,23 @@ prompt) during export, e.g. conversion of org to say html."
                                         (concat(getenv "HOME"))
                                         ))))
   )
+
+(after! babel
+  (setq org-plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
+  (setq plantuml-default-exec-mode 'jar)
+  ;; (setq plantuml-default-exec-mode 'binary)
+  )
+
+;; Indent bars mode
+(setq
+ indent-bars-color '(highlight :face-bg t :blend 0.15)
+ indent-bars-pattern "."
+ indent-bars-width-frac 0.1
+ indent-bars-pad-frac 0.1
+ indent-bars-zigzag nil
+ indent-bars-color-by-depth '(:regexp "outline-\\([0-9]+\\)" :blend 1) ; blend=1: blend with BG only
+ indent-bars-highlight-current-depth '(:blend 0.5) ; pump up the BG blend on current
+ indent-bars-display-on-blank-lines t)
 
 ;; -- Ideally this is state dependent but this creates a nesting depth error for some reason
 (after! vterm
@@ -1324,4 +1302,13 @@ prompt) during export, e.g. conversion of org to say html."
   (setq vterm-tramp-shells '(("docker" "/bin/bash")
                              ("ssh" "/bin/bash")
                              ("sshx" "/bin/bash")
-                             ("sudo" "/bin/bash"))))
+                             ("sudo" "/bin/bash")))
+
+  ;; TODO - Figure out how to put vterm into copy mode on i -> m or n -> m
+
+;; (map!
+;;  :map vterm-mode-map
+;;  "C-y" #'vterm-yank
+;;  )
+
+  )
