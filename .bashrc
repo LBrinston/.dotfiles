@@ -232,6 +232,10 @@ export PATH="$XDG_DATA_HOME/cargo/bin:$PATH"
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/dotnet
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
+# Install Ruby Gems to ~/.gems
+export GEM_HOME="$HOME/.gems"
+export PATH="$HOME/.gems/bin:$PATH"
+
 # Adding to PATH
 export PATH="$HOME/.local/bin:$PATH"
 

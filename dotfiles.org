@@ -773,6 +773,8 @@ export UVIC="$HOME/Documents/UVic"
 #<<DOCKER-SHELL-VAR>>#
 #<<DOTNET-SHELL-VAR>>#
 #<<GNUPG-SHELL-VAR>>#
+#<<JEKYLL-SHELL-VAR>>#
+
 # Adding to PATH
 export PATH="$HOME/.local/bin:$PATH"
 
@@ -5042,3 +5044,17 @@ alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
 #+BEGIN_SRC bash
 export WINEPREFIX="$XDG_DATA_HOME"/wine
 #+END_SRC
+*** jekyll
+**** Dependencies
+
+#+begin_src bash
+sudo apt-get install ruby-full build-essential zlib1g-dev
+#+end_src
+**** Environment variables
+
+#+name: JEKYLL-SHELL-VAR
+#+begin_src bash
+# Install Ruby Gems to ~/.gems
+export GEM_HOME="$HOME/.gems"
+export PATH="$HOME/.gems/bin:$PATH"
+#+end_src
