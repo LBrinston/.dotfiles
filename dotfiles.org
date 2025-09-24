@@ -2232,6 +2232,9 @@ conda config --set auto_activate_base false
 #+END_SRC
 
 **** DOOM
+:PROPERTIES:
+:header-args: :comments link
+:END:
 
 Upfront make sure that our shell can find DOOM.
 
