@@ -5018,11 +5018,10 @@ export PATH="$XDG_DATA_HOME/cargo/bin:$PATH"
 #+END_SRC
 **** =ripgrep=
 
-ripgrep is a dependency for doom emacs itself (plus it whips). It is better to install it directly via cargo than apt so that it can be built with 'pcre2'. Don't forget to runn ~doom sync~ after.
-
+ripgrep is a dependency for doom emacs itself (plus it whips). It is better to install it directly via cargo than apt so that it can be built with 'pcre2'. Don't forget to run ~doom sync~ after.
 
 #+begin_src bash :tangle no
-sudo cargo --features 'pcre2'
+cargo install ripgrep --features 'pcre2'
 #+end_src
 
 *** nVidia
