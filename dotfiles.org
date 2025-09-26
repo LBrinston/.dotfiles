@@ -2978,6 +2978,11 @@ This isn't reliably loading on start for some reason.
 #+END_SRC
 
 ref: https://emacs.stackexchange.com/questions/44664/apply-ansi-color-escape-sequences-for-org-babel-results
+******** TODO Hooks - Format the file we've tangled too
+
+This would be really nice to figure out.
+
+ref: https://jamesaimonetti.com/posts/formatting-tangled-output-in-org-mode/
 
 ******* Images
 :PROPERTIES:
