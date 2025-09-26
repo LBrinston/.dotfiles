@@ -575,8 +575,9 @@ org-download-heading-lvl nil)
         (sequence "EMACS-CONFIG")
         ;; -- Work
         (sequence "APPLY" "|" "APPLIED")
-        )
-      )
+        (sequence "QUESTION" "|" "ANSWER")
+        (sequence "MEETING" "|" "MINUTES")
+        ))
 
 (setq org-todo-keyword-faces
       '(("TODO"      . ( :foreground "red"          :weight bold))
@@ -585,15 +586,23 @@ org-download-heading-lvl nil)
         ("DONE"      . ( :foreground "green"        :weight bold))
         ("IDEA"      . ( :foreground "deepskyblue1" :weight bold))
         ("CANCELLED" . ( :foreground "gray"         :weight bold))
+        ;; -- Media
         ("TO-FIND"   . ( :foreground "yellow1"      :weight bold))
+        ("TO-READ"   . ( :foreground "SteelBlue1"   :weight bold))
+        ;; -- Emacs
         ("EMACS"     . ( :foreground "purple"       :weight bold))
+        ;; -- Misc
         ("PRJ"       . ( :foreground "orange2"      :weight bold))
         ("BUY"       . ( :foreground "spring green" :weight bold))
         ("SELL"      . ( :foreground "deep pink"    :weight bold))
+        ;; -- Work
         ("APPLY"     . ( :foreground "red1"         :weight bold))
         ("APPLIED"   . ( :foreground "green yellow" :weight bold))
-        )
-      )
+        ("QUESTION"  . ( :foreground "cyan"         :weight bold))
+        ("ANSWER"  .   ( :foreground "pale gren"    :weight bold))
+        ("MEETING"  . (  :foreground "goldenrod1"   :weight bold))
+        ("MINUTES"  . (  :foreground "yellow2"      :weight bold))
+        ))
 
 (after! org
   (setq org-log-done 'time)
