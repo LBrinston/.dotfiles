@@ -4724,13 +4724,12 @@ Vterm requires some extra work to get functioning.
 #+BEGIN_SRC bash :tangle no
 	sudo apt-get -y install libvterm-dev
 #+END_SRC
-******* 2 Install ~libtool~
+******* 2. Install ~libtool~
 
 CMake requires libtool inorder to build vterm. The libtool package may be installed on your package but the binary itself may be missing in which case you'll want:
 src_sh{sudo apt install libtool-bin}.
 
 Often the libtool package just installs libtoolize (which is for adding libtool support to programs) is installed on a system.
-
 
 ******* 2. Compile =libvterm.so=
 :PROPERTIES:
