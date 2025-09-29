@@ -3703,9 +3703,15 @@ Relevant documentation:
 #+begin_src emacs-lisp
 (after! org
   (setq org-capture-templates
-        '(("t" "Todo" entry (file "~/.notes/capture.org")
+        '(
+          ("t" "Todo" entry (file "~/.notes/capture.org")
            "* TODO %?\n  %i\n"
            :empty-lines-after 1)
+          ;; -- Freeform - no preset todo keyword
+          ("f" "Freeform" entry (file "~/.notes/capture.org")
+           "* %?\n  %i\n"
+           :empty-lines-after 1)
+
 #+end_src
 
 "Life" related things.
@@ -3819,7 +3825,7 @@ _Work related_
 ("wa" "Job Application" entry (file+headline "~/.notes/employment.org" "2025 Job Hunt")
  "* APPLY [[%x][%^{Application Name}]]\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
-("wt" "Work TODO" entry (file+headline "~/.notes/work-agenda.org" "Tasks")
+("wt" "TODO" entry (file+headline "~/.notes/work-agenda.org" "Tasks")
  "* TODO %^{Project Name} - %^{Task description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
 ("wn" "Work Note" entry (file+headline "~/.notes/work-agenda.org" "Improvements")
