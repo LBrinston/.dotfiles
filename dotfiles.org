@@ -2978,6 +2978,11 @@ This isn't reliably loading on start for some reason.
 #+END_SRC
 
 ref: https://emacs.stackexchange.com/questions/44664/apply-ansi-color-escape-sequences-for-org-babel-results
+******** TODO Hooks - Format the file we've tangled too
+
+This would be really nice to figure out.
+
+ref: https://jamesaimonetti.com/posts/formatting-tangled-output-in-org-mode/
 
 ******* Images
 :PROPERTIES:
@@ -4733,7 +4738,7 @@ Often the libtool package just installs libtoolize (which is for adding libtool 
 Emacs should offer to do this for you when you first trying to run it.
 ******* 3. Configure =vterm=
 
-vterm is meant to act like a terminal so we want it to go straight to insert mode AND we \probably\ want to land in bash (by defaul it vterm looks for sh).
+vterm is meant to act like a terminal so we want it to go straight to insert mode AND we \probably\ want to land in bash (by default it vterm looks for sh).
 
 =(not clear why I'm having to manually specify tangle path here?)=
 #+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/config.el
