@@ -574,14 +574,13 @@ org-download-heading-lvl nil)
         (sequence "EMACS-PACKAGE")
         (sequence "EMACS-CONFIG")
         (sequence "ISSUE" "|" "RESOLVED")
-        (sequence "BUG")
+        (sequence "BUG" "KNOWCAUSE" "|" "FIXED") 
         (sequence "ERROR")
         ;; -- Work
         (sequence "APPLY" "|" "APPLIED")
         (sequence "QUESTION" "|" "ANSWER")
         (sequence "MEETING" "|" "MINUTES")
-        )
-      )
+        ))
 
 (setq org-todo-keyword-faces
       '(
@@ -592,6 +591,12 @@ org-download-heading-lvl nil)
         ("DONE"      . ( :foreground "green"        :weight bold))
         ("IDEA"      . ( :foreground "deepskyblue1" :weight bold))
         ("CANCELLED" . ( :foreground "gray"         :weight bold))
+        ;; -- Media
+        ("TO-FIND"   . ( :foreground "yellow1"      :weight bold))
+        ("TO-READ"   . ( :foreground "SteelBlue1"   :weight bold))
+        ;; -- Emacs
+        ("EMACS"     . ( :foreground "purple"       :weight bold))
+        ;; -- Misc
         ("PRJ"       . ( :foreground "orange2"      :weight bold))
         ;; -- Media
         ("TO-FIND"   . ( :foreground "yellow1"      :weight bold))
@@ -603,13 +608,15 @@ org-download-heading-lvl nil)
         ;; -- Misc
         ("BUY"       . ( :foreground "spring green" :weight bold))
         ("SELL"      . ( :foreground "deep pink"    :weight bold))
-        ;; -- Work
+        ;; -- Find Work
         ("APPLY"     . ( :foreground "red1"         :weight bold))
         ("APPLIED"   . ( :foreground "green yellow" :weight bold))
+        ;; -- Do Work
         ("QUESTION"  . ( :foreground "cyan"         :weight bold))
-        ("ANSWER"    . ( :foreground "aquamarine"   :weight bold))
-        )
-      )
+        ("ANSWER"  .   ( :foreground "pale gren"    :weight bold))
+        ("MEETING"  . (  :foreground "goldenrod1"   :weight bold))
+        ("MINUTES"  . (  :foreground "yellow2"      :weight bold))
+        ))
 
 (after! org
   (setq org-log-done 'time)
@@ -699,8 +706,13 @@ org-download-heading-lvl nil)
 
 (after! org
   (setq org-capture-templates
-        '(("t" "Todo" entry (file "~/.notes/capture.org")
+        '(
+          ("t" "Todo" entry (file "~/.notes/capture.org")
            "* TODO %?\n  %i\n"
+           :empty-lines-after 1)
+          ;; -- Freeform - no preset todo keyword
+          ("f" "Freeform" entry (file "~/.notes/capture.org")
+           "* %?\n  %i\n"
            :empty-lines-after 1)
 
 ;; -- Life
@@ -784,7 +796,7 @@ org-download-heading-lvl nil)
 ("wa" "Job Application" entry (file+headline "~/.notes/employment.org" "2025 Job Hunt")
  "* APPLY [[%x][%^{Application Name}]]\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
-("wt" "Work TODO" entry (file+headline "~/.notes/work-agenda.org" "Tasks")
+("wt" "TODO" entry (file+headline "~/.notes/work-agenda.org" "Tasks")
  "* TODO %^{Project Name} - %^{Task description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
 ("wn" "Work Note" entry (file+headline "~/.notes/work-agenda.org" "Improvements")
