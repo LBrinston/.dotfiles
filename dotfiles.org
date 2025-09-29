@@ -3534,29 +3534,45 @@ There appears to be two issues:
         (sequence "TO-FIND" "|" "FOUND")
         (sequence "TO-READ" "|" "READ")
         (sequence "TO-WATCH" "|" "WATCHED")
-        ;; -- Emacs
+        ;; -- Programming
         (sequence "EMACS")
         (sequence "EMACS-PACKAGE")
         (sequence "EMACS-CONFIG")
+        (sequence "ISSUE" "|" "RESOLVED")
+        (sequence "BUG") ; KNOWCAUSE | FIXED?
+        (sequence "ERROR")
         ;; -- Work
         (sequence "APPLY" "|" "APPLIED")
+        (sequence "QUESTION" "|" "ANSWER")
+        (sequence "MEETING" "|" "MINUTES")
         )
       )
 
 (setq org-todo-keyword-faces
-      '(("TODO"      . ( :foreground "red"          :weight bold))
+      '(
+        ;; -- General
+        ("TODO"      . ( :foreground "red"          :weight bold))
         ("IN-PROG"   . ( :foreground "orange"       :weight bold))
         ("WAITING"   . ( :foreground "yellow"       :weight bold))
         ("DONE"      . ( :foreground "green"        :weight bold))
         ("IDEA"      . ( :foreground "deepskyblue1" :weight bold))
         ("CANCELLED" . ( :foreground "gray"         :weight bold))
-        ("TO-FIND"   . ( :foreground "yellow1"      :weight bold))
-        ("EMACS"     . ( :foreground "purple"       :weight bold))
         ("PRJ"       . ( :foreground "orange2"      :weight bold))
+        ;; -- Media
+        ("TO-FIND"   . ( :foreground "yellow1"      :weight bold))
+        ("TO-READ"   . ( :foreground "steel blue"   :weight bold))
+        ;; -- Programming
+        ("EMACS"     . ( :foreground "MediumPurple1":weight bold))
+        ("BUG"       . ( :foreground "marron1"      :weight bold))
+        ("ERROR"     . ( :foreground "red3"         :weight bold))
+        ;; -- Misc
         ("BUY"       . ( :foreground "spring green" :weight bold))
         ("SELL"      . ( :foreground "deep pink"    :weight bold))
+        ;; -- Work
         ("APPLY"     . ( :foreground "red1"         :weight bold))
         ("APPLIED"   . ( :foreground "green yellow" :weight bold))
+        ("QUESTION"  . ( :foreground "cyan"         :weight bold))
+        ("ANSWER"    . ( :foreground "aquamarine"   :weight bold))
         )
       )
 #+END_SRC
