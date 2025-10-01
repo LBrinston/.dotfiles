@@ -2559,6 +2559,7 @@ I'm really just storing the header here. I think it makes sense for the package 
 :PROPERTIES:
 :header-args: :tangle ~/.dotfiles/.config/doom/config.el
 :ID:       cde6812f-ce92-4a0a-8369-062f2edb7ab6
+:CREATED:  2025-10-01 09:13:55
 :END:
 ****** Header
 :PROPERTIES:
@@ -3694,6 +3695,38 @@ There appears to be two issues:
         ("MINUTES"  . (  :foreground "yellow2"      :weight bold))
         ))
 #+END_SRC
+
+******* Tags
+
+Pre-define some tags to help with categorizing and filtering things. Since I already tag things but category these tags with have some syntax sugar to distinguish them. This is intended to work with the agenda.
+
+<tag>  - topic tags
+@<tag> - "context" tags
+#<tag> - 
+
+#+begin_src emacs-lisp
+(setq org-tag-alist
+'(
+  ;; @ is syntax sugar
+  ;;("TAG-NAME" . ?<speed-key>)
+
+  ;; Places
+  ("@home" . ?H)
+  ("@work" . ?W)
+  
+  ;; Devices
+  ("@computer" . ?C)
+  ("@phone" . ?P) 
+  
+  ;; Activities
+  ("@planning" . ?n)
+  ("@email" . ?e)
+  ("@call" . ?a)
+  ("@errands" . ?r)
+  ("@cad" . ?c)
+  ("@writing" . ?w)
+  ))
+#+end_src
 
 ******* Agenda
 

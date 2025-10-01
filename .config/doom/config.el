@@ -690,6 +690,28 @@ org-download-heading-lvl nil)
         ("MINUTES"  . (  :foreground "yellow2"      :weight bold))
         ))
 
+(setq org-tag-alist
+'(
+  ;; @ is syntax sugar
+  ;;("TAG-NAME" . ?<speed-key>)
+
+  ;; Places
+  ("@home" . ?H)
+  ("@work" . ?W)
+  
+  ;; Devices
+  ("@computer" . ?C)
+  ("@phone" . ?P) 
+  
+  ;; Activities
+  ("@planning" . ?n)
+  ("@email" . ?e)
+  ("@call" . ?a)
+  ("@errands" . ?r)
+  ("@cad" . ?c)
+  ("@writing" . ?w)
+  ))
+
 (after! org
   (setq org-log-done 'time)
   (setq org-log-note-clock-out t)
