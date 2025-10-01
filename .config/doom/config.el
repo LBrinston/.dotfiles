@@ -428,6 +428,67 @@ org-download-heading-lvl nil)
 ;; (setq org-export-filter-link-functions '(my-org-odt-link-converter))
   )
 
+(defun nix-to-win-path(nix-path)
+  (interactive)
+  "Takes a unix style path and converts it to a windows UNC path."
+  (let
+      ((win-path nix-path) ; initialize to the passed path
+       (nix-mnt (concat (expand-file-name "~") "/Artemis"))
+       (win-mnt "///Artemis")
+       (matched nil)
+       )
+    (let
+        (
+         ;; Project
+         (project "/Project")
+         ;; Public
+         (public "/Public")
+         ;; Add more here
+         )
+      ;; -- Check if the passed link contains any fileshare paths
+      (cond
+       ;; Project
+       ((string-match-p (concat nix-mnt project) win-path)
+        (setq win-path (string-replace (concat nix-mnt project) (concat win-mnt project) win-path))
+        (setq matched t))
+       ;; Public
+       ((string-match-p (concat nix-mnt public) win-path)
+        (setq win-path (string-replace (concat nix-mnt public) (concat win-mnt public) win-path))
+        (setq matched t)
+        )
+       ;; Add more here
+       ) ;cond
+      ); inner-let
+    ;; -- Flip all our slashes
+    (if matched
+        win-path
+      nix-path
+      )
+    ))
+
+(defun my-org-odt-link-filter (text backend info)
+  "Convert Unix fileshare paths to Windows UNC paths in ODT export."
+  ;; Filters need to return _something_ if we're
+  (if (org-export-derived-backend-p backend 'odt)
+    ;; Only process if it's a file link
+    ;; -- regex the file path out of the odt xml
+    (if (string-match "xlink:href=\"file://\\([^\"]+\\)\"" text)
+
+        ;; -- progn is need to bundle our message debug and let* into a single clause under the if (otherwise the let* would be seen as the else clause)
+        (progn
+        (message "Running filter on: %s" (match-string 1 text)) ;debug
+
+        ;; match-string retrieves the capture groups from string-match
+        (let* ((unix-path (match-string 1 text))  ;; Path without file://
+               (win-path (nix-to-win-path unix-path)))  ;; Convert path
+          (string-replace (concat "file://" unix-path)
+                         (concat "file://" win-path)
+                         text)
+          ) ; let*
+        ) ; progn
+      ;; Not a file link, return unchanged
+      text)))
+
 ;;(after! org
 ;;(use-package! org-latex-preview
 ;;  :after org

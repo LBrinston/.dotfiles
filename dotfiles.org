@@ -3286,36 +3286,86 @@ Ideally we set these per file as need with a file-local variable like this:
 ~-,*- org-export-filter-link-functions: (my-custom-link-filter); -*-~
 =Note=: the , at the beginning is to escape org markup.
 
-#+name: ODT-LINK-FILTER
-#+begin_src emacs-lisp :tangle no
-;; WIP - needs testing and configuration
-;; Define path mappings
-(setq org-link-path-mappings
-      '(("/mount/shared" . "R:")
-        ("/home/shared" . "S:")
-        ("/mnt/fileserver" . "\\\\fileserver")))
+******* Filters
+******** (odt) Unix to Windows file:// links
+:PROPERTIES:
+:ID:       d7faa0b6-fcf1-4f27-b5ed-924914bc2952
+:END:
+:BACKLINKS:
+[2025-09-30 Tue 15:12] <- [[id:cd992c9b-6424-468e-b3cd-a8470677848f][4. Plumb it into dotfiles]]
+:END:
 
-;; Custom function to convert file links for ODT export
-(defun my-org-odt-link-converter (path desc format)
-  "Convert file paths for Windows when exporting to ODT."
-  (when (and (string= format "odt")
-             (string-match "^file:" path))
-    (let ((file-path (substring path 5))) ; Remove "file:" prefix
-      ;; Apply path mappings
-      (dolist (mapping org-link-path-mappings)
-        (when (string-prefix-p (car mapping) file-path)
-          (setq file-path (replace-regexp-in-string
-                          (regexp-quote (car mapping))
-                          (cdr mapping)
-                          file-path))))
-      ;; Convert forward slashes to backslashes for Windows
-      (setq file-path (replace-regexp-in-string "/" "\\\\" file-path))
-      ;; Return the converted path
-      (concat "file:" file-path))))
+Step 1. Write a function to perform the conversion.
 
-;; Hook it into the ODT exporter
-;; Want to do this conditionally
-;; (setq org-export-filter-link-functions '(my-org-odt-link-converter))
+Here I am concerned with specifically converting file share paths NOT all paths.
+
+#+begin_src emacs-lisp
+(defun nix-to-win-path(nix-path)
+  (interactive)
+  "Takes a unix style path and converts it to a windows UNC path."
+  (let
+      ((win-path nix-path) ; initialize to the passed path
+       (nix-mnt (concat (expand-file-name "~") "/Artemis"))
+       (win-mnt "///Artemis")
+       (matched nil)
+       )
+    (let
+        (
+         ;; Project
+         (project "/Project")
+         ;; Public
+         (public "/Public")
+         ;; Add more here
+         )
+      ;; -- Check if the passed link contains any fileshare paths
+      (cond
+       ;; Project
+       ((string-match-p (concat nix-mnt project) win-path)
+        (setq win-path (string-replace (concat nix-mnt project) (concat win-mnt project) win-path))
+        (setq matched t))
+       ;; Public
+       ((string-match-p (concat nix-mnt public) win-path)
+        (setq win-path (string-replace (concat nix-mnt public) (concat win-mnt public) win-path))
+        (setq matched t)
+        )
+       ;; Add more here
+       ) ;cond
+      ); inner-let
+    ;; -- Flip all our slashes
+    (if matched
+        win-path
+      nix-path
+      )
+    ))
+#+end_src
+
+Step 2. Create a org-export filter
+
+The ~org-export~ filters are _run after_ the org file has already been converted to the target format. So the link needs to be extracted from xml in the case of odt.
+
+#+begin_src emacs-lisp
+(defun my-org-odt-link-filter (text backend info)
+  "Convert Unix fileshare paths to Windows UNC paths in ODT export."
+  ;; Filters need to return _something_ if we're
+  (if (org-export-derived-backend-p backend 'odt)
+    ;; Only process if it's a file link
+    ;; -- regex the file path out of the odt xml
+    (if (string-match "xlink:href=\"file://\\([^\"]+\\)\"" text)
+
+        ;; -- progn is need to bundle our message debug and let* into a single clause under the if (otherwise the let* would be seen as the else clause)
+        (progn
+        (message "Running filter on: %s" (match-string 1 text)) ;debug
+
+        ;; match-string retrieves the capture groups from string-match
+        (let* ((unix-path (match-string 1 text))  ;; Path without file://
+               (win-path (nix-to-win-path unix-path)))  ;; Convert path
+          (string-replace (concat "file://" unix-path)
+                         (concat "file://" win-path)
+                         text)
+          ) ; let*
+        ) ; progn
+      ;; Not a file link, return unchanged
+      text)))
 #+end_src
 
 ******* LaTeX
