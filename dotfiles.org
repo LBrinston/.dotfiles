@@ -3189,7 +3189,22 @@ Headings and links go together because we will assign a unique ID to every headi
 (after! org-id
   (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
   )
+
+ ;; Make sure capture applys an ID
+(add-hook 'org-capture-prepare-finalize-hook 'org-id-get-create)
+
+(defun my/org-add-ids-to-headlines-in-file ()
+  "Add ID properties to all headlines in the current file which
+do not already have one."
+  (interactive)
+  (org-map-entries 'org-id-get-create))
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'my/org-add-ids-to-headlines-in-file nil 'local)))
 #+end_src
+
+ref: [[https://stackoverflow.com/questions/13340616/assign-ids-to-every-entry-in-org-mode][emacs - Assign IDs to every entry in Org-mode - Stack Overflow]]
 
 We will also bring in =org-super-links= so that we can have automatic back links.
 
