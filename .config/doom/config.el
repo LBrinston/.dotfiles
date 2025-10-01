@@ -897,7 +897,7 @@ org-download-heading-lvl nil)
  "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
 ("wnl" "Note with link" entry (file "~/.notes/agenda-work.org")
- "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n[[%^{Link}][%^{Description}]]\n%?"
  :empty-lines-after 1 :prepend t)
 
 ;; -- Test

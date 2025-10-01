@@ -3181,6 +3181,9 @@ Org-mode has a ~yank-media~ command since 9.something. It seems to more or less 
 :PROPERTIES:
 :ID:       7b519273-d75a-446a-86b6-e0763c79ea4c
 :END:
+:BACKLINKS:
+[2025-09-30 Tue 15:40] <- [[id:de814756-aa9b-4f42-9dd9-15f0613c76b0][org-map-entries]]
+:END:
 
 Headings and links go together because we will assign a unique ID to every heading from which we will derive org-links. This makes the links much more resilient.
 
@@ -3252,7 +3255,7 @@ Creates automatic backlinks when it is used to create a link. ~org-refile~ targe
  )
 #+end_src
 
-******** fetching link titles
+******** Fetching link titles
 
 I know this will work.
 
