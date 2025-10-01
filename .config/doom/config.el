@@ -143,6 +143,14 @@ which contain configuration files that should be tangled"
 
 (setq doom-modeline-height 35)
 
+;; When there is a "Time-stamp: <>" string in the first 10 lines of the file,
+;; Emacs will write time-stamp information there when saving the file.
+;; (Borrowed from http://home.thep.lu.se/~karlf/emacs.html)
+(setq time-stamp-active t          ; Do enable time-stamps.
+      time-stamp-line-limit 10     ; Check first 10 buffer lines for Time-stamp: <>
+      time-stamp-format "Last changed %Y-%02m-%02d %02H:%02M:%02S by %u")
+(add-hook 'write-file-hooks 'time-stamp) ; Update when saving.
+
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/.notes/")
