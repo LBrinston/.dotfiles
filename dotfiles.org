@@ -2588,6 +2588,9 @@ I'm really just storing the header here. I think it makes sense for the package 
 
 <<my-dotfiles-vars>>
 
+;; Get the path to home
+(defvar my/home (getenv "HOME"))
+
 ;; -- Add my personal functions early
 (add-load-path!
  "my-elisp.el"

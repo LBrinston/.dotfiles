@@ -26,6 +26,9 @@ which contain configuration files that should be tangled"
 
 (setq dotcrafter-org-files '("dotfiles.org"))
 
+;; Get the path to home
+(defvar my/home (getenv "HOME"))
+
 ;; -- Add my personal functions early
 (add-load-path!
  "my-elisp.el"
