@@ -690,6 +690,28 @@ org-download-heading-lvl nil)
         ("MINUTES"  . (  :foreground "yellow2"      :weight bold))
         ))
 
+(setq org-tag-alist
+'(
+  ;; @ is syntax sugar
+  ;;("TAG-NAME" . ?<speed-key>)
+
+  ;; Places
+  ("@home" . ?H)
+  ("@work" . ?W)
+  
+  ;; Devices
+  ("@computer" . ?C)
+  ("@phone" . ?P) 
+  
+  ;; Activities
+  ("@planning" . ?n)
+  ("@email" . ?e)
+  ("@call" . ?a)
+  ("@errands" . ?r)
+  ("@cad" . ?c)
+  ("@writing" . ?w)
+  ))
+
 (after! org
   (setq org-log-done 'time)
   (setq org-log-note-clock-out t)
@@ -870,21 +892,34 @@ org-download-heading-lvl nil)
  "* APPLY [[%x][%^{Application Name}]]\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
 ;; -- Do
-("wn" "Note" entry (file "~/.notes/agenda-work.org")
+;; NOTES
+("wn" "Work Notes")
+("wnn" "Note" entry (file "~/.notes/agenda-work.org")
  "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
-("wi" "Issue" entry (file "~/.notes/agenda-work.org")
+("wnl" "Note with link" entry (file "~/.notes/agenda-work.org")
+ "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n[[%^{Link}][%^{Description}]]\n%?"
+ :empty-lines-after 1 :prepend t)
+("wnf" "Note with file link" entry (file "~/.notes/agenda-work.org")
+ "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%A\n%?"
+ :empty-lines-after 1 :prepend t)
+;; ISSUE
+("wi" "Work Issue")
+("wii" "Issue" entry (file "~/.notes/agenda-work.org")
  "* ISSUE %^{Project name} - %^{Issue name} - %^{Issue description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
+("wil" "Note with link" entry (file "~/.notes/agenda-work.org")
+ "* ISSUE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n[[%^{Link}][%^{Description}]]\n%?"
+ :empty-lines-after 1 :prepend t)
+;; BUG
 ("wb" "Bug" entry (file "~/.notes/agenda-work.org")
  "* BUG %^{Project name} - %^{Bug description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
+;; QUESTION
 ("wq" "Question" entry (file "~/.notes/agenda-work.org")
  "* QUESTTION %^{Project name} - %^{Bug description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
-("we" "Question" entry (file "~/.notes/agenda-work.org")
- "* QUESTION %^{Project name} - %^{Bug description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
- :empty-lines-after 1 :prepend t)
+ ;; TODO
 ("wt" "Work todos")
 ("wtt" "TODO" entry (file "~/.notes/agenda-work.org")
  "* TODO %^{Project Name} - %^{Task description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
@@ -892,12 +927,8 @@ org-download-heading-lvl nil)
 ("wtl" "TODO" entry (file "~/.notes/agenda-work.org")
  "* TODO %^{Project Name} - %^{Task description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n[[%^{Link}][%^{Description}]]\n%?"
  :empty-lines-after 1 :prepend t)
-("wn" "Work Notes")
-("wnn" "Note" entry (file "~/.notes/agenda-work.org")
- "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
- :empty-lines-after 1 :prepend t)
-("wnl" "Note with link" entry (file "~/.notes/agenda-work.org")
- "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n[[%^{Link}][%^{Description}]]\n%?"
+("wtf" "TODO" entry (file "~/.notes/agenda-work.org")
+ "* TODO %^{Project Name} - %^{Task description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%As\n%?"
  :empty-lines-after 1 :prepend t)
 
 ;; -- Test

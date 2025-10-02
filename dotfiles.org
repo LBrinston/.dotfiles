@@ -2559,6 +2559,7 @@ I'm really just storing the header here. I think it makes sense for the package 
 :PROPERTIES:
 :header-args: :tangle ~/.dotfiles/.config/doom/config.el
 :ID:       cde6812f-ce92-4a0a-8369-062f2edb7ab6
+:CREATED:  2025-10-01 09:13:55
 :END:
 ****** Header
 :PROPERTIES:
@@ -3696,6 +3697,38 @@ There appears to be two issues:
         ))
 #+END_SRC
 
+******* Tags
+
+Pre-define some tags to help with categorizing and filtering things. Since I already tag things but category these tags with have some syntax sugar to distinguish them. This is intended to work with the agenda.
+
+<tag>  - topic tags
+@<tag> - "context" tags
+#<tag> - 
+
+#+begin_src emacs-lisp
+(setq org-tag-alist
+'(
+  ;; @ is syntax sugar
+  ;;("TAG-NAME" . ?<speed-key>)
+
+  ;; Places
+  ("@home" . ?H)
+  ("@work" . ?W)
+  
+  ;; Devices
+  ("@computer" . ?C)
+  ("@phone" . ?P) 
+  
+  ;; Activities
+  ("@planning" . ?n)
+  ("@email" . ?e)
+  ("@call" . ?a)
+  ("@errands" . ?r)
+  ("@cad" . ?c)
+  ("@writing" . ?w)
+  ))
+#+end_src
+
 ******* Agenda
 
 #+begin_src emacs-lisp :noweb yes
@@ -3958,21 +3991,34 @@ _Work related_
  "* APPLY [[%x][%^{Application Name}]]\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
 ;; -- Do
-("wn" "Note" entry (file "~/.notes/agenda-work.org")
+;; NOTES
+("wn" "Work Notes")
+("wnn" "Note" entry (file "~/.notes/agenda-work.org")
  "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
-("wi" "Issue" entry (file "~/.notes/agenda-work.org")
+("wnl" "Note with link" entry (file "~/.notes/agenda-work.org")
+ "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n[[%^{Link}][%^{Description}]]\n%?"
+ :empty-lines-after 1 :prepend t)
+("wnf" "Note with file link" entry (file "~/.notes/agenda-work.org")
+ "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%A\n%?"
+ :empty-lines-after 1 :prepend t)
+;; ISSUE
+("wi" "Work Issue")
+("wii" "Issue" entry (file "~/.notes/agenda-work.org")
  "* ISSUE %^{Project name} - %^{Issue name} - %^{Issue description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
+("wil" "Note with link" entry (file "~/.notes/agenda-work.org")
+ "* ISSUE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n[[%^{Link}][%^{Description}]]\n%?"
+ :empty-lines-after 1 :prepend t)
+;; BUG
 ("wb" "Bug" entry (file "~/.notes/agenda-work.org")
  "* BUG %^{Project name} - %^{Bug description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
+;; QUESTION
 ("wq" "Question" entry (file "~/.notes/agenda-work.org")
  "* QUESTTION %^{Project name} - %^{Bug description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
-("we" "Question" entry (file "~/.notes/agenda-work.org")
- "* QUESTION %^{Project name} - %^{Bug description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
- :empty-lines-after 1 :prepend t)
+ ;; TODO
 ("wt" "Work todos")
 ("wtt" "TODO" entry (file "~/.notes/agenda-work.org")
  "* TODO %^{Project Name} - %^{Task description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
@@ -3980,12 +4026,8 @@ _Work related_
 ("wtl" "TODO" entry (file "~/.notes/agenda-work.org")
  "* TODO %^{Project Name} - %^{Task description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n[[%^{Link}][%^{Description}]]\n%?"
  :empty-lines-after 1 :prepend t)
-("wn" "Work Notes")
-("wnn" "Note" entry (file "~/.notes/agenda-work.org")
- "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
- :empty-lines-after 1 :prepend t)
-("wnl" "Note with link" entry (file "~/.notes/agenda-work.org")
- "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n[[%^{Link}][%^{Description}]]\n%?"
+("wtf" "TODO" entry (file "~/.notes/agenda-work.org")
+ "* TODO %^{Project Name} - %^{Task description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%As\n%?"
  :empty-lines-after 1 :prepend t)
 #+end_src
 
