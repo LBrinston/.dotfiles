@@ -370,6 +370,19 @@ org-download-heading-lvl nil)
   (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
   )
 
+ ;; Make sure capture applys an ID
+(add-hook 'org-capture-prepare-finalize-hook 'org-id-get-create)
+
+(defun my/org-add-ids-to-headlines-in-file ()
+  "Add ID properties to all headlines in the current file which
+do not already have one."
+  (interactive)
+  (org-map-entries 'org-id-get-create))
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'my/org-add-ids-to-headlines-in-file nil 'local)))
+
 (use-package! org-super-links
   :after org
   :bind (("C-c s s" . org-super-links-link)
@@ -392,6 +405,24 @@ org-download-heading-lvl nil)
  :n :desc "org-super-links-convert-to-super" "c" #'org-super-links-convert-link-to-super
  )
 
+(defun set-creation-date-heading-property ()
+      (save-excursion
+        (org-back-to-heading)
+        (org-set-property "CREATED" (format-time-string "%Y-%m-%d %T"))))
+
+    (defun my-org-mode-date-heading-on ()
+      "Turn on heading creation date property"
+      (interactive)
+      (add-hook 'org-insert-heading-hook #'set-creation-date-heading-property))
+
+    (defun my-org-mode-date-heading-off ()
+      "Turn off heading creation date property"
+      (interactive)
+      (remove-hook 'org-insert-heading-hook #'set-creation-date-heading-property))
+
+;; Default - timestamp all headings
+(my-org-mode-date-heading-on)
+
 (after! org
   ;; HTML can do 6 so can we!
   (setq org-export-headline-levels 6)
@@ -409,34 +440,7 @@ org-download-heading-lvl nil)
 ;; dep: LaTeXML (apt or site)
 (setq org-latex-to-mathml-convert-command
       "latexmlmath %i --presentationmathml=%o")
-;; WIP - needs testing and configuration
-;; Define path mappings
-(setq org-link-path-mappings
-      '(("/mount/shared" . "R:")
-        ("/home/shared" . "S:")
-        ("/mnt/fileserver" . "\\\\fileserver")))
 
-;; Custom function to convert file links for ODT export
-(defun my-org-odt-link-converter (path desc format)
-  "Convert file paths for Windows when exporting to ODT."
-  (when (and (string= format "odt")
-             (string-match "^file:" path))
-    (let ((file-path (substring path 5))) ; Remove "file:" prefix
-      ;; Apply path mappings
-      (dolist (mapping org-link-path-mappings)
-        (when (string-prefix-p (car mapping) file-path)
-          (setq file-path (replace-regexp-in-string
-                          (regexp-quote (car mapping))
-                          (cdr mapping)
-                          file-path))))
-      ;; Convert forward slashes to backslashes for Windows
-      (setq file-path (replace-regexp-in-string "/" "\\\\" file-path))
-      ;; Return the converted path
-      (concat "file:" file-path))))
-
-;; Hook it into the ODT exporter
-;; Want to do this conditionally
-;; (setq org-export-filter-link-functions '(my-org-odt-link-converter))
   )
 
 (defun nix-to-win-path(nix-path)
