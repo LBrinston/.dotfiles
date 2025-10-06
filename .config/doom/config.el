@@ -983,17 +983,17 @@ do not already have one."
   (transient-define-prefix my/org-ql-cheatsheet ()
     "Ripgrep cheatsheet"
     ["Syntax"
-     ("todo:" "TODO - " ignore)
-     ("ts:" "Timestamp - ts:on=today" ignore)
-     ("ts-active:" "Timestamp - from=<yyyy-mm-dd>,to=<yyyy-mm-dd>" ignore)
-     ("heading:" "Heading - " ignore)
-     ("src:" "Source block - lang=<lang>" ignore)
-     ("tags:" "-w pattern - Match whole words" ignore)]
+     (:info "todo:       - TODO")
+     (:info "ts:         - Timestamp - ts:on=today")
+     (:info "ts-active:  - Timestamp - from=<yyyy-mm-dd>,to=<yyyy-mm-dd>")
+     (:info "heading:    - Heading")
+     (:info "src:        - Source block - lang=<lang>")
+     (:info "tags:       - Tag")
+     ]
     ["Logic"
-     ("!" "Inversion" ignore)
-     ("<,<=,>,>=,=" "Comparison as you would expect" ignore)
-     ("$" "'pattern$' - End of line" ignore)
-     ("|" "'foo|bar' - Foo OR bar" ignore)]
+     (:info "!           - Inversion")
+     (:info "<,<=,>,>=,= - Comparison as you would expect")
+     ]
     ))
 
   (map! :map minibuffer-local-map
