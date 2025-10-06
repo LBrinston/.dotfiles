@@ -832,21 +832,30 @@ do not already have one."
  :empty-lines-after 1)
 ;;
 
-;; -- School
-("s" "School")
-("sa" "Assignment" entry (file+headline "~/.notes/agenda-school.org" "Spring 2025")
- "* TODO %^{ECE441|ENGR297|ENGR446} - %^{Assignment|Worksheet} %^{#} \nSCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+;; -- Capture
+("c" "Capture")
+ ;; TODO
+("ct" "Todo")
+("ctt" "TODO" entry (file "~/.notes/capture.org")
+ "* TODO %^{Title} - %^{Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
-("se" "Exam" entry (file+headline "~/.notes/agenda-school.org" "Spring 2025")
- "* TODO %^{ECE441|ENGR297|ENGR446} - %^{Quiz|Midterm|Final} \nSCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+("ctl" "Todo with link" entry (file "~/.notes/capture.org")
+ "* TODO %^{Title} - %^{Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n[[%^{Link}][%^{Description}]]\n%?"
  :empty-lines-after 1 :prepend t)
-("sr" "Reading" entry (file+headline "~/.notes/agenda-school.org" "Spring 2025")
- "* TODO %^{ECE441|ENGR297|ENGR446} - %^{Reading} - %^{Chapter|Pages|Section} \nSCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+("ctf" "Todo with file link" entry (file "~/.notes/capture.org")
+ "* TODO %^{Title} - %^{Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%As\n%?"
  :empty-lines-after 1 :prepend t)
-
-;; ("sl" "499 log" entry (file+headline "~/.notes/agenda-school.org" "work-log")
-;;  "* TODO %^{ECE441|ENGR297|ENGR446} - %^{Reading} - %^{Chapter|Pages|Section} \nSCHEDULED: %^t DEADLINE: %^t\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
-;;  :empty-lines-after 1 :prepend t)
+;; Notes
+("cn" "Notes")
+("cnn" "Note" entry (file "~/.notes/capture.org")
+ "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
+("cnl" "Note with link" entry (file "~/.notes/capture.org")
+ "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n[[%^{Link}][%^{Description}]]\n%?"
+ :empty-lines-after 1 :prepend t)
+("cnf" "Note with file link" entry (file "~/.notes/capture.org")
+ "* NOTE %^{Note Title} - %^{Note Description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%A\n%?"
+ :empty-lines-after 1 :prepend t)
 
 ;; -- Journal
 ("j" "Journal" entry (file+olp+datetree "~/.notes/journal.org")
