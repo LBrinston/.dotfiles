@@ -979,6 +979,16 @@ do not already have one."
         )
   )
 
+ (defun org-ql-open-link-in-agenda ()
+    "Call `org-ql-open-link' on `org-agenda-files'."
+    (interactive)
+    (org-ql-open-link (org-agenda-files)))
+
+  (defun org-ql-open-link-in-org-directory ()
+    "Call `org-ql-open-link' on files in `org-directory'."
+    (interactive)
+    (org-ql-open-link (org-ql-search-directories-files)))
+
 (after! org-ql
   (transient-define-prefix my/org-ql-cheatsheet ()
     "Ripgrep cheatsheet"

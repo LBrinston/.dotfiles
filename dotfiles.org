@@ -4114,6 +4114,20 @@ Usuage of doct still involves using ~setq~ on ~set-org-capture-templates~ but wh
            :files (:defaults (:exclude "helm-org-ql.el"))))
 #+end_src
 
+ref: [[https://fgiasson.com/blog/index.php/2023/12/06/searching-any-web-link-within-a-org-library-using-org-ql/][Searching any Web link within a Org library using org-ql &#8211; Frederick Giasson]] 
+
+#+begin_src emacs-lisp
+ (defun org-ql-open-link-in-agenda ()
+    "Call `org-ql-open-link' on `org-agenda-files'."
+    (interactive)
+    (org-ql-open-link (org-agenda-files)))
+
+  (defun org-ql-open-link-in-org-directory ()
+    "Call `org-ql-open-link' on files in `org-directory'."
+    (interactive)
+    (org-ql-open-link (org-ql-search-directories-files)))
+#+end_src
+
 I should be passing the :info property here.
 see: [[https://github.com/positron-solutions/transient-showcase?tab=readme-ov-file#displaying-information][GitHub - positron-solutions/transient-showcase: Example forms for transient UI&#39;s in Emacs]] 
 
