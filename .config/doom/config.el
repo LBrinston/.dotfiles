@@ -960,6 +960,26 @@ org-download-heading-lvl nil)
         )
   )
 
+(after! org-ql
+  (transient-define-prefix my/org-ql-cheatsheet ()
+    "Ripgrep cheatsheet"
+    ["Syntax"
+     ("todo:" "TODO - " ignore)
+     ("ts:" "Timestamp - ts:on=today" ignore)
+     ("ts-active:" "Timestamp - from=<yyyy-mm-dd>,to=<yyyy-mm-dd>" ignore)
+     ("heading:" "Heading - " ignore)
+     ("src:" "Source block - lang=<lang>" ignore)
+     ("tags:" "-w pattern - Match whole words" ignore)]
+    ["Logic"
+     ("!" "Inversion" ignore)
+     ("<,<=,>,>=,=" "Comparison as you would expect" ignore)
+     ("$" "'pattern$' - End of line" ignore)
+     ("|" "'foo|bar' - Foo OR bar" ignore)]
+    ))
+
+  (map! :map minibuffer-local-map
+        "C-c ?" #'my/org-ql-cheatsheet)
+
 (use-package! org-pandoc-import
   :after org)
 

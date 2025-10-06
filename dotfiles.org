@@ -4092,6 +4092,31 @@ Usuage of doct still involves using ~setq~ on ~set-org-capture-templates~ but wh
            :files (:defaults (:exclude "helm-org-ql.el"))))
 #+end_src
 
+I should be passing the :info property here.
+see: [[https://github.com/positron-solutions/transient-showcase?tab=readme-ov-file#displaying-information][GitHub - positron-solutions/transient-showcase: Example forms for transient UI&#39;s in Emacs]] 
+
+#+begin_src emacs-lisp
+(after! org-ql
+  (transient-define-prefix my/org-ql-cheatsheet ()
+    "Ripgrep cheatsheet"
+    ["Syntax"
+     ("todo:" "TODO - " ignore)
+     ("ts:" "Timestamp - ts:on=today" ignore)
+     ("ts-active:" "Timestamp - from=<yyyy-mm-dd>,to=<yyyy-mm-dd>" ignore)
+     ("heading:" "Heading - " ignore)
+     ("src:" "Source block - lang=<lang>" ignore)
+     ("tags:" "-w pattern - Match whole words" ignore)]
+    ["Logic"
+     ("!" "Inversion" ignore)
+     ("<,<=,>,>=,=" "Comparison as you would expect" ignore)
+     ("$" "'pattern$' - End of line" ignore)
+     ("|" "'foo|bar' - Foo OR bar" ignore)]
+    ))
+
+  (map! :map minibuffer-local-map
+        "C-c ?" #'my/org-ql-cheatsheet)
+#+end_src
+
 ******* (package) =org-import=
 
 [[https://github.com/tecosaur/org-pandoc-import][(gh) org-pandoc-import repo]]
