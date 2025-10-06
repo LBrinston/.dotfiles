@@ -3102,6 +3102,20 @@ org-download-heading-lvl nil)
 ;; This will remove the #+DOWNLOADED annotation
 ;;(setq org-download-annotate-function (lambda (_) "Return empty string" ""))
 #+end_src
+******** (built-in) yank - in general
+:PROPERTIES:
+:ID:       be9fdc3b-46d4-4af3-97bd-911d060ce594
+:END:
+
+Yanking from the kill-ring is too useful to not have a hot key.
+
+#+begin_src emacs-lisp
+  (map!
+   :leader
+   :prefix ("i k" . "Yank from kill ring")
+   :n :desc "Yank" "r"  #'yank-from-kill-ring
+   )
+#+end_src
 
 ******** (built-in) yank-media
 

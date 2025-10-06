@@ -294,6 +294,12 @@ org-download-heading-lvl nil)
 ;; This will remove the #+DOWNLOADED annotation
 ;;(setq org-download-annotate-function (lambda (_) "Return empty string" ""))
 
+  (map!
+   :leader
+   :prefix ("i k" . "Yank from kill ring")
+   :n :desc "Yank" "r"  #'yank-from-kill-ring
+   )
+
 (after! org
   (defun get-assets-dir-path ()
     "Return path to .assets directory for current buffer. Creates the directory if it doesn't exist, prompt for confirmation."
