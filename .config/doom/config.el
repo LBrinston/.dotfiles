@@ -1049,11 +1049,12 @@ do not already have one."
 ;;-- Avy
   (map!
    :after avy
-   :leader
    :n
-   "s w" #'avy-goto-word-1
+   "g s s" #'avy-goto-char
    :desc "Jump to a word!"
-   ;;#'avy-goto-line
+   :n
+   "g s S" #'avy-goto-char-2
+   :desc "avy-goto-char-2"
    )
 
 (after! aphelia
