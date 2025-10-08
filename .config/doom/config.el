@@ -1199,6 +1199,13 @@ do not already have one."
     (completion-styles '(orderless basic))
     (completion-category-overrides '((file (styles basic partial-completion))))
      ))
+
+(use-package! cape
+:init
+(add-to-list 'completion-at-point-functions #'cape-file)
+(add-to-list 'completion-at-point-functions #'cape-elisp-block)
+)
+
 (use-package! yasnippet
   :defer t
   :config

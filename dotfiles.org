@@ -4517,6 +4517,28 @@ Completion can be nice so long as it's useful. DOOM's configuration of corfu nee
     (completion-category-overrides '((file (styles basic partial-completion))))
      ))
 #+end_src
+****** (package) cape
+:PROPERTIES:
+:CREATED:  2025-10-07 21:10:00
+:ID:       c4abb32a-301f-4dfd-816b-123c9f990b0b
+:END:
+:BACKLINKS:
+[2025-10-07 Tue 21:17] <- [[id:0307882a-6ec9-4f2b-807a-30de81674460][(package) corfu]]
+:END:
+
+repo: [[https://github.com/minad/cape][GitHub - minad/cape: 🦸cape.el - Completion At Point Extensions]] 
+
+Cape provide completion frameworks too [[id:0307882a-6ec9-4f2b-807a-30de81674460][(package) corfu]].
+For now let's just try a few, consult [[https://github.com/minad/cape?tab=readme-ov-file#available-capfs][GitHub - minad/cape: 🦸cape.el - Available Capfs]] for others.
+
+#+begin_src emacs-lisp 
+(use-package! cape
+:init
+(add-to-list 'completion-at-point-functions #'cape-file)
+(add-to-list 'completion-at-point-functions #'cape-elisp-block)
+)
+#+end_src
+
 ****** yasnippet
 :PROPERTIES:
 :ID:       ced94036-8aaa-4e7c-ad82-7ed66507c291
