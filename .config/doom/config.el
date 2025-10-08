@@ -452,6 +452,7 @@ do not already have one."
  :n :desc "org-super-links-convert-to-super" "c" #'org-super-links-convert-link-to-super
  )
 
+(after! org
 (defun set-creation-date-heading-property ()
       (save-excursion
         (org-back-to-heading)
@@ -468,7 +469,7 @@ do not already have one."
       (remove-hook 'org-insert-heading-hook #'set-creation-date-heading-property))
 
 ;; Default - timestamp all headings
-(my-org-mode-date-heading-on)
+(my-org-mode-date-heading-on))
 
 (after! org
   ;; HTML can do 6 so can we!
