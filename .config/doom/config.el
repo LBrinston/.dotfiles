@@ -1189,6 +1189,16 @@ do not already have one."
 
   )
 
+(after! corfu
+
+  (setq corfu-auto t)
+  (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode)
+ 
+  (use-package! orderless
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles basic partial-completion))))
+     ))
 (use-package! yasnippet
   :defer t
   :config

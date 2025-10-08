@@ -4492,6 +4492,31 @@ Perhaps I shouldn't be using =use-package!= with module packages? I'm missing so
 
   )
 #+end_src
+****** (package) corfu
+:PROPERTIES:
+:CREATED:  2025-10-07 20:58:45
+:ID:       0307882a-6ec9-4f2b-807a-30de81674460
+:END:
+:BACKLINKS:
+[2025-10-07 Tue 21:18] <- [[id:c4abb32a-301f-4dfd-816b-123c9f990b0b][(package) cape]]
+:END:
+
+repo: [[https://github.com/minad/corfu?tab=readme-ov-file][GitHub - minad/corfu: :desert_island: corfu.el - COmpletion in Region FUnction]]  
+
+Completion can be nice so long as it's useful. DOOM's configuration of corfu needs some tweaking as does it's configuration of [[id:c4abb32a-301f-4dfd-816b-123c9f990b0b][(package) cape]].
+
+#+begin_src emacs-lisp
+(after! corfu
+
+  (setq corfu-auto t)
+  (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode)
+ 
+  (use-package! orderless
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles basic partial-completion))))
+     ))
+#+end_src
 ****** yasnippet
 :PROPERTIES:
 :ID:       ced94036-8aaa-4e7c-ad82-7ed66507c291
