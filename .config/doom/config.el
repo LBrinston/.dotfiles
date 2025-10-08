@@ -368,6 +368,47 @@ org-download-heading-lvl nil)
    )
   )
 
+(defun my/yank-from-dir-to-assets ()
+  "Copies an image from a "
+  (interactive)
+  (let*(
+        ;; TODO - Visual interactive file picker would be nice
+        ;; TODO - Have this as an interactive
+        ;; something like: (interactive (list (read-string "Prompt: " "default-value")))
+        ;; or (interactive (list (completing-read "File: " choices nil nil "default")))
+        (selected-screenshot-path (completing-read "File: " (directory-files "~/vmscreenshots" t)))
+        (selected-screenshot-name (file-name-nondirectory selected-screenshot-path))
+        ;; TODO Prompt for re-name?
+        ;; (re-name (read-string "Rename[RET to keep]:"))
+        (assets-path (get-assets-dir-path))
+        (buff-name (file-name-base (buffer-file-name)))
+        (assets-dir (concat assets-path "/" buff-name))
+        (new-path (concat assets-dir "/" selected-screenshot-name))
+        ;; TODO - Made this mode-dependant
+        (link-str (concat "[[file:" new-path "]]"))
+        )
+    ;; Debug paths
+    (message "Selected path: %s\nSelected name: %s\nAssets: %s\nBuff: %s\nNew-Path: %s"
+             selected-screenshot-path selected-screenshot-name assets-path buff-name new-path)
+    
+    (unless (file-directory-p assets-dir)
+      (when (yes-or-no-p (format "Create .assets directory at %s?" assets-dir))
+        (make-directory assets-dir t)))
+
+    (unless (file-exists-p new-path)
+      (copy-file selected-screenshot-path new-path))
+
+    (insert link-str)
+    link-str ; RET the link string
+    ))
+
+;; Not sure D is the best choice for this
+(map!
+ :leader
+ :prefix ("i m" . "Media")
+ :n :desc "Yank media from directory" "D"  #'my/yank-from-dir-to-assets
+ )
+
 (after! org
   (require 'org-id)
 )

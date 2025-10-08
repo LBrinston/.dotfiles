@@ -3195,53 +3195,48 @@ Org-mode has a ~yank-media~ command since 9.something. It seems to more or less 
 Sometimes I need to grab an image from a file path instead of the clipboard.
 
 #+name: WIP 
-#+begin_src emacs-lisp :tangle no
-(defun get-screenshot-from-dir ()
-"Prompts for a a screenshot to be copied from a screenshot directory."
-(interactive)
-(let (
-      ;; pass t to directory-files FULL arg to get full file path
-      (screenshot (completing-read "File: " (directory-files "~/vmscreenshots" t)))
-      )
-  screenshot
-  )
-)
+#+begin_src emacs-lisp 
+(defun my/yank-from-dir-to-assets ()
+  "Copies an image from a "
+  (interactive)
+  (let*(
+        ;; TODO - Visual interactive file picker would be nice
+        ;; TODO - Have this as an interactive
+        ;; something like: (interactive (list (read-string "Prompt: " "default-value")))
+        ;; or (interactive (list (completing-read "File: " choices nil nil "default")))
+        (selected-screenshot-path (completing-read "File: " (directory-files "~/vmscreenshots" t)))
+        (selected-screenshot-name (file-name-nondirectory selected-screenshot-path))
+        ;; TODO Prompt for re-name?
+        ;; (re-name (read-string "Rename[RET to keep]:"))
+        (assets-path (get-assets-dir-path))
+        (buff-name (file-name-base (buffer-file-name)))
+        (assets-dir (concat assets-path "/" buff-name))
+        (new-path (concat assets-dir "/" selected-screenshot-name))
+        ;; TODO - Made this mode-dependant
+        (link-str (concat "[[file:" new-path "]]"))
+        )
+    ;; Debug paths
+    (message "Selected path: %s\nSelected name: %s\nAssets: %s\nBuff: %s\nNew-Path: %s"
+             selected-screenshot-path selected-screenshot-name assets-path buff-name new-path)
+    
+    (unless (file-directory-p assets-dir)
+      (when (yes-or-no-p (format "Create .assets directory at %s?" assets-dir))
+        (make-directory assets-dir t)))
 
-(message "%s" (get-screenshot-from-dir))
+    (unless (file-exists-p new-path)
+      (copy-file selected-screenshot-path new-path))
 
-(message "%s" (file-name-base(get-screenshot-from-dir)))
+    (insert link-str)
+    link-str ; RET the link string
+    ))
 
-(defun yank-from-dir-to-assets ()
-""
-(interactive)
-(let*(
-      ;; Select file
-      ;; TODO - Visual interactive file picker would be nice
-      (selected-screenshot-path (get-screenshot-from-dir))
-      ;; idk why I can't just file-name-base on selected-screenshot-path
-      (selected-screenshot-name (file-name-base selected-screenshot-path))
-      ;; TODO Prompt for re-name?
-      ;; (re-name (read-string "Rename[RET to keep]:"))
-      ;; Get dest path
-      (assets-dir (get-assets-dir-path))
-      ;; Get buffer-name
-      (buff-name (file-name-base (buffer-file-name)))
-      ;; Construct new path
-      (new-path (concat assets-dir "/" buff-name "/" selected-screenshot-name))
-      ;; Construct link string
-      ;; TODO - Made this mode-dependant
-      (link-str (concat "file:[[" new-path "]]"))
-    )
-  ;; Debug paths
-  (message "Selected path: %s\nSelected name: %s\nAssets: %s\nBuff: %s\nNew-Path: %s"
-   selected-screenshot-path selected-screenshot-name assets-dir buff-name new-path)
-  ;; Check if .assets path exists and create if if not
-  ;; Copy file
-  (copy-file selected-screenshot-path new-path)
-  link-str
-  ))
+;; Not sure D is the best choice for this
+(map!
+ :leader
+ :prefix ("i m" . "Media")
+ :n :desc "Yank media from directory" "D"  #'my/yank-from-dir-to-assets
+ )
 #+end_src
-
 
 ******* Headings & Links
 :PROPERTIES:
