@@ -3434,12 +3434,16 @@ Step 1. Write a function to perform the conversion.
 
 Here I am concerned with specifically converting file share paths NOT all paths.
 
+=Note=: May in fact need to flip slashes and the UNC path should lead with two \\<Server>
+=Note=: This could be done more efficiently with an early exit on the failed match (as in before constructing the corrected string).
 #+begin_src emacs-lisp
 (defun nix-to-win-path(nix-path)
   (interactive)
   "Takes a unix style path and converts it to a windows UNC path."
   (let
-      ((win-path nix-path) ; initialize to the passed path
+      (
+       (win-path (expand-file-name nix-path)) ; initialize to the passed path
+       ;; (win-path nix-path) ; initialize to the passed path
        (nix-mnt (concat (expand-file-name "~") "/Artemis"))
        (win-mnt "///Artemis")
        (matched nil)
@@ -3467,6 +3471,7 @@ Here I am concerned with specifically converting file share paths NOT all paths.
        ) ;cond
       ); inner-let
     ;; -- Flip all our slashes
+    ;; (string-replace "/" "\" win-path)
     (if matched
         win-path
       nix-path
@@ -3477,6 +3482,8 @@ Here I am concerned with specifically converting file share paths NOT all paths.
 Step 2. Create a org-export filter
 
 The ~org-export~ filters are _run after_ the org file has already been converted to the target format. So the link needs to be extracted from xml in the case of odt.
+
+=Note=: Alternatively rather than using a filter (applied after conversion). One of the two export hooks could be used (both of which are called before conversion).
 
 #+begin_src emacs-lisp
 (defun my-org-odt-link-filter (text backend info)

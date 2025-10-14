@@ -500,7 +500,9 @@ do not already have one."
   (interactive)
   "Takes a unix style path and converts it to a windows UNC path."
   (let
-      ((win-path nix-path) ; initialize to the passed path
+      (
+       (win-path (expand-file-name nix-path)) ; initialize to the passed path
+       ;; (win-path nix-path) ; initialize to the passed path
        (nix-mnt (concat (expand-file-name "~") "/Artemis"))
        (win-mnt "///Artemis")
        (matched nil)
@@ -528,6 +530,7 @@ do not already have one."
        ) ;cond
       ); inner-let
     ;; -- Flip all our slashes
+    ;; (string-replace "/" "\" win-path)
     (if matched
         win-path
       nix-path
