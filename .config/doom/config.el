@@ -410,6 +410,11 @@ org-download-heading-lvl nil)
  )
 
 (after! org
+  ;; If installed via apt this should be correct
+  (setq org-ditaa-jar-path "/usr/bin/ditaa") 
+  )
+
+(after! org
   (require 'org-id)
 )
 
