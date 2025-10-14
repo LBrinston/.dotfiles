@@ -3237,6 +3237,17 @@ Sometimes I need to grab an image from a file path instead of the clipboard.
  :n :desc "Yank media from directory" "D"  #'my/yank-from-dir-to-assets
  )
 #+end_src
+******* (lang) ditaa
+
+ditaa is a java based cli for turning text into diagrams.
+Org-mode may need to be given the path to it's jar file.
+
+#+begin_src emacs-lisp
+(after! org
+  ;; If installed via apt this should be correct
+  (setq org-ditaa-jar-path "/usr/bin/ditaa") 
+  )
+#+end_src
 
 ******* Headings & Links
 :PROPERTIES:
