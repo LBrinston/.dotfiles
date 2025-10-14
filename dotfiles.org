@@ -3694,6 +3694,9 @@ There appears to be two issues:
 #+END_SRC
 
 ******* Org - todo-keywords
+:PROPERTIES:
+:ID:       900f662b-690f-423f-8445-d079221ac9ab
+:END:
 
 =Reminder=:
 (<fast-key>!)  - creates a timestamp on transition to STATE
@@ -3708,6 +3711,7 @@ There appears to be two issues:
         (sequence "|" "SUBMITTED(s!)")
         (sequence "|" "CANCALLED(c@)" "DELEGATED(e!)")
         (sequence "IDEA")
+        (sequence "NOTE")
         (sequence "PRJ")
         (sequence "REMINDER(!r)")
         (sequence "CALL" "|" "CALLED(!)")
@@ -3729,43 +3733,46 @@ There appears to be two issues:
         ;; -- Work
         (sequence "APPLY" "|" "APPLIED")
         (sequence "QUESTION" "|" "ANSWER")
-        (sequence "MEETING" "|" "MINUTES")
+        (sequence "MEETING" "MEETING-ACTIONS" "|" "MINUTES")
         ))
 
 (setq org-todo-keyword-faces
       '(
         ;; -- General
-        ("TODO"      . ( :foreground "red"          :weight bold))
-        ("IN-PROG"   . ( :foreground "orange"       :weight bold))
-        ("WAITING"   . ( :foreground "yellow"       :weight bold))
-        ("DONE"      . ( :foreground "green"        :weight bold))
-        ("IDEA"      . ( :foreground "deepskyblue1" :weight bold))
-        ("CANCELLED" . ( :foreground "gray"         :weight bold))
+        ("TODO"             . (  :foreground "red"             :weight bold))
+        ("IN-PROG"          . (  :foreground "orange"          :weight bold))
+        ("WAITING"          . (  :foreground "yellow"          :weight bold))
+        ("DONE"             . (  :foreground "green"           :weight bold))
+        ("NOTE"             . (  :foreground "white smoke"     :weight bold))
+        ("IDEA"             . (  :foreground "deepskyblue1"    :weight bold))
+        ("CANCELLED"        . (  :foreground "gray"            :weight bold))
         ;; -- Media
-        ("TO-FIND"   . ( :foreground "yellow1"      :weight bold))
-        ("TO-READ"   . ( :foreground "SteelBlue1"   :weight bold))
+        ("TO-FIND"          . (  :foreground "yellow1"         :weight bold))
+        ("TO-READ"          . (  :foreground "SteelBlue1"      :weight bold))
+        ("TO-READ"          . (  :foreground "LightSteelBlue"  :weight bold))
         ;; -- Emacs
-        ("EMACS"     . ( :foreground "purple"       :weight bold))
+        ("EMACS"            . (  :foreground "purple"          :weight bold))
         ;; -- Misc
-        ("PRJ"       . ( :foreground "orange2"      :weight bold))
+        ("PRJ"              . (  :foreground "orange2"         :weight bold))
         ;; -- Media
-        ("TO-FIND"   . ( :foreground "yellow1"      :weight bold))
-        ("TO-READ"   . ( :foreground "steel blue"   :weight bold))
+        ("TO-FIND"          . (  :foreground "yellow1"         :weight bold))
+        ("TO-READ"          . (  :foreground "steel blue"      :weight bold))
         ;; -- Programming
-        ("EMACS"     . ( :foreground "MediumPurple1":weight bold))
-        ("BUG"       . ( :foreground "marron1"      :weight bold))
-        ("ERROR"     . ( :foreground "red3"         :weight bold))
+        ("EMACS"            . (  :foreground "MediumPurple1"   :weight bold))
+        ("BUG"              . (  :foreground "marron1"         :weight bold))
+        ("ERROR"            . (  :foreground "red3"            :weight bold))
         ;; -- Misc
-        ("BUY"       . ( :foreground "spring green" :weight bold))
-        ("SELL"      . ( :foreground "deep pink"    :weight bold))
+        ("BUY"              . (  :foreground "spring green"    :weight bold))
+        ("SELL"             . (  :foreground "deep pink"       :weight bold))
         ;; -- Find Work
-        ("APPLY"     . ( :foreground "red1"         :weight bold))
-        ("APPLIED"   . ( :foreground "green yellow" :weight bold))
+        ("APPLY"            . (  :foreground "red1"            :weight bold))
+        ("APPLIED"          . (  :foreground "green yellow"    :weight bold))
         ;; -- Do Work
-        ("QUESTION"  . ( :foreground "cyan"         :weight bold))
-        ("ANSWER"  .   ( :foreground "pale gren"    :weight bold))
-        ("MEETING"  . (  :foreground "goldenrod1"   :weight bold))
-        ("MINUTES"  . (  :foreground "yellow2"      :weight bold))
+        ("QUESTION"         . (  :foreground "cyan"            :weight bold))
+        ("ANSWER"           . (  :foreground "pale green"      :weight bold))
+        ;; Meetings
+        ("MEETING"          . (  :foreground "goldenrod1"      :weight bold))
+        ("MEETING-ACTIONS"  . (  :foreground "orange1"         :weight bold))
         ))
 #+END_SRC
 
