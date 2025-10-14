@@ -982,8 +982,15 @@ do not already have one."
  "* BUG %^{Project name} - %^{Bug description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
 ;; QUESTION
-("wq" "Question" entry (file "~/.notes/agenda-work.org")
- "* QUESTTION %^{Project name} - %^{Bug description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+("wq" "Work Question")
+("wqq" "Question" entry (file "~/.notes/agenda-work.org")
+ "* QUESTION %^{Project name} - %^{Bug description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ :empty-lines-after 1 :prepend t)
+("wql" "Question with link" entry (file "~/.notes/agenda-work.org")
+ "* QUESTION %^{Project name} - %^{Question description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n[[%^{Link}][%^{Description}]]\n%?"
+ :empty-lines-after 1 :prepend t)
+("wqf" "Question with file link" entry (file "~/.notes/agenda-work.org")
+ "* QUESTION %^{Project name} - %^{Question description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%A\n%?"
  :empty-lines-after 1 :prepend t)
  ;; TODO
 ("wt" "Work todos")
