@@ -4071,6 +4071,11 @@ _Work related_
  "* APPLY [[%x][%^{Application Name}]]\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
 ;; -- Do
+;; ACRONYMS
+("wc" "Work CfAR")
+("wca" "CfAR Acronyms" entry (file+headline "~/.notes/cfar.org" "Big List of Acronyms")
+ "* %^{Acronym} - %{Meaning}\n\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n"
+ :empty-lines-after 1 :prepend t)
 ;; NOTES
 ("wn" "Work Notes")
 ("wnn" "Note" entry (file "~/.notes/agenda-work.org")
