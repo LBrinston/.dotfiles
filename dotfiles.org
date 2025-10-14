@@ -2343,7 +2343,7 @@ In Doom Emacs ~init.el~ servers as the area for _module_ activation. This is a s
  ;;word-wrap         ; soft wrapping with language-aware indent
 
  :emacs
- dired             ; making dired pretty [functional]
+ (dired +icons +dirvish)             ; making dired pretty [functional]
  electric          ; smarter, keyword-based electric-indent
  ;;eww               ; the internet is gross
  ;;ibuffer           ; interactive buffer management
