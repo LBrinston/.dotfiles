@@ -751,7 +751,6 @@ do not already have one."
         ;; Meetings
         ("MEETING"          . (  :foreground "goldenrod1"      :weight bold))
         ("MEETING-ACTIONS"  . (  :foreground "orange1"         :weight bold))
-        ("MINUTES"          . (  :foreground "yellow2"         :weight bold))
         ))
 
 (setq org-tag-alist
@@ -1035,7 +1034,49 @@ do not already have one."
 ;;                       :headline "Inbox"
 ;;                       :type entry
 ;;                       :template ("* TODO %?"
-;;                                  "%i %a"))))))
+;;                                  "%i %a")))))
+;; (after! org
+;;   (setq org-capture-templates
+;;         (doct '(("Parent" :keys "p"
+;;                  :file "~/example.org"
+;;                  :prepend t
+;;                  :template ("* %{todo-state} %^{Description}"
+;;                             ":PROPERTIES:"
+;;                             ":Created: %U"
+;;                             ":END:"
+;;                             "%?")
+;;                  :children (("First Child"  :keys "1"
+;;                              :headline   ""
+;;                              :todo-state "TODO"
+;;                              :hook (lambda () (message "\"First Child\" selected.")))
+;;                             ("Second Child" :keys "2"
+;;                              :headline   "Two"
+;;                              :todo-state "NEXT")
+;;                             ("Third Child"  :keys "3"
+;;                              :headline   "Three"
+;;                              :todo-state "MAYBE"))))))
+;;   )
+
+;; (doct '(("Work" :keys "n"
+;;          :prepend t
+;;          :children
+;;          (("Notes" :keys "c"
+;;            :children
+;;            (("Plain" :keys "p"
+;;              :file ""
+;;              :type plain
+;;              :template "test"))
+;;            (("With link" :keys "l"
+;;              :file ""
+;;              :type plain
+;;              :todo-state "NOTE"
+;;              :template "test"))
+;;            (("With file link" :keys "f"
+;;              :file ""
+;;              :type plain
+;;              :todo-state "NOTE"
+;;              :template "test"))
+;;            )))))
 
 (after! org
   (setq org-default-notes-file "~/.notes/capture.org")
@@ -1121,6 +1162,8 @@ do not already have one."
    :n
    "g s S" #'avy-goto-char-2
    :desc "avy-goto-char-2"
+
+   
    )
 
 (after! aphelia

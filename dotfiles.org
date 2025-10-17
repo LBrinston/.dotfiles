@@ -7,15 +7,22 @@
 * Dotfile management
 :PROPERTIES:
 :VISIBILITY: folded
+:ID:       446af760-7479-4711-90e9-9d8a8ea11f2f
 :END:
 
 Personal dotfile management, and documentation using org-mode, GNU stow, and git.
 
 ** GNU Stow
+:PROPERTIES:
+:ID:       dfe1ac73-d26b-4662-bcbb-e3bad7146f96
+:END:
 
 GNU stow assumes that any file in the ~cwd~ is to be symlinked somewhere (that somewhere, is assumed to be a dir in ~$HOME~ that has the same name as the subdir in the cwd).
 
 *** .stow-local-ignore
+:PROPERTIES:
+:ID:       437ed0ea-8598-4964-b9b7-c7a0dbe6b5b6
+:END:
 
 Very important to ignore certain files to keep things tidy.
 =Note=: creation of a ~.stow-local-ignore~ will override the default used by stow itself.
@@ -33,6 +40,9 @@ LICENSE
 #+END_SRC
 
 *** Tree Folding (symlinking dirs vs files)
+:PROPERTIES:
+:ID:       00cbe301-a29f-4264-bfc4-1d962320ec29
+:END:
 
 GNU stow refers to linking a dir as "tree folding" (because it folds a file tree into a single symlink). Stow will only do this if:
 1. A specified dir is empty.
@@ -42,10 +52,16 @@ GNU stow refers to linking a dir as "tree folding" (because it folds a file tree
 To prevent this entirely stow can be called with: ~--no-folding~
 
 *** Tree Unfolding
+:PROPERTIES:
+:ID:       b9bb1448-b955-4d22-a4e3-edadb421c31c
+:END:
 
 A symlink will have to be unfolded one stow discovers that subdirs are now needed within that folded dir.
 
 *** sync-dotfiles.sh
+:PROPERTIES:
+:ID:       1965be3b-4a2a-4041-9a2b-2aae3ffa034e
+:END:
 
 This script is intended to help smooth out the usage of GNU stow and git together. Anytime new config is pulled in from a git repo =stow= needs to be called which is very easy to forgot.
 
@@ -99,6 +115,9 @@ fi
 #+END_SRC
 
 ** Where to put conf files
+:PROPERTIES:
+:ID:       542d5e44-221e-40d3-92cf-8984748f5136
+:END:
 
 The [[https://specifications.freedesktop.org/basedir-spec/0.6/][freedesktop XDG Base Directory Specification]] is widely adopted and provides prescriptions for where user specific data (~$XDG_DATA_HOME~) and user specific config (~$XDG_CONFIG_HOME~) should be.
 
@@ -129,6 +148,9 @@ export XDG_CACHE_HOME="$HOME/.cache"
 #+END_SRC
 
 *** ~xdg-ninja~
+:PROPERTIES:
+:ID:       803f3f58-b9a7-4128-8899-ce56984e735d
+:END:
 
 [[https://github.com/b3nj5m1n/xdg-ninja][xdg-ninja git repo]]
 
@@ -149,6 +171,9 @@ git clone https://github.com/b3nj5m1n/xdg-ninja ~/.bin/xdg-ninja
 For now I am electing to directly clone this to =~/.bin= instead of =~/.dotfiles/.bin=. I may instead add a check for it to ~.bashrc~ instead. Since this more or less a script that checks a data base this begs the question how do I easily keep this (and other cloned tools) up to date.
 
 **** TODO Keeping git cloned things up to date:
+:PROPERTIES:
+:ID:       80b6cc95-44c3-414d-9135-a78637c2ff09
+:END:
 https://askubuntu.com/questions/759058/how-to-keep-a-local-bin-folder-up-to-date-with-updates-from-various-github-rep
 
 ** Org-mode & Babel
@@ -182,8 +207,14 @@ which contain configuration files that should be tangled"
 #+end_src
 
 * dotfiles
+:PROPERTIES:
+:ID:       3bfd2862-9b8f-49cf-bf80-54df5504b631
+:END:
 
 *** android
+:PROPERTIES:
+:ID:       8ac00560-b295-4a95-8871-e2d7f0065f6b
+:END:
 
 For the handful of times a year I need to use ~adb~
 
@@ -198,12 +229,18 @@ alias adb='HOME="$XDG_DATA_HOME"/android adb'
 #+END_SRC
 
 *** docker
+:PROPERTIES:
+:ID:       9cc6802a-6cd9-4ed2-96dd-74c7428bd945
+:END:
 
 #+name: DOCKER-SHELL-VAR
 #+BEGIN_SRC bash
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 #+END_SRC
 *** dotnet
+:PROPERTIES:
+:ID:       6bc514e9-7bc4-45c1-90ea-aab6ca3a9b44
+:END:
 
 #+name: DOTNET-SHELL-VAR
 #+BEGIN_SRC bash
@@ -211,6 +248,9 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME"/dotnet
 #+END_SRC
 
 *** xremap - keyboard remapping
+:PROPERTIES:
+:ID:       ff16186d-4e82-47a0-afe3-80b7c030affb
+:END:
 
 [[https://github.com/xremap/xremap][(gh) xremap]]
 xremap is a rust based keyboard remapping tool.
@@ -227,6 +267,9 @@ cargo install xremap --features x11     # X11
 #+end_src
 
 **** Configuration
+:PROPERTIES:
+:ID:       7b734aac-3d58-4418-bf0b-96c2b23f837a
+:END:
 
 xremap just takes a yaml file that can live in the location of your choice (doesn't have a standard conf dir).
 
@@ -324,6 +367,9 @@ keymap:
 #+end_src
 
 **** Running as a daemon
+:PROPERTIES:
+:ID:       ed0d8cdd-148d-49a4-a4b7-73a5a51637aa
+:END:
 
 Here the ExecStart expects xremap to be in /usr/bin/local which if xremap was installed with cargo may not be where the binary is actually located.
 
@@ -355,6 +401,9 @@ The above setups xremap as a _user service_ so if you go looking for it to check
 src_shell{systemctl --user status xremap.service}
 
 **** Issues
+:PROPERTIES:
+:ID:       a08fe284-9469-4117-956a-33cc3c52cff1
+:END:
 
 1. xremap can only see limited subset of devices
    This is either:
@@ -370,6 +419,9 @@ src_shell{systemctl --user status xremap.service}
          #+end_src
 
 *** rbw - (unofficial) bitwarden cli
+:PROPERTIES:
+:ID:       e0de6fd3-9bab-4cda-b0c4-ec4608dd21de
+:END:
 
 rbw is easiest to install via cargo.
 
@@ -386,6 +438,9 @@ First login to your bitwarden account
 _Bash completions_
 
 *** gnupg
+:PROPERTIES:
+:ID:       a72e260f-5faa-4836-a20b-bfb71c067479
+:END:
 
 #+name: GNUPG-SHELL-VAR
 #+BEGIN_SRC bash
@@ -393,6 +448,9 @@ export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 #+END_SRC
 
 *** (term) starship
+:PROPERTIES:
+:ID:       b751d399-cb2b-48ab-941f-6b419c4b3568
+:END:
 
 [[curl -sS https://starship.rs/install.sh | sh][starship - cross-shell prompt]]
 
@@ -546,6 +604,9 @@ vimcmd_visual_symbol = '[](bold fg:color_yellow)'
 #+end_src
 
 *** nala
+:PROPERTIES:
+:ID:       184e785c-ae68-49a6-9c48-10139037960f
+:END:
 
 Nala is a shinier front end to ~libapt-pkg~ made in python.
 
@@ -558,7 +619,13 @@ It supports parallel downloads! Also it will run some basic perf to determine wh
 It also keeps a history (~/var/lib/nala/history.json~) that can be instrumented with it's history command.
 
 *** =bash=
+:PROPERTIES:
+:ID:       d5ba992a-5e4a-4013-917d-66d41ad53f0e
+:END:
 **** .bashrc
+:PROPERTIES:
+:ID:       fd7b7b1b-89b6-44ff-93d5-c4f760666ec0
+:END:
 
 The individual per-interactive-shell startup file.
 
@@ -801,10 +868,16 @@ export PATH="/opt/arm-none-eabi/bin:$PATH"
 #<<PICO-SDK-VAR>>#
 #+END_SRC
 **** .bash_profile
+:PROPERTIES:
+:ID:       5c0e5470-1292-449b-ba39-f4ba90b7be99
+:END:
 
 The personal initialization file, executed for _login shells_. This is only read by bash but if it is not found it will fall back to ~/.profile~.
 
 **** .bash_aliases
+:PROPERTIES:
+:ID:       70cc4377-c301-4b11-99a8-f2418c1985d5
+:END:
 #+BEGIN_SRC bash :tangle ~/.dotfiles/.bash_aliases
 alias ll="ls -la"
 alias la="ls -AF"
@@ -815,6 +888,9 @@ alias de="doom-emacs"
 #<<ADB_HOME>>#
 #+END_SRC
 **** bash auto completion
+:PROPERTIES:
+:ID:       c0a40f78-ddb4-4558-97ff-94e1fff194bf
+:END:
 
 Bash-completion is a tool that allows for easier addition of bash auto-completion via script files that live in ~/etc/profile.d/~.
 
@@ -834,6 +910,9 @@ source /etc/profile.d/bash_completion.sh
 #+end_src
 
 *** .profile
+:PROPERTIES:
+:ID:       7892832b-703d-4c53-82b7-c8f3de2f68be
+:END:
 
 The original initialization for Bourne shell (aka. ~sh~).
 
@@ -868,8 +947,14 @@ fi
 #+END_SRC
 
 *** =git=
+:PROPERTIES:
+:ID:       98f23441-61b5-4553-8dfa-643bc1c0b1b6
+:END:
 
 **** .gitconfig
+:PROPERTIES:
+:ID:       6188ee4f-73e6-498f-b14c-20016c5a0ae1
+:END:
 
 Git supported the XDG spec out of the box so we can just directly place our ~.gitconfig~ at ~XDG_CONFIG_HOME/git/config~ (note config here is a _file_ not a dir).
 
@@ -942,6 +1027,9 @@ See:
 - [fn:git-2]. [[https://blog.gitbutler.com/how-git-core-devs-configure-git/][How git core devs configure git]]
 
 **** ~safe.directory~
+:PROPERTIES:
+:ID:       0624cb1b-05fb-488a-a2b3-8d12d6f6cfe4
+:END:
 
 This tells git that we consider a given dir safe. Without it git _will not_ parse a ~.gitconfig~ of a non-safe (assume to be unless told otherwise), run hooks, etc. This value is _only respected when set in the global ~.gitconfig~..
 
@@ -952,6 +1040,9 @@ This value is interpolated.
 See: [[https://git-scm.com/docs/git-config/2.35.2#Documentation/git-config.txt-safedirectory][git-scm safe.directory]]
 
 *** .tmux.conf
+:PROPERTIES:
+:ID:       5077dfde-62ef-45e5-9fc9-cde47ccd8bc5
+:END:
 
 #+BEGIN_SRC conf :tangle ~/.dotfiles/.config/tmux/tmux.conf
 # ~/.tmux.conf
@@ -1086,11 +1177,17 @@ set -ga status-right '#[fg=#{PURPLE},bg=#{PINK}]🭮#[fg=#{FG_COLOR},bg=#{PURPLE
 run '~/.tmux/plugins/tpm/tpm'
 #+END_SRC
 *** =fzf=
+:PROPERTIES:
+:ID:       cd6574e7-cd04-49db-b1d3-7d758e8fc78b
+:END:
 
 Installed via apt.
 [[https://github.com/junegunn/fzf][fzf github repo]]
 
 **** completion.bash
+:PROPERTIES:
+:ID:       c8af8515-d204-4ff1-9b8c-b00b5ed729cf
+:END:
 
 #+BEGIN_SRC bash :tangle ~/.dotfiles/.fzf/completion.bash
 #     ____      ____
@@ -1477,6 +1574,9 @@ _fzf_setup_completion 'proc'  kill
 fi
 #+END_SRC
 **** key-bindings.bash
+:PROPERTIES:
+:ID:       1cabfe1b-b42d-4eef-8fd6-1e00f5779972
+:END:
 
 #+BEGIN_SRC bash :tangle ~/.dotfiles/.fzf/key-bindings.bash
 #     ____      ____
@@ -1579,12 +1679,18 @@ fi
 
 #+RESULTS:
 *** Octave
+:PROPERTIES:
+:ID:       fa4d6a2b-0f94-4252-b3ff-1483a2552532
+:END:
 
 #+name: OCTAVE-SHELL-VAR
 #+BEGIN_SRC bash
 export OCTAVE_HISTFILE="$XDG_STATE_HOME/octave_hist"
 #+END_SRC
 *** =Python=
+:PROPERTIES:
+:ID:       3828bbeb-8137-4770-b827-7ebe79bcfbc0
+:END:
 
 #+NAME: PYTHON_BASHRC
 #+BEGIN_SRC bash
@@ -1599,6 +1705,9 @@ export PATH="$HOME/venvs:$PATH"
 #+END_SRC
 
 **** .pythonrc
+:PROPERTIES:
+:ID:       e2d88f66-fa1b-4cb5-ba52-2609faeb8550
+:END:
 
 As noted in the comment this is unnecessary for python >v3.13.0a3
 
@@ -1645,6 +1754,9 @@ if is_vanilla():
 #+END_SRC
 
 **** .pylintrc
+:PROPERTIES:
+:ID:       b35c5af3-8c2b-4539-b7ba-1a0244341c03
+:END:
 
 This is almost entirely the default generated by the command ~pylint --generate-rcfile~ (=note=: this will take a ~--interactive~ if you want to be walked through each setting).
 
@@ -2209,10 +2321,16 @@ redefining-builtins-modules = ["six.moves", "past.builtins", "future.builtins", 
 #+END_SRC
 
 **** conda - mini and ana
+:PROPERTIES:
+:ID:       7acdab4e-bb31-4716-93bd-0ba5bab4660c
+:END:
 
 One of the several python package managers.
 
 ***** Disabling auto start
+:PROPERTIES:
+:ID:       d30a5f2e-22b1-4885-af12-bdbadcc6af58
+:END:
 
 Annoyingly conda by default auto-starts with your shell.
 
@@ -2221,11 +2339,20 @@ conda config --set auto_activate_base false
 #+END_SRC
 
 *** =Emacs=
+:PROPERTIES:
+:ID:       7cb58939-0f2a-4a6e-af2a-d29cd8a355a5
+:END:
 **** chemacs
+:PROPERTIES:
+:ID:       b41e6851-7729-4dc8-b38e-099caff6cc9a
+:END:
 
 [[https://github.com/plexus/chemacs2][Chemacs2 git repo]]
 
 ***** emacs-profiles.el
+:PROPERTIES:
+:ID:       6b00d246-09ef-4848-9fb5-ccaa4d7be21f
+:END:
 
 #+BEGIN_SRC emacs-lisp :tangle ~/.dotfiles/.emacs-profiles.el
 (("default"   . ((user-emacs-directory . "~/.my-emacs")))
@@ -2236,6 +2363,7 @@ conda config --set auto_activate_base false
 **** DOOM
 :PROPERTIES:
 :header-args: :comments link
+:ID:       ba50e46e-4dd3-4dc3-b694-7e15e4402022
 :END:
 
 Upfront make sure that our shell can find DOOM.
@@ -2248,6 +2376,9 @@ export PATH="$XDG_CONFIG_HOME/doom-emacs/bin/:$PATH"
 #+END_SRC
 
 ***** Desktop Entry
+:PROPERTIES:
+:ID:       f36273f1-101b-48ca-bcb7-46cc88cd65c4
+:END:
 
 Lets make a desktop entry so doom can be launched from the desktop launcher.
 
@@ -2433,7 +2564,7 @@ In Doom Emacs ~init.el~ servers as the area for _module_ activation. This is a s
  (org +pandoc +noter +pretty)               ; organize your plain life in plain text
  ;;php               ; perl's insecure younger brother
  plantuml          ; diagrams for confusing people more
- graphviz          ; diagrams for confusing yourself even more
+ ;;graphviz          ; diagrams for confusing yourself even more
  ;;purescript        ; javascript, but functional
  (python +lsp)            ; beautiful is better than ugly
  ;;qt                ; the 'cutest' gui framework ever
@@ -2473,6 +2604,13 @@ In Doom Emacs ~init.el~ servers as the area for _module_ activation. This is a s
 #+end_src
 
 ***** Doctor         - =doctor.el=
+:PROPERTIES:
+:ID:       5dd795ed-ab96-403b-a8ed-08d42d982899
+:END:
+:BACKLINKS:
+[2025-10-11 Sat 23:03] <- [[id:1b5e8aef-05e8-4872-a055-e68b3b8c883a][Template - Doom doctor]]
+[2025-10-11 Sat 23:03] <- [[id:1e82852e-ea1a-4962-b9cd-b7b5ea7f2dbb][Template - Doom doctor]]
+:END:
 
 The ~doom doctor~ shell command can ingest ~doctor.el~ files to help diagnose issues with packages and/or config. Originally discovered and borrowed from reading [[https://tecosaur.github.io/emacs-config/config.html#config-doctor][tecosaur's config]].
 
@@ -2740,10 +2878,16 @@ Dependencies:
 #+end_src
 
 ****** Modeline
+:PROPERTIES:
+:ID:       deedcfc7-534f-4455-ba3b-cc588a1a3a93
+:END:
 #+BEGIN_SRC emacs-lisp
 (setq doom-modeline-height 35)
 #+END_SRC
 ****** Timestamping
+:PROPERTIES:
+:ID:       14de83ad-24f7-4ddb-8359-9189944538d2
+:END:
 
 Emacs can timestamp files by matching to a special string.
 Ideally this special string would be created
@@ -2821,6 +2965,9 @@ But =org-appear= solves this nicely.
 #+end_src
 
 ******* (package) =org-superstar=
+:PROPERTIES:
+:ID:       54dd4dab-7a57-4357-98e6-28d2f5d11f53
+:END:
 
 Org bullets is nice but [[https://github.com/integral-dw/org-superstar-mode][(gh) org-superstar]] might be a bit more flexible.
 
@@ -2879,6 +3026,9 @@ Org bullets is nice but [[https://github.com/integral-dw/org-superstar-mode][(gh
 #+end_src
 
 ******* (builtin) =org-babel=
+:PROPERTIES:
+:ID:       3860e6db-7156-4031-b430-508116ccd3e4
+:END:
 
 I usually want to be able to reference the org file I am working from when editing a src-bock and preferably things TAB as expected for the language.
 
@@ -2887,6 +3037,9 @@ I usually want to be able to reference the org file I am working from when editi
 (setq org-src-tab-acts-natively t)
 #+END_SRC
 ******** The Library of Babel
+:PROPERTIES:
+:ID:       463cf138-4d87-4a72-ad6d-0e5177acc489
+:END:
 
 Babel blocks can be includes from other files via "the Library of Babel". To do so we must tell Emacs which file/s to use via this function:
 
@@ -2905,9 +3058,15 @@ WIP - for some reason this creates problems on initialization even though it eva
 Which sets ~org-babel-library-of-babel~.
 
 ******** TODO Review some safe/sane babel default
+:PROPERTIES:
+:ID:       41e6df8e-6075-43d6-a165-59f5e84b3f2c
+:END:
 - [[https://sachachua.com/blog/2024/12/linking-to-org-babel-source-in-a-comment-and-making-that-always-use-file-links/][Linking to Org Babel source - Sacha Chua]]
 
 ******** noweb
+:PROPERTIES:
+:ID:       2a21b71f-99ea-4dda-9329-6efe6b09e167
+:END:
 
 noweb syntax (<<block-name>>) allows for the concatenation of org-babel blocks by name. This is all well and good until "<</>>" breaks syntax highlighting for a given language.
 
@@ -3001,6 +3160,9 @@ This isn't reliably loading on start for some reason.
 
 ref: https://emacs.stackexchange.com/questions/44664/apply-ansi-color-escape-sequences-for-org-babel-results
 ******** TODO Hooks - Format the file we've tangled too
+:PROPERTIES:
+:ID:       a1bbc564-ba3b-4970-b07a-a1df57a57c07
+:END:
 
 This would be really nice to figure out.
 
@@ -3026,6 +3188,9 @@ Dealing with images in org mode really requires pixel scrolling.
 #+END_SRC
 
 ******** (depreciated) =org-download= - screenshots
+:PROPERTIES:
+:ID:       b636918e-37e5-43ef-b982-ba559a7e26de
+:END:
 
 [[https://github.com/abo-abo/org-download][org-download github]]
 
@@ -3119,6 +3284,9 @@ Yanking from the kill-ring is too useful to not have a hot key.
 #+end_src
 
 ******** (built-in) yank-media
+:PROPERTIES:
+:ID:       8deab4dc-fc32-4056-82a9-efe52a998de5
+:END:
 
 Org-mode has a ~yank-media~ command since 9.something. It seems to more or less achieve what ~org-download~ does. By default it uses the ~org-attach~ machinery
 
@@ -3239,6 +3407,9 @@ Sometimes I need to grab an image from a file path instead of the clipboard.
  )
 #+end_src
 ******* (lang) ditaa
+:PROPERTIES:
+:ID:       3f086640-0f8a-4f6b-8ba8-e06518e5ad70
+:END:
 
 ditaa is a java based cli for turning text into diagrams.
 Org-mode may need to be given the path to it's jar file.
@@ -3329,6 +3500,9 @@ Creates automatic backlinks when it is used to create a link. ~org-refile~ targe
 #+end_src
 
 ******** Fetching link titles
+:PROPERTIES:
+:ID:       43a23140-691f-45a4-9e22-ee9a424be06b
+:END:
 
 I know this will work.
 
@@ -3347,6 +3521,9 @@ May need to sanitize special characters...
 
 ref: [[https://emacs.stackexchange.com/questions/66178/how-to-execute-shell-command-with-piping-in-elisp][(st-ex) how to execute shell command with piping in Elisp?]]
 ******** Timestamp org-headings
+:PROPERTIES:
+:ID:       850a60ce-84b4-4c3c-bc01-5fc668c728ed
+:END:
 
 #+begin_src emacs-lisp
 (after! org
@@ -3372,7 +3549,13 @@ ref: [[https://emacs.stackexchange.com/questions/66178/how-to-execute-shell-comm
 ref: [[https://emacs.stackexchange.com/a/72148][Org-Mode : adding creation date property upon heading creation]]
 
 ******* Export
+:PROPERTIES:
+:ID:       9ffc4a2d-f274-4984-a250-5926a63c177a
+:END:
 ******** org-export: org \rarr odt \rarr docx
+:PROPERTIES:
+:ID:       bb3a4194-cfbd-4280-961c-c224a512cead
+:END:
 
 For the most part org \rarr to odt works very well. There a few small things that do need configuration
 
@@ -3422,6 +3605,9 @@ Ideally we set these per file as need with a file-local variable like this:
 =Note=: the , at the beginning is to escape org markup.
 
 ******* Filters
+:PROPERTIES:
+:ID:       b022d8af-3f2c-4764-8d50-119d30128944
+:END:
 ******** (odt) Unix to Windows file:// links
 :PROPERTIES:
 :ID:       d7faa0b6-fcf1-4f27-b5ed-924914bc2952
@@ -3512,7 +3698,13 @@ The ~org-export~ filters are _run after_ the org file has already been converted
 #+end_src
 
 ******* LaTeX
+:PROPERTIES:
+:ID:       7dfc079a-6853-479d-9908-85192cbd00c7
+:END:
 ******** LaTeX - previews
+:PROPERTIES:
+:ID:       28d14554-57c0-4c18-b6c4-3900c309d79e
+:END:
 
 First we configure some of the built in options for the preview mode.
 
@@ -3560,6 +3752,9 @@ ref: [[https://hieuphay.com/doom-emacs-config/][Hieu Phay - My Doom Emacs Config
 #+END_SRC
 
 ********* Engraved-faces
+:PROPERTIES:
+:ID:       fac8182c-3909-4173-89e8-8501bb71e1c6
+:END:
 
 Engraved is the native Emac's highlighting backed that translate Emacs' font locks to LaTeX.
 
@@ -3645,6 +3840,9 @@ Engraved is the native Emac's highlighting backed that translate Emacs' font loc
 #+END_SRC
 
 ********* (package) ~org-fragtog~
+:PROPERTIES:
+:ID:       9a35a777-4d6f-4a49-9bae-11a544f7417e
+:END:
 
 Then we bring in =org-fragtog= to save from having to constantly toggle previews.
 
@@ -3668,7 +3866,13 @@ Then we bring in =org-fragtog= to save from having to constantly toggle previews
 #+end_src
 
 ******* Drawing
+:PROPERTIES:
+:ID:       2620d0f2-b334-48b8-811a-3b51b5aa8406
+:END:
 ******** (package) org-xopp
+:PROPERTIES:
+:ID:       dc46a531-fdbb-4b6b-932c-7f9b54ef64c3
+:END:
 
 _External dependencies:_
 - ~xournalpp~
@@ -3703,7 +3907,7 @@ There appears to be two issues:
 
 ******* Org - todo-keywords
 :PROPERTIES:
-:ID:       900f662b-690f-423f-8445-d079221ac9ab
+:ID:       ec91ef3e-a5dd-4987-bf03-cc0848cdfedd
 :END:
 
 =Reminder=:
@@ -3783,6 +3987,9 @@ There appears to be two issues:
 #+END_SRC
 
 ******* Tags
+:PROPERTIES:
+:ID:       a0bbe6a6-74a1-44ef-bd2b-2f21c48906b1
+:END:
 
 Pre-define some tags to help with categorizing and filtering things. Since I already tag things but category these tags with have some syntax sugar to distinguish them. This is intended to work with the agenda.
 
@@ -3815,6 +4022,9 @@ Pre-define some tags to help with categorizing and filtering things. Since I alr
 #+end_src
 
 ******* Agenda
+:PROPERTIES:
+:ID:       4a125bff-4c82-489e-baac-4e61554947f3
+:END:
 
 #+begin_src emacs-lisp :noweb yes
 (after! org
@@ -3835,6 +4045,9 @@ Pre-define some tags to help with categorizing and filtering things. Since I alr
 #+end_src
 
 ******** Custom Agenda Commands - Not used
+:PROPERTIES:
+:ID:       ece9043d-df99-4593-9c7e-190d8941e314
+:END:
 
 _Currently not used due to gremlins_
 
@@ -3898,6 +4111,9 @@ Type can take numerous predefined symbols or a user-defined function.
   )
 #+end_src
 ******** (package) casual-suite
+:PROPERTIES:
+:ID:       35974261-5d3d-473b-9e96-ee40bb0d1c3a
+:END:
 
 [[https://github.com/kickingvegas/casual-suite][(gh) casual-suite]]
 
@@ -3915,6 +4131,9 @@ Type can take numerous predefined symbols or a user-defined function.
 #+end_src
 
 ******** (package) org-super-agenda
+:PROPERTIES:
+:ID:       0b141ba6-952c-4217-a43e-5bf452dbaac6
+:END:
 
 #+BEGIN_SRC emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
 (package! org-super-agenda
@@ -3941,8 +4160,14 @@ Type can take numerous predefined symbols or a user-defined function.
 #+END_SRC
 
 ******* Capture
+:PROPERTIES:
+:ID:       6ef9a0e4-3017-4309-a663-efa60e6c6783
+:END:
 
 ******** (built-in) org-capture-templates
+:PROPERTIES:
+:ID:       0b8015a3-5719-4857-9c9f-4c3b18f15c47
+:END:
 
 Relevant documentation:
 - [[https://orgmode.org/manual/Template-expansion.html][Org capture template expansion]]
@@ -4148,6 +4373,12 @@ This one is purely for testing purposes.
 #+end_src
 
 ******** (package) DOCT: Declarative Org Capture Templates
+:PROPERTIES:
+:ID:       d0756e6b-b32e-4bf8-9cb6-62cde5eb6773
+:END:
+:BACKLINKS:
+[2025-10-11 Sat 23:01] <- [[id:e7e4bbb7-8230-4cdd-a1cc-31ec50bbb409][* TODO]]
+:END:
 
 The default way of writing templates can be hard to read and write. Maybe this will be easier.
 
@@ -4162,6 +4393,26 @@ The default way of writing templates can be hard to read and write. Maybe this w
 
 Usuage of doct still involves using ~setq~ on ~set-org-capture-templates~ but what is passed to it is wrapped in ~(doct '(...))~. Presumably this means that doct' ingests the quote list written in declarative syntax and spit returns to ~org-capture-templates~ the default syntax.
 
+At current ([2025-10-08 Wed]) I organize by category first:
+life
+work
+bookmark
+media
+
+Then note type:
+w
+w todo
+  plain 
+  with link
+  with file link
+w note
+w meeting
+w
+
+Emacs
+Doom Doctor - things to add to the doctor
+Doom Issue
+Package Note?
 #+begin_src emacs-lisp
 (use-package! doct
   :commands doct)
@@ -4175,10 +4426,55 @@ Usuage of doct still involves using ~setq~ on ~set-org-capture-templates~ but wh
 ;;                       :headline "Inbox"
 ;;                       :type entry
 ;;                       :template ("* TODO %?"
-;;                                  "%i %a"))))))
+;;                                  "%i %a")))))
+;; (after! org
+;;   (setq org-capture-templates
+;;         (doct '(("Parent" :keys "p"
+;;                  :file "~/example.org"
+;;                  :prepend t
+;;                  :template ("* %{todo-state} %^{Description}"
+;;                             ":PROPERTIES:"
+;;                             ":Created: %U"
+;;                             ":END:"
+;;                             "%?")
+;;                  :children (("First Child"  :keys "1"
+;;                              :headline   ""
+;;                              :todo-state "TODO"
+;;                              :hook (lambda () (message "\"First Child\" selected.")))
+;;                             ("Second Child" :keys "2"
+;;                              :headline   "Two"
+;;                              :todo-state "NEXT")
+;;                             ("Third Child"  :keys "3"
+;;                              :headline   "Three"
+;;                              :todo-state "MAYBE"))))))
+;;   )
+
+;; (doct '(("Work" :keys "n"
+;;          :prepend t
+;;          :children
+;;          (("Notes" :keys "c"
+;;            :children
+;;            (("Plain" :keys "p"
+;;              :file ""
+;;              :type plain
+;;              :template "test"))
+;;            (("With link" :keys "l"
+;;              :file ""
+;;              :type plain
+;;              :todo-state "NOTE"
+;;              :template "test"))
+;;            (("With file link" :keys "f"
+;;              :file ""
+;;              :type plain
+;;              :todo-state "NOTE"
+;;              :template "test"))
+;;            )))))
 #+end_src
 
 ******** (built-in) org-refile
+:PROPERTIES:
+:ID:       3abc32d5-74ed-4893-b407-a7189d1430b6
+:END:
 
 #+BEGIN_SRC emacs-lisp
 (after! org
@@ -4190,6 +4486,9 @@ Usuage of doct still involves using ~setq~ on ~set-org-capture-templates~ but wh
   )
 #+END_SRC
 ******* (package) =org-ql=
+:PROPERTIES:
+:ID:       31b4a36c-8066-413e-bf34-6222e1ab6183
+:END:
 
 #+begin_src emacs-lisp :tangle ~/.dotfiles/.config/doom/packages.el
 (package! org-ql
@@ -4237,6 +4536,9 @@ see: [[https://github.com/positron-solutions/transient-showcase?tab=readme-ov-fi
 #+end_src
 
 ******* (package) =org-import=
+:PROPERTIES:
+:ID:       861bba9a-bfcb-438d-9dad-905b947dd258
+:END:
 
 [[https://github.com/tecosaur/org-pandoc-import][(gh) org-pandoc-import repo]]
 
@@ -4335,6 +4637,9 @@ _Normal mode_
 But if I query this via =SPC h k= Doom informs me that "This lambda is an interactive function" BUT does list ~evil-motion-state-map~ under "Key Bindings" which does include a number of ~avy~ functions.
 
 ****** (builtin) =Apheleia=
+:PROPERTIES:
+:ID:       5fd82726-a512-45dd-9aaf-5ef1abb668ec
+:END:
 
 Apheleia is an emacs package for wrangling formatters (so it seems). It's primary defaulty choice is prettier but can be made to work with other thing such as yq.
 
@@ -4360,6 +4665,9 @@ Apheleia understands unquotes _file, filename, and input_ as different types of 
 #+end_src
 
 ****** Project.el
+:PROPERTIES:
+:ID:       3e524c99-f2fb-4909-8429-125a4a1fe99c
+:END:
 
 You can set porject "indicator" files like this (by default it uses VC files to "guess"):
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -4369,6 +4677,9 @@ You can set porject "indicator" files like this (by default it uses VC files to 
   )
 #+END_SRC
 ****** Projectile.el
+:PROPERTIES:
+:ID:       76faaa5d-d4b1-41a9-b94a-b9c8fb9d683d
+:END:
 
 #+BEGIN_SRC emacs-lisp :tangle no :noweb yes
 (use-package! projectile
@@ -4398,6 +4709,9 @@ The modeline can be set like so (it won't work for TRAMP however):
 #+END_SRC
 
 ******* Generic Project Override Functions
+:PROPERTIES:
+:ID:       6f24fdee-5a1a-4455-8240-88d45d0e3b18
+:END:
 
 The following functions can be configured to perform project specific actions.
 
@@ -4415,7 +4729,7 @@ These commands use output buffers that are _shared_ \therefore if called by diff
 (setq projectile-per-project-compilation-buffer t)
 #+END_SRC
 
-****** (package) Consult
+****** (package) consult
 :PROPERTIES:
 :ID:       d543f813-c091-460c-83ab-3857345cb107
 :END:
@@ -4489,6 +4803,9 @@ Although consult is included in the Doom completion module many of the key bindi
    )
 #+end_src
 ****** (package) which-key
+:PROPERTIES:
+:ID:       80890818-ca86-4e4f-ab76-e4e06cd93fb2
+:END:
 
 ~which-key~ is used by default in DOOM. Ideally I would like to add my own labels to prefix menus and such but so far I have not been able to figure out how to do so.
 
@@ -4622,6 +4939,9 @@ Some keybinding is necessary to ensure that snippets can be navigated as expecte
 #+end_src
 
 ****** (package) =evil-multiedit=
+:PROPERTIES:
+:ID:       3a85a212-52bd-47bb-97db-594ae0177807
+:END:
 
 evil-multiedit is enabled by uncommenting ~multiple-cursors~ in packages.el
 
@@ -4649,6 +4969,9 @@ reference:
   )
 #+end_src
 ****** Flymake
+:PROPERTIES:
+:ID:       9fa3f013-bf14-49d8-a216-dd249e4e63fe
+:END:
 
 #+begin_src emacs-lisp
 ;; Different faces for different severities
@@ -4801,10 +5124,16 @@ External dependencies:
  "C-M-$" #'jinx-languages)
 #+end_src
 ****** Languagetool
+:PROPERTIES:
+:ID:       62fa4fd6-a934-448d-a551-be15f902a81e
+:END:
 
 Languagetool is a FOSS alternative to grammarly and needs to be installed manually for Doom to be able to instrument it. It seems to use a Client-Server model and on Linux has to be installed via bash script (see: [[https://github.com/languagetool-org/languagetool][Languagetool github]])
 
 ****** citar
+:PROPERTIES:
+:ID:       215272f3-5157-4f42-a83a-fd264b637fc6
+:END:
 
 #+BEGIN_SRC emacs-lisp
 ;; biblio
@@ -4816,6 +5145,9 @@ Languagetool is a FOSS alternative to grammarly and needs to be installed manual
 #+END_SRC
 
 ****** dap-mode
+:PROPERTIES:
+:ID:       4761fe6f-86f2-442e-be06-47390ef7f72f
+:END:
 #+begin_src emacs-lisp
 ;; -- General dap-mode --
 (after! dap-mode
@@ -4838,6 +5170,9 @@ Languagetool is a FOSS alternative to grammarly and needs to be installed manual
 :ID:       45e35db0-e9e0-45c8-997d-5971eb581bff
 :END:
 ******* Matlab
+:PROPERTIES:
+:ID:       d15bfe1c-4ff0-4191-8602-77d5a5b1db18
+:END:
 
 There is a [[https://github.com/MathWorks/Emacs-MATLAB-Mode][Emacs MATLAB-mode]] that can be installed via MELPA and is maintained from someone at Mathworks. It mostly works although I never got the linter working quite right.
 
@@ -4928,6 +5263,9 @@ prompt) during export, e.g. conversion of org to say html."
   )
 #+END_SRC
 ******* Python
+:PROPERTIES:
+:ID:       8d92ce2b-4bde-46b2-ad35-e1cace4f6901
+:END:
 
 #+BEGIN_SRC emacs-lisp
 ;; -- Python -- ;;
@@ -5046,6 +5384,9 @@ _Debugging - DAP-mode_
 )
 #+end_src
 ******* C and C++
+:PROPERTIES:
+:ID:       ee849b22-06bf-48dc-92e9-7dfddb1e7309
+:END:
 
 For c and cpp make use of eglot and clangd. See:[[https://rgoswami.me/posts/emacs-lang-servers/][Doom Emacs and Language Servers]]
 
@@ -5062,6 +5403,9 @@ For c and cpp make use of eglot and clangd. See:[[https://rgoswami.me/posts/emac
   )
 #+end_src
 ******* PlantUML
+:PROPERTIES:
+:ID:       644c0270-0e03-4e99-8f76-676329f4a08c
+:END:
 
 [[https://github.com/skuro/plantuml-mode][(gh) PlantUML-mode]]
 
@@ -5077,6 +5421,9 @@ src_shell{grep jar /usr/bin/plantuml} {{{results(=$JAVA -Djava.net.useSystemProx
 #+end_src
 
 ****** Highlight-indent-guides (indent-guides module)
+:PROPERTIES:
+:ID:       d11e336b-cd81-4b75-b81d-222be3ba725b
+:END:
 
 Can't seem to get this to take no matter what I try.
 
@@ -5108,6 +5455,9 @@ Vterm requires some extra work to get functioning.
 	sudo apt-get -y install libvterm-dev
 #+END_SRC
 ******* 2. Install ~libtool~
+:PROPERTIES:
+:ID:       a4963e45-f8fd-419f-bd4e-d70608b94560
+:END:
 
 CMake requires libtool inorder to build vterm. The libtool package may be installed on your package but the binary itself may be missing in which case you'll want:
 src_sh{sudo apt install libtool-bin}.
@@ -5120,6 +5470,9 @@ Often the libtool package just installs libtoolize (which is for adding libtool 
 :END:
 Emacs should offer to do this for you when you first trying to run it.
 ******* 3. Configure =vterm=
+:PROPERTIES:
+:ID:       2bcd780f-2980-47b7-9599-d63d8a812d44
+:END:
 
 vterm is meant to act like a terminal so we want it to go straight to insert mode AND we \probably\ want to land in bash (by default it vterm looks for sh).
 
@@ -5173,7 +5526,13 @@ vterm_printf() {
 Fish has a different function, see [[https://github.com/akermu/emacs-libvterm][(gh) emacs-vterm - shell-side configuration]]
 
 ***** Personal Elisp - =my-elisp.el=
+:PROPERTIES:
+:ID:       a41b607b-ca78-4c68-a183-85dd3f8d2a6d
+:END:
 ****** Structure
+:PROPERTIES:
+:ID:       7e32e863-8846-4fa2-8cb4-e2a9dc431548
+:END:
 
 #+begin_src emacs-lisp :noweb yes :tangle ~/.dotfiles/.config/doom/my-elisp.el
 ;;; my-elisp.el --- Description -*- lexical-binding: t; -*-
@@ -5200,6 +5559,9 @@ Fish has a different function, see [[https://github.com/akermu/emacs-libvterm][(
 ;;; my-elisp.el ends here
 #+end_src
 ****** Yoinking font properties
+:PROPERTIES:
+:ID:       814b7a04-b80c-4600-9de9-63d25550a0de
+:END:
 
 #+BEGIN_SRC emacs-lisp :tangle no
 (defun copy-face-color-at-point ()
@@ -5224,6 +5586,9 @@ Fish has a different function, see [[https://github.com/akermu/emacs-libvterm][(
   :desc "Copy face color at point" "f" #'copy-face-color-at-point))
 #+END_SRC
 ****** Config Tooling :WIP:
+:PROPERTIES:
+:ID:       c311c927-c84b-4494-90e7-aa6f6baa1d02
+:END:
 
 #+begin_src emacs-lisp :tangle no
 (dolist (org-file my--dotfiles-org-files)
@@ -5287,12 +5652,40 @@ _Testing_
 
 #+RESULTS:
 : test-scan-dotfiles
-****** Wrap-text :WIP:
+****** Wrap-text - ~smartparens.el~ :WIP:
+:PROPERTIES:
+:ID:       df6db68a-e2b1-4c87-a345-3e85a359f940
+:END:
+
+There is are some built in functions (~sp-wrap-curly/square/paren~) that do this. So may as well make use of them!
+
+All of these are wrappers on ~sp-wrap-with-pair~. 
+
+Smartparens seems to have issues in org src blogs, at least in ~emacs-lisp~ blocks.
+
+#+begin_src emacs-lisp
+  (map!
+   :map org-mode-map
+   :n "C-(" 'sp-wrap-round
+   :desc "Wrap round." 
+   )
+(map!
+   :map org-mode-map
+   :n "C-{" 'sp-wrap-curly
+   :desc "Wrap round." 
+ )
+(map!
+   :map org-mode-map
+   :n "C-[" 'sp-wrap-square
+   :desc "Wrap round." 
+ )
+#+end_src
 
 ref: [[https://stackoverflow.com/questions/1760939/how-to-write-an-emacs-function-to-wrap-the-marked-region-with-specified-text][How to write an Emacs function to wrap the marked region with specified text]]
 ****** ~shell-for-link-title~ - Emac's function or script to look for and pull a title for a link?
 :PROPERTIES:
 :ID:       eb43813b-989e-4954-baae-99f75ec37ca2
+:CREATED:  2025-10-07 21:21:15
 :END:
 
     Often this information in the URL in the first place. For Example:
@@ -5301,6 +5694,9 @@ ref: [[https://stackoverflow.com/questions/1760939/how-to-write-an-emacs-functio
     A function that takes the link and parses for a title and presents it as an option that could be overwritten would do 95% of what I desire.
 
 ******* Step 1. Write a shell script
+:PROPERTIES:
+:ID:       0154841f-7497-4e7a-8da0-6985e68f5148
+:END:
 
     Options:
     1. Regex
@@ -5334,6 +5730,9 @@ curl -s $1 | grep -oP --regexp='(?<=<title>)(.*?)(?=<\/title>)'
 #+end_src
 
 ******* Step 2. Wrap the shell script in an elisp function
+:PROPERTIES:
+:ID:       05c78c17-64f1-48dc-b2ef-1ed071b2a7ed
+:END:
 
 =Note=: [2025-09-18 Thu]
 Tried to use this via tramp and it didn't work (unsurprisingly). I guess for it to work in such a situation I would have to:
@@ -5356,13 +5755,30 @@ Tried to use this via tramp and it didn't work (unsurprisingly). I guess for it 
 4. Give it a hotkey
 
 5. Probably some error checking maybe?
+******* Step 3. Improve it?
+:PROPERTIES:
+:ID:       ff71b32d-6c5e-414c-95cb-afbe83536611
+:END:
 
+But how?
++ Parse the link for # marks for links to page elements, eg:
+ https://github.com/minad/cape?tab=readme-ov-file#available-capfs 
++ Parse link as first link for title prior to curl?
 ***** Debugging & Troubleshooting
+:PROPERTIES:
+:ID:       b00d9d4f-fb93-4a5e-bab4-43b1745518cb
+:END:
 ****** Packages
+:PROPERTIES:
+:ID:       b1ea1b00-3a90-4514-a3d4-d3380691408d
+:END:
 
 If a package recipe isn't installed right ~straight~ will still create a directory and symlink for it even when it fails to find a package. This can lead to errors about a file or dir not being.
 
 ******* Manually updating packages
+:PROPERTIES:
+:ID:       09acafd9-3db0-41cb-95a6-4f39341f3ca7
+:END:
 You can manually update your packages by calling:
 
 #+begin_src bash
@@ -5398,11 +5814,17 @@ This will have doom go package by package and attempt to update. This can yield 
 [2025-07-05 Sat 11:10] <- [[id:efff4c49-5fc3-43e7-8e97-0bac704d4e1f][TRAMP]]
 :END:
 **** my-emacs
+:PROPERTIES:
+:ID:       53a5ec35-cde8-44ad-bbba-7c7a8f188c3a
+:END:
 
 # Local Variables:
 # jinx-local-words: "config"
 # End:
 *** pico-SDK
+:PROPERTIES:
+:ID:       5964ce8f-54d7-4919-854e-9321300c5bc6
+:END:
 
 #+name: PICO-SDK-VAR
 #+begin_src shell
@@ -5416,7 +5838,13 @@ echo 'export PICO_SDK_PATH=/opt/pico-sdk' | sudo tee -a /etc/profile.d/pico-sdk.
 Which is too awkward to handle via babel.
 
 *** rust
+:PROPERTIES:
+:ID:       f41dfad9-8ba2-4fd2-90a5-00465d72e84d
+:END:
 **** cargo
+:PROPERTIES:
+:ID:       a62940f9-97ee-4f84-bbb9-0aeb2d8401ef
+:END:
 
 Set the home dir for cargo and make sure we can find the executables it installs.
 
@@ -5429,6 +5857,9 @@ export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export PATH="$XDG_DATA_HOME/cargo/bin:$PATH"
 #+END_SRC
 **** =ripgrep=
+:PROPERTIES:
+:ID:       5d696136-2c25-489f-826d-02cb0d605784
+:END:
 
 ripgrep is a dependency for doom emacs itself (plus it whips). It is better to install it directly via cargo than apt so that it can be built with 'pcre2'. Don't forget to run ~doom sync~ after.
 
@@ -5437,30 +5868,48 @@ cargo install ripgrep --features 'pcre2'
 #+end_src
 
 *** nVidia
+:PROPERTIES:
+:ID:       1ce7ed1d-673e-48a4-98d5-3dade4f13dc5
+:END:
 
 #+name: CUDA-SHELL-VAR
 #+BEGIN_SRC bash
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
 #+END_SRC
 *** wget
+:PROPERTIES:
+:ID:       cd9f8121-ef19-4b79-880e-403dd56cfd2c
+:END:
 
 #+name: WGET-SHELL-VAR
 #+BEGIN_SRC bash
 alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
 #+END_SRC
 *** wine
+:PROPERTIES:
+:ID:       e06b0d18-b5e8-44f2-b678-4af24ca91e39
+:END:
 
 #+name: WINE-SHELL-VAR
 #+BEGIN_SRC bash
 export WINEPREFIX="$XDG_DATA_HOME"/wine
 #+END_SRC
 *** jekyll
+:PROPERTIES:
+:ID:       6a9ea68f-0177-4575-a710-4f6bbfe37a43
+:END:
 **** Dependencies
+:PROPERTIES:
+:ID:       b3368225-915c-459a-9fea-2b4bd6947e9b
+:END:
 
 #+begin_src bash
 sudo apt-get install ruby-full build-essential zlib1g-dev
 #+end_src
 **** Environment variables
+:PROPERTIES:
+:ID:       399b07a6-c11e-45e3-a1fd-2946340032a4
+:END:
 
 #+name: JEKYLL-SHELL-VAR
 #+begin_src bash
