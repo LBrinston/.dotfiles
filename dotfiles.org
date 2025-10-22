@@ -5402,6 +5402,61 @@ For c and cpp make use of eglot and clangd. See:[[https://rgoswami.me/posts/emac
                                         ))))
   )
 #+end_src
+******* irony-mode
+:PROPERTIES:
+:CREATED:  2025-10-21 20:34:28
+:ID:       9a5d86ad-722c-4d42-95e2-78c3bb41ca1e
+:END:
+
+[[https://github.com/Sarcasm/irony-mode][GitHub - Sarcasm/irony-mode: A C/C++ minor mode for Emacs powered by libclang]]
+
+******* CMake
+:PROPERTIES:
+:ID:       d24479a9-927d-47d5-8233-6d126ad2de94
+:END:
+
+The primary CMake language server I know of is a
++ [[https://github.com/neocmakelsp/neocmakelsp][GitHub - neocmakelsp/neocmakelsp: Another cmake lsp]] - rust
++ [[https://github.com/regen100/cmake-language-server][GitHub - regen100/cmake-language-server: CMake LSP Implementation]] - python
+
+#+begin_src emacs-lisp
+;; -- CMake LSP
+;;; add to $DOOMDIR/config.el
+;; (set-tree-sitter! 'csharp-mode 'csharp-ts-mode
+;;   '((c-sharp :url "https://github.com/tree-sitter/tree-sitter-c-sharp"
+;;              :commit "3431444351c871dffb32654f1299a00019280f2f")))
+
+
+;; (use-package! cmake-ts-mode
+;;   :config
+;;   (add-hook 'cmake-ts-mode-hook
+;;     (defun setup-neocmakelsp ()
+;;       (require 'eglot)
+;;       (add-to-list 'eglot-server-programs `((cmake-ts-mode) . ("neocmakelsp" "--stdio")))
+;;       (eglot-ensure))))A
+
+;; ref: [[https://github.com/neocmakelsp/neocmakelsp/issues/64#issuecomment-2656388801][how to use with emacs · Issue #64 · neocmakelsp/neocmakelsp · GitHub]]
+;; (after! eglot
+;;   (add-to-list 'eglot-server-programs `((cmake-mode cmake-ts-mode) . ("neocmakelsp" "--stdio")))
+;;   )
+#+end_src
+
+Tried to install cmake-language-server via ~pipx~ but:
+
+#+begin_src 
+➜ pipx install cmake-language-server
+⚠️  File exists at /home/bicolor/.local/bin/cmake-language-server and points to
+    /home/bicolor/.local/bin/cmake-language-server, not
+    /home/bicolor/.local/share/pipx/venvs/cmake-language-server/bin/cmake-language-server.
+    Not modifying.
+  installed package cmake-language-server 0.1.11, installed using Python 3.12.3
+  These apps are now globally available
+    - cmake-language-server (symlink missing or pointing to unexpected location)
+done! ✨ 🌟 ✨
+#+end_src
+
+ref: [[https://github.com/neocmakelsp/neocmakelsp/issues/64#issuecomment-2656388801][how to use with emacs · Issue #64 · neocmakelsp/neocmakelsp · GitHub]]
+
 ******* PlantUML
 :PROPERTIES:
 :ID:       644c0270-0e03-4e99-8f76-676329f4a08c
