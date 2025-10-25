@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: org ditaa block
+# key: ditaa
+# --
+#+begin_src ditaa :file .assets/${1:`(file-name-base(buffer-file-name))`}/${2:file-name}.png :cmdline -ES
+$0
+#+end_src
