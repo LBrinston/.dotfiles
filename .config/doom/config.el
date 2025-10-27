@@ -1602,8 +1602,10 @@ prompt) during export, e.g. conversion of org to say html."
                                         ))))
   )
 
-(after! babel
-  (setq org-plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
+
+(after! org
+  ;; These _must_ be set for local operation otherwise it tries to submit to the plantumlcom webserver.
+  (setq plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
   (setq plantuml-default-exec-mode 'jar)
   ;; (setq plantuml-default-exec-mode 'binary)
   )

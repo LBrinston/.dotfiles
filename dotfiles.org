@@ -4860,16 +4860,39 @@ repo: [[https://github.com/minad/corfu?tab=readme-ov-file][GitHub - minad/corfu:
 Completion can be nice so long as it's useful. DOOM's configuration of corfu needs some tweaking as does it's configuration of [[id:c4abb32a-301f-4dfd-816b-123c9f990b0b][(package) cape]].
 
 #+begin_src emacs-lisp
-(after! corfu
+(use-package corfu
+  ;; TAB-and-Go customizations
+  :custom
+  (corfu-cycle t)           ;; Enable cycling for `corfu-next/previous'
+  (corfu-preselect 'prompt) ;; Always preselect the prompt
 
+  ;; Use TAB for cycling, default is `corfu-complete'.
+  ;; :bind
+  ;; (:map corfu-map
+  ;;       ("TAB" . corfu-next)
+  ;;       ([tab] . corfu-next)
+  ;;       ("S-TAB" . corfu-previous)
+  ;;       ([backtab] . corfu-previous)
+  ;;       ("SPC" . corfu-insert-seperator)
+  ;;       ("M-SPC" . corfu-insert)
+  ;;       )
+
+  :init
+  (global-corfu-mode)
+  (setq corfu-quit-at-boundary nil)
+  (setq corfu-quit-no-match nil)
   (setq corfu-auto t)
   (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode)
- 
+  )
+
+(after! corfu
   (use-package! orderless
     :custom
     (completion-styles '(orderless basic))
-    (completion-category-overrides '((file (styles basic partial-completion))))
-     ))
+    ;; (completion-category-overrides '((file (styles basic partial-completion))))
+    (completion-category-overrides '((file (styles orderless))))
+    )
+  )
 #+end_src
 ****** (package) cape
 :PROPERTIES:
@@ -5460,16 +5483,23 @@ ref: [[https://github.com/neocmakelsp/neocmakelsp/issues/64#issuecomment-2656388
 ******* PlantUML
 :PROPERTIES:
 :ID:       644c0270-0e03-4e99-8f76-676329f4a08c
+:DEP:      plantuml
 :END:
 
 [[https://github.com/skuro/plantuml-mode][(gh) PlantUML-mode]]
+[[https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-plantuml.html][PlantUML Code Blocks in Babel]]
+[[https://plantuml.com/faq-install][PlantUML - FAQ about installation]]
 
-PlantUML can probably be installed by package manager! But watchout if you src_shell{which plantuml} {{{results(=/usr/bin/plantuml=)}}} \larr it might lie to you. If you src_shell{file -b "/usr/bin/plantuml"} you will learn that this is actually a shell script! Which is hiding the location of the jar file:
+PlantUML can probably be installed by package manager!
+But watch out if you src_shell{which plantuml} {{{results(=/usr/bin/plantuml=)}}} \larr it might lie to you. If you src_shell{file -b "/usr/bin/plantuml"} you will learn that this is actually a shell script! Which is hiding the location of the jar file:
 src_shell{grep jar /usr/bin/plantuml} {{{results(=$JAVA -Djava.net.useSystemProxies=true $HEADLESS -jar /usr/share/plantuml/plantuml.jar "$@"=)}}}
 
+=Additional note=: Debian/Ubuntu's universe package for plantUML is five years old ( time of writing: [2025-10-27 Mon] ). You will need to install directly from the releases page for certain diagrams to work.
+
 #+begin_src emacs-lisp
-(after! babel
-  (setq org-plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
+(after! org
+  ;; These _must_ be set for local operation otherwise it tries to submit to the plantumlcom webserver.
+  (setq plantuml-jar-path "/usr/share/plantuml/plantuml.jar") 
   (setq plantuml-default-exec-mode 'jar)
   ;; (setq plantuml-default-exec-mode 'binary)
   )
