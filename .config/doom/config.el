@@ -416,6 +416,13 @@ org-download-heading-lvl nil)
   )
 
 (after! org
+  ;; If not set explicitly values from +popup-defaults are used . 
+(set-popup-rules!
+  '(("^\\*Org Src" :side right :size 0.5) 
+    )
+  ))
+
+(after! org
   (require 'org-id)
 )
 

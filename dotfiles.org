@@ -3420,7 +3420,32 @@ Org-mode may need to be given the path to it's jar file.
   (setq org-ditaa-jar-path "/usr/bin/ditaa") 
   )
 #+end_src
+******* (buffer) =org-src=
+:PROPERTIES:
+:ID:       a1326195-d813-47e2-a9d2-7865eed6a7bc
+:END:
 
+Ref: 
++ [[https://orgmode.org/manual/Editing-Source-Code.html][Editing Source Code (The Org Manual)]]
++ [[https://docs.doomemacs.org/latest/modules/ui/popup/][:ui popup - Doom Emacs v21.12 documentation]]
+
+In vanilla emacs this is done by setting
+
+#+begin_src emacs-lisp :tangle no
+;; (setq org-src-window-setup 'current-window)
+(setq org-src-window-setup 'reorganize-frame)
+#+end_src
+
+Doom however, has shimmed in it's ~:ui popup~ library so you must set that instead.
+
+#+begin_src emacs-lisp 
+(after! org
+  ;; If not set explicitly values from +popup-defaults are used . 
+(set-popup-rules!
+  '(("^\\*Org Src" :side right :size 0.5) 
+    )
+  ))
+#+end_src
 ******* Headings & Links
 :PROPERTIES:
 :ID:       7b519273-d75a-446a-86b6-e0763c79ea4c
