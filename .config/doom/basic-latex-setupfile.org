@@ -1,0 +1,20 @@
+#+LATEX_CLASS: article
+#+LATEX_CLASS_OPTIONS: [letterpaper, 11pt]
+
+# Title
+#+LATEX_HEADER: \usepackage{titling}
+#+LATEX_HEADER: \setlength{\droptitle}{-4em}
+
+# Font and encoding
+#+LATEX_HEADER: \usepackage{lmodern}
+#+LATEX_HEADER: \usepackage[T1]{fontenc}
+
+# Margins
+#+latex_header: \usepackage[margin=1in]{geometry}
+#+LATEX_HEADER: \setlength{\parindent}{0pt}
+#+LATEX_HEADER: \setlength{\parskip}{1em}
+
+# Colorizing links in a nicer way.
+#+LATEX_HEADER: \definecolor{bblue}{HTML}{0645AD}
+#+LATEX_HEADER: \usepackage[colorlinks]{hyperref}
+#+LATEX_HEADER: \hypersetup{colorlinks, linkcolor=blue, urlcolor=bblue}
