@@ -99,9 +99,3 @@
 (package! jinx
 :recipe (:host github :repo "/minad/jinx")
   )
-
-(package! matlab-mode
-  :recipe(:type git
-          :host github
-          :repo "mathworks/Emacs-MATLAB-Mode")
-  )

@@ -2493,12 +2493,12 @@ In Doom Emacs ~init.el~ servers as the area for _module_ activation. This is a s
  grammar           ; tasing grammar mistake every you make
 
  :tools
- ;;ansible
+ ansible
  biblio            ; Writes a PhD for you (citation needed)
  ;;collab            ; buffers with friends
  (debugger)          ; FIXME stepping through code, to help you add bugs
  ;;direnv
- ;;docker
+ docker
  ;;editorconfig      ; let someone else argue about tabs vs spaces
  ;;ein               ; tame Jupyter notebooks with emacs
  (eval +overlay)     ; run code, run (also, repls)
@@ -2931,7 +2931,7 @@ According [[https://github.com/doomemacs/doomemacs/issues/7633][this issue]] it 
 I prefer to hide the emphasis markers.
 
 #+begin_src emacs-lisp
-(after! org-mode
+(after! org
 (setq org-hide-emphasis-markers t
       org-use-sub-superscripts "{}"
       )
@@ -4147,7 +4147,7 @@ Type can take numerous predefined symbols or a user-defined function.
 #+end_src
 
 #+begin_src emacs-lisp
-(after! org-mode
+(after! org
   (keymap-set org-agenda-mode-map "C-o" #'casual-agenda-tmenu)
   ;; bindings to make jumping consistent between Org Agenda and Casual Agenda
   (keymap-set org-agenda-mode-map "M-j" #'org-agenda-clock-goto)
@@ -4827,7 +4827,7 @@ Although consult is included in the Doom completion module many of the key bindi
    ;; "M-r"   #'consult-history                ;; orig. previous-matching-history-element
    )
 #+end_src
-****** (package) which-key
+****** (package) =which-key=
 :PROPERTIES:
 :ID:       80890818-ca86-4e4f-ab76-e4e06cd93fb2
 :END:
@@ -5217,7 +5217,7 @@ Languagetool is a FOSS alternative to grammarly and needs to be installed manual
 :PROPERTIES:
 :ID:       45e35db0-e9e0-45c8-997d-5971eb581bff
 :END:
-******* Matlab
+******* COMMENT Matlab
 :PROPERTIES:
 :ID:       d15bfe1c-4ff0-4191-8602-77d5a5b1db18
 :END:
@@ -5635,16 +5635,51 @@ vterm_printf() {
 
 Fish has a different function, see [[https://github.com/akermu/emacs-libvterm][(gh) emacs-vterm - shell-side configuration]]
 
+****** Wrap-text - ~smartparens.el~ :WIP:
+:PROPERTIES:
+:ID:       df6db68a-e2b1-4c87-a345-3e85a359f940
+:END:
+
+There is are some built in functions (~sp-wrap-curly/square/paren~) that do this. So may as well make use of them!
+
+All of these are wrappers on ~sp-wrap-with-pair~. 
+
+Smartparens seems to have issues in org src blogs, at least in ~emacs-lisp~ blocks.
+
+=IMPORTANT=: _Do not_ attempt to bind "C-[" \larr this represents ESC in Emacs and will break things in odd and subtle ways.
+
+#+begin_src emacs-lisp
+;; Smartparens has it's own notion internally of what is a valid sexp with which to wrap so you have to set them per-mode
+(after! org
+  (sp-local-pair 'org-mode "<" ">")
+  )
+
+(defun my/wrap-with-pair ()
+  "Prompts for a paired character and wraps with it."
+  (interactive "*")
+  (let ((char (read-char "Wrap with pair: ")))
+    (when char
+      (sp-wrap-with-pair (char-to-string char)))))
+
+(map!
+ :map org-mode-map
+ :n :desc "Wrap with PROMPT" "C-(" 'my/sp-wrap-with-pair
+ ) 
+#+end_src
+
+ref: [[https://stackoverflow.com/questions/1760939/how-to-write-an-emacs-function-to-wrap-the-marked-region-with-specified-text][How to write an Emacs function to wrap the marked region with specified text]]
 ***** Personal Elisp - =my-elisp.el=
 :PROPERTIES:
 :ID:       a41b607b-ca78-4c68-a183-85dd3f8d2a6d
+:header-args: :tangle ./.config/doom/my-elisp.el
 :END:
-****** Structure
+****** HEADER
 :PROPERTIES:
-:ID:       7e32e863-8846-4fa2-8cb4-e2a9dc431548
+:CREATED:  2025-10-25 12:54:04
+:ID:       ba06c642-1c29-40d7-be77-a4b99b66d875
 :END:
 
-#+begin_src emacs-lisp :noweb yes :tangle ~/.dotfiles/.config/doom/my-elisp.el
+#+begin_src emacs-lisp 
 ;;; my-elisp.el --- Description -*- lexical-binding: t; -*-
 ;;
 ;; Author: Me T-T
@@ -5661,19 +5696,13 @@ Fish has a different function, see [[https://github.com/akermu/emacs-libvterm][(
 ;;  Description
 ;;
 ;;; Code:
-
-<<my--scan-for-output-files>>
-<<test-scan>>
-
-(provide 'my-elisp)
-;;; my-elisp.el ends here
 #+end_src
 ****** Yoinking font properties
 :PROPERTIES:
 :ID:       814b7a04-b80c-4600-9de9-63d25550a0de
 :END:
 
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp 
 (defun copy-face-color-at-point ()
   "Copy the foreground color of the face at point to the kill ring."
   (interactive)
@@ -5700,17 +5729,15 @@ Fish has a different function, see [[https://github.com/akermu/emacs-libvterm][(
 :ID:       c311c927-c84b-4494-90e7-aa6f6baa1d02
 :END:
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp 
 (dolist (org-file my--dotfiles-org-files)
 (with-current-buffer (get-file-buffer (expand-file-name org-file
                                                         my-dotfiles-dir))
 (message "File: %s" (buffer-file-name))))
 #+end_src
 
-#+RESULTS:
-
 #+name: my--scan-for-output-files
-#+begin_src emacs-lisp :eval no
+#+begin_src emacs-lisp :eval no :tangle yes
 (defun my--scan-for-output-files (org-file)
   (let ((output-files '())
         (current-match t))
@@ -5745,7 +5772,7 @@ Fish has a different function, see [[https://github.com/akermu/emacs-libvterm][(
 _Testing_
 
 #+name: test-scan
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp 
 ;; A simple test for my--scan-for-output-files
 (defun test-scan-dotfiles ()
   (interactive)
@@ -5762,36 +5789,6 @@ _Testing_
 
 #+RESULTS:
 : test-scan-dotfiles
-****** Wrap-text - ~smartparens.el~ :WIP:
-:PROPERTIES:
-:ID:       df6db68a-e2b1-4c87-a345-3e85a359f940
-:END:
-
-There is are some built in functions (~sp-wrap-curly/square/paren~) that do this. So may as well make use of them!
-
-All of these are wrappers on ~sp-wrap-with-pair~. 
-
-Smartparens seems to have issues in org src blogs, at least in ~emacs-lisp~ blocks.
-
-#+begin_src emacs-lisp
-  (map!
-   :map org-mode-map
-   :n "C-(" 'sp-wrap-round
-   :desc "Wrap round." 
-   )
-(map!
-   :map org-mode-map
-   :n "C-{" 'sp-wrap-curly
-   :desc "Wrap round." 
- )
-(map!
-   :map org-mode-map
-   :n "C-[" 'sp-wrap-square
-   :desc "Wrap round." 
- )
-#+end_src
-
-ref: [[https://stackoverflow.com/questions/1760939/how-to-write-an-emacs-function-to-wrap-the-marked-region-with-specified-text][How to write an Emacs function to wrap the marked region with specified text]]
 ****** ~shell-for-link-title~ - Emac's function or script to look for and pull a title for a link?
 :PROPERTIES:
 :ID:       eb43813b-989e-4954-baae-99f75ec37ca2
@@ -5839,7 +5836,7 @@ Next step wrap it in a shell script and call it from a hook:
 curl -s $1 | grep -oP --regexp='(?<=<title>)(.*?)(?=<\/title>)'
 #+end_src
 
-******* Step 2. Wrap the shell script in an elisp function
+******* Step 2. =(IMPL)= Wrap the shell script in an elisp function
 :PROPERTIES:
 :ID:       05c78c17-64f1-48dc-b2ef-1ed071b2a7ed
 :END:
@@ -5850,8 +5847,9 @@ Tried to use this via tramp and it didn't work (unsurprisingly). I guess for it 
 2. Back propagate the URL to the host where my shell script actually lives.
 3. Send the formatted link back to the remote.
 
-#+begin_src emacs-lisp :comments link :tangle ~/.dotfiles/.config/doom/my-elisp.el
-(defun shell-for-title (url)
+#+name: my/shell-for-title
+#+begin_src emacs-lisp :comments link 
+(defun my/shell-for-title (url)
   (interactive "sURL: ")
   "Calls a bash script to retrieve a title from the passed URL. Returns a formatted org-mode link"
   ;; string-trim removes any \n
@@ -5874,6 +5872,49 @@ But how?
 + Parse the link for # marks for links to page elements, eg:
  https://github.com/minad/cape?tab=readme-ov-file#available-capfs 
 + Parse link as first link for title prior to curl?
+****** LISP - Insert list as org heading :@computer:
+:PROPERTIES:
+:ID:       1bb7b231-843e-4dc4-ae9b-2d15ce892f11
+:END:
+
+Like mkdir
+(insert-list-heading {list,of,headigs})
+
+=Rough draft=
+#+begin_src emacs-lisp :tangle no
+(let ((head-list '("test1" "test2" "test3")))
+  (dolist (heading head-list)
+    (org-insert-heading)
+    (insert heading)
+    )
+  )
+#+end_src
+
+#+name: my/org-mklist-headings
+#+begin_src emacs-lisp 
+(defun my/org-mklist-headings (hlist)
+  "Creates Org-mode headings from passed LIST."
+  ;; Check if hlist is nil
+  ;; Prompt interactively for list if nil (this way can be interactive or not)
+  (interactive "sEnter headings (csv)")
+  (when (stringp hlist)
+    ;; Split the csv and remove any trailing whitespace (string-trim)
+    (setq hlist (mapcar #'string-trim (split-string hlist ",")))
+    (dolist (heading hlist)
+      (org-insert-heading)
+      (insert heading))
+      ))
+#+end_src
+****** FOOTER
+:PROPERTIES:
+:CREATED:  2025-10-25 12:54:04
+:ID:       6875de5e-5982-4c4e-89c6-54ce02f2ce46
+:END:
+#+begin_src emacs-lisp 
+(provide 'my-elisp)
+;;; my-elisp.el ends here
+#+end_src
+
 ***** Debugging & Troubleshooting
 :PROPERTIES:
 :ID:       b00d9d4f-fb93-4a5e-bab4-43b1745518cb

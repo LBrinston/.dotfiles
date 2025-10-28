@@ -162,7 +162,7 @@ which contain configuration files that should be tangled"
 ;; Prevents getting an annoying error
 (autoload 'org-eldoc-get-src-lang "org-eldoc")
 
-(after! org-mode
+(after! org
 (setq org-hide-emphasis-markers t
       org-use-sub-superscripts "{}"
       )
@@ -847,7 +847,7 @@ do not already have one."
         )
   )
 
-(after! org-mode
+(after! org
   (keymap-set org-agenda-mode-map "C-o" #'casual-agenda-tmenu)
   ;; bindings to make jumping consistent between Org Agenda and Casual Agenda
   (keymap-set org-agenda-mode-map "M-j" #'org-agenda-clock-goto)
@@ -1264,16 +1264,39 @@ do not already have one."
 
   )
 
-(after! corfu
+(use-package corfu
+  ;; TAB-and-Go customizations
+  :custom
+  (corfu-cycle t)           ;; Enable cycling for `corfu-next/previous'
+  (corfu-preselect 'prompt) ;; Always preselect the prompt
 
+  ;; Use TAB for cycling, default is `corfu-complete'.
+  ;; :bind
+  ;; (:map corfu-map
+  ;;       ("TAB" . corfu-next)
+  ;;       ([tab] . corfu-next)
+  ;;       ("S-TAB" . corfu-previous)
+  ;;       ([backtab] . corfu-previous)
+  ;;       ("SPC" . corfu-insert-seperator)
+  ;;       ("M-SPC" . corfu-insert)
+  ;;       )
+
+  :init
+  (global-corfu-mode)
+  (setq corfu-quit-at-boundary nil)
+  (setq corfu-quit-no-match nil)
   (setq corfu-auto t)
   (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode)
- 
+  )
+
+(after! corfu
   (use-package! orderless
     :custom
     (completion-styles '(orderless basic))
-    (completion-category-overrides '((file (styles basic partial-completion))))
-     ))
+    ;; (completion-category-overrides '((file (styles basic partial-completion))))
+    (completion-category-overrides '((file (styles orderless))))
+    )
+  )
 
 (use-package! cape
 :init
@@ -1462,81 +1485,6 @@ do not already have one."
         )
   )
 
-(use-package! matlab
-  :config
-  ;; associate .m file with the matlab-mode (major mode)
-  (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
-
-  ;; setup matlab-shell
-  ;; swap out for symlink in /usr/local/bin
-  (setq matlab-shell-command "/usr/local/bin/matlab")
-  ;;  (setq matlab-shell-command "/usr/local/MATLAB/R2023a/bin/matlab")
-  (setq matlab-shell-command-switches (list "-nodesktop" "-nosplash"))
-
-  (setq matlab-indent-function t)
-  ;; setup mlint for warnings and errors highlighting
-  ;; (setq add-to-list 'mlint-programs "/usr/local/MATLAB/R2023a/bin/glnxa64/mlint") ;; add mlint program for Linux
-  (setq org-babel-default-header-args:matlab
-        '((:session . "*MATLAB*")))
-
-
-  (defun matlab-org-session-advice (orig-fun &rest args)
-    "Advice for org to reuse the *MATLAB* buffer"
-    ;; ob-octave.el leverages both org-babel-matlab-emacs-link-wrapper-method and
-    ;; org-babel-octave-wrapper-method when interacting with the *MATLAB* buffer.
-    ;; Here we fix a couple items such as adding cd default-directory:
-    (setq org-babel-matlab-emacs-link-wrapper-method
-          (concat "\
-    cd('" default-directory "');
-    %s
-    if ~exist('ans','var') ans=''; end
-    if ischar(ans), fid = fopen('%s', 'w'); fprintf(fid, '%%s\\n', ans); fclose(fid);
-    else, save -ascii %s ans
-    end
-    delete('%s')
-    "))
-    (setq org-babel-octave-wrapper-method
-          (concat "\
-    cd('" default-directory "');
-    %s
-    if ~exist('ans','var') ans=''; end
-    if ischar(ans) || isstring(ans), fid = fopen('%s', 'w'); fprintf(fid, '%%s\\n', ans); fclose(fid);
-    else, dlmwrite('%s', ans, '\\t')
-    end"))
-    (apply orig-fun args))
-
-  (defun matlab-org-fixup-print (orig-fun session body result-type &optional matlabp)
-    "Fixup figure print to make it work with MATLAB"
-    ;; org 9.3 correctly does:     print -dpng figure.png
-    ;; org 9.6.1 incorrectly does: print -dpng "figure.png"
-    ;; and thus 9.6.1 creates on disk a file name containing quotes which is incorrect, so this
-    ;; advice fixes that.
-    (setq body (replace-regexp-in-string "^\\(print -dpng \\)\"\\([^\"]+\\)\"" "\\1\\2"  body t))
-    (funcall orig-fun session body result-type matlabp))
-
-  (defun org-export-dispatch-no-babel-advice (orig-fun &rest args)
-    "Instruct babel to not evaluate code blocks (and hence no
-prompt) during export, e.g. conversion of org to say html."
-    (let* ((org-babel-default-header-args
-            (cons '(:eval . "never-export") org-babel-default-header-args))
-           (result (apply orig-fun args)))
-      result))
-
-  (eval-after-load 'ox
-    '(progn
-       ;; Make C-c C-e `org-export-dispatch' work without prompting to evaluate code blocks
-       (advice-add 'org-export-dispatch :around #'org-export-dispatch-no-babel-advice)))
-
-  ;; org babel for matlab - make all matlab code blocks execute in the same *MATLAB* session
-  (eval-after-load "org"
-    '(progn
-       (advice-add 'org-babel-octave-evaluate-external-process :around #'matlab-org-session-advice)
-       (advice-add 'org-babel-octave-evaluate-session :around #'matlab-org-session-advice)
-       (advice-add 'org-babel-octave-evaluate :around #'matlab-org-fixup-print)))
-  ;; src: https://github.com/mathworks/Emacs-MATLAB-Mode/blob/default/examples/matlab-and-org-mode/matlab-and-org-mode.org
-
-  )
-
 ;; -- Python -- ;;
 
 ;; (after! python-mode
@@ -1609,10 +1557,29 @@ prompt) during export, e.g. conversion of org to say html."
                                         ))))
   )
 
+;; -- CMake LSP
+;;; add to $DOOMDIR/config.el
+;; (set-tree-sitter! 'csharp-mode 'csharp-ts-mode
+;;   '((c-sharp :url "https://github.com/tree-sitter/tree-sitter-c-sharp"
+;;              :commit "3431444351c871dffb32654f1299a00019280f2f")))
+
+
+;; (use-package! cmake-ts-mode
+;;   :config
+;;   (add-hook 'cmake-ts-mode-hook
+;;     (defun setup-neocmakelsp ()
+;;       (require 'eglot)
+;;       (add-to-list 'eglot-server-programs `((cmake-ts-mode) . ("neocmakelsp" "--stdio")))
+;;       (eglot-ensure))))A
+
+;; ref: [[https://github.com/neocmakelsp/neocmakelsp/issues/64#issuecomment-2656388801][how to use with emacs · Issue #64 · neocmakelsp/neocmakelsp · GitHub]]
+;; (after! eglot
+;;   (add-to-list 'eglot-server-programs `((cmake-mode cmake-ts-mode) . ("neocmakelsp" "--stdio")))
+;;   )
 
 (after! org
   ;; These _must_ be set for local operation otherwise it tries to submit to the plantumlcom webserver.
-  (setq plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
+  (setq plantuml-jar-path "/usr/share/plantuml/plantuml.jar") 
   (setq plantuml-default-exec-mode 'jar)
   ;; (setq plantuml-default-exec-mode 'binary)
   )
@@ -1650,3 +1617,20 @@ prompt) during export, e.g. conversion of org to say html."
 ;;  )
 
   )
+
+;; Smartparens has it's own notion internally of what is a valid sexp with which to wrap so you have to set them per-mode
+(after! org
+  (sp-local-pair 'org-mode "<" ">")
+  )
+
+(defun my/wrap-with-pair ()
+  "Prompts for a paired character and wraps with it."
+  (interactive "*")
+  (let ((char (read-char "Wrap with pair: ")))
+    (when char
+      (sp-wrap-with-pair (char-to-string char)))))
+
+(map!
+ :map org-mode-map
+ :n :desc "Wrap with PROMPT" "C-(" 'my/sp-wrap-with-pair
+ )

@@ -1,4 +1,3 @@
-;; [[file:~/.dotfiles/dotfiles.org::*Structure][Structure:1]]
 ;;; my-elisp.el --- Description -*- lexical-binding: t; -*-
 ;;
 ;; Author: Me T-T
@@ -16,35 +15,32 @@
 ;;
 ;;; Code:
 
-(defun my--scan-for-output-files (org-file)
-  (let ((output-files '())
-        (current-match t))
-    ;; Get a buffer for the file, either one that is
-    ;; already open or open a new one
-    (with-current-buffer (or (get-file-buffer org-file)
-                             (find-file-noselect org-file ))
-      ;; Save the current buffer position
-      (save-excursion
-        ;; Go back to the beginning of the buffer
-        (goto-char (point-min))
-        (widen) ; remove any narrowing - just in case buffer is already open
-        (message "Scanning buffer: %s" (buffer-name))
+(defun copy-face-color-at-point ()
+  "Copy the foreground color of the face at point to the kill ring."
+  (interactive)
+  (let* ((face (get-text-property (point) 'face))
+         ;; Sometimes, faces are lists!
+         (color (if (listp face)
+                    ;; So if they are, create an alist of face:foreground
+                   (mapcar (lambda (f) (cons f (face-attribute f :foreground))) face)
+                  ;; Otherwise, just one face so grab the :foreground from the face
+                 (face-attribute face :foreground))))
+    ;; Yoink it to the kill ring.
+    (kill-new (format "%s" color))
+    ;; Make it clear everything went according to plan.
+    (message "Copied to kill ring: %s" color)))
 
-        ;; Loop until no more matches are found
-        (while current-match
-          ;; Search for blocks with a :tangle property
-          ;; NOTE nil - silences search-forwards error on no match, would otherwise break the while
-          (setq current-match (search-forward ":tangle " nil t))
-          (when current-match
-            (let ((output-file (thing-at-point 'filename t)))
-              ;; If a file path was found, add it to the list
-              (unless (or (not output-file)
-                          (string-equal output-file "no")
-                          (string-equal output-file "yes"))
-                (setq output-files (cons output-file
-                                         output-files))))))))
-    output-files)
-  )
+;; Give it a hotkey
+(map!
+ :leader
+ (:prefix ("c" . "code")
+  :desc "Copy face color at point" "f" #'copy-face-color-at-point))
+
+(dolist (org-file my--dotfiles-org-files)
+(with-current-buffer (get-file-buffer (expand-file-name org-file
+                                                        my-dotfiles-dir))
+(message "File: %s" (buffer-file-name))))
+
 ;; A simple test for my--scan-for-output-files
 (defun test-scan-dotfiles ()
   (interactive)
@@ -58,12 +54,8 @@
     (message "Output Files: %S" output-files))
   )
 
-(provide 'my-elisp)
-;;; my-elisp.el ends here
-;; Structure:1 ends here
-
-;; [[file:~/.dotfiles/dotfiles.org::*Step 2. Wrap the shell script in an elisp function][Step 2. Wrap the shell script in an elisp function:1]]
-(defun shell-for-title (url)
+;; [[file:~/.dotfiles/dotfiles.org::my/shell-for-title][my/shell-for-title]]
+(defun my/shell-for-title (url)
   (interactive "sURL: ")
   "Calls a bash script to retrieve a title from the passed URL. Returns a formatted org-mode link"
   ;; string-trim removes any \n
@@ -72,4 +64,20 @@
     (when (called-interactively-p 'interactive)
       (insert link))
     link))
-;; Step 2. Wrap the shell script in an elisp function:1 ends here
+;; my/shell-for-title ends here
+
+(defun my/org-mklist-headings (hlist)
+  "Creates Org-mode headings from passed LIST."
+  ;; Check if hlist is nil
+  ;; Prompt interactively for list if nil (this way can be interactive or not)
+  (interactive "sEnter headings (csv)")
+  (when (stringp hlist)
+    ;; Split the csv and remove any trailing whitespace (string-trim)
+    (setq hlist (mapcar #'string-trim (split-string hlist ",")))
+    (dolist (heading hlist)
+      (org-insert-heading)
+      (insert heading))
+      ))
+
+(provide 'my-elisp)
+;;; my-elisp.el ends here
