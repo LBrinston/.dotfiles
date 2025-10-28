@@ -2364,6 +2364,7 @@ conda config --set auto_activate_base false
 :PROPERTIES:
 :header-args: :comments link
 :ID:       ba50e46e-4dd3-4dc3-b694-7e15e4402022
+:CREATED:  2025-10-27 20:07:51
 :END:
 
 Upfront make sure that our shell can find DOOM.
@@ -3628,6 +3629,29 @@ This is where things get more complicated. The org-exporter does have a notion o
 Ideally we set these per file as need with a file-local variable like this:
 ~-,*- org-export-filter-link-functions: (my-custom-link-filter); -*-~
 =Note=: the , at the beginning is to escape org markup.
+(see Filters below)
+
+_Getting Libreoffice to convert to .docx_
+
+This requires libreoffice (and for it to be on path).
+
+#+begin_src emacs-lisp
+(after! org
+(defun my/org-export-to-docx-with-template ()
+  "Export org to ODT with template, then convert to DOCX."
+  (interactive)
+  (let* ((odt-file (org-odt-export-to-odt))
+         (docx-file (concat (file-name-sans-extension odt-file) ".docx")))
+    (shell-command 
+     (format "libreoffice --headless --convert-to docx --outdir %s %s"
+             (file-name-directory odt-file)
+             odt-file))
+    (message "Exported to %s" docx-file)))
+
+;; Should set a default
+;;(setq org-odt-styles-file "/path/to/your/template.odt")
+)
+#+end_src
 
 ******* Filters
 :PROPERTIES:
@@ -5944,7 +5968,16 @@ This will have doom go package by package and attempt to update. This can yield 
     but recipe specifies a URL of
       "https://git.sr.ht/~~ashton314/auto-olivetti"
 #+end_src
+****** M-x or M-: undefined but everything else seemingly fine
+:PROPERTIES:
+:ID:       7b162bae-2dfc-47e4-b9a7-7172a2d4f764
+:END:
 
+Keymap bugs are weird and can be hard to debug.
+One thing _for sure_ to not do:
++ _Do not_ try to bind C-[
+
+ C-[ is ESC in Emacs. Things will break in subtle ways.
 ***** Reference
 :PROPERTIES:
 :ID:       9f117960-0294-4f2a-a6da-1f44dd91d5fa

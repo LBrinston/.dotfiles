@@ -504,6 +504,22 @@ do not already have one."
 
   )
 
+(after! org
+(defun my/org-export-to-docx-with-template ()
+  "Export org to ODT with template, then convert to DOCX."
+  (interactive)
+  (let* ((odt-file (org-odt-export-to-odt))
+         (docx-file (concat (file-name-sans-extension odt-file) ".docx")))
+    (shell-command 
+     (format "libreoffice --headless --convert-to docx --outdir %s %s"
+             (file-name-directory odt-file)
+             odt-file))
+    (message "Exported to %s" docx-file)))
+
+;; Should set a default
+;;(setq org-odt-styles-file "/path/to/your/template.odt")
+)
+
 (defun nix-to-win-path(nix-path)
   (interactive)
   "Takes a unix style path and converts it to a windows UNC path."
