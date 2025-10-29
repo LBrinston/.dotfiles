@@ -55,6 +55,8 @@
           :repo "awth13/org-appear"))
 ;; (package) =org-appear=:1 ends here
 
+(package! org-transclusion)
+
 (package! org-super-links
  :recipe(:host github
          :repo "toshism/org-super-links"

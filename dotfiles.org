@@ -3168,6 +3168,37 @@ ref: https://emacs.stackexchange.com/questions/44664/apply-ansi-color-escape-seq
 This would be really nice to figure out.
 
 ref: https://jamesaimonetti.com/posts/formatting-tangled-output-in-org-mode/
+******* (package) =org-transclude=
+:PROPERTIES:
+:ID:       dad83ef8-cf8d-4938-8c3a-78bf57acdc4a
+:END:
+
+#+begin_src emacs-lisp :tangle ./.config/doom/packages.el 
+(package! org-transclusion)
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package! org-transclusion
+  :after org
+  :init
+  (map!
+   :map global-map "<f12>" #'org-transclusion-add
+   :leader
+   :prefix "n"
+   :desc "Org Transclusion Mode" "t" #'org-transclusion-mode)
+  :config
+  ;; May want to set explicit faces?
+  ;; ref: https://nobiot.github.io/org-transclusion/#Face-for-the-_0023_002btransclude-keyword
+  ;; (set-face-attribute
+  ;;  'org-transclusion nil
+  ;;  :background "black"
+  ;;  )
+  ;; (set-face-attribute
+  ;;  'org-transclusion-source nil
+  ;;  :background "black"
+  ;;  )
+  )
+#+end_src
 
 ******* Images
 :PROPERTIES:

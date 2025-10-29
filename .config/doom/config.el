@@ -261,6 +261,15 @@ which contain configuration files that should be tangled"
   (add-hook 'org-babel-after-execute-hook 'my--org-babel-display-ansi-colors)
   )
 
+(use-package! org-transclusion
+  :after org
+  :init
+  (map!
+   :map global-map "<f12>" #'org-transclusion-add
+   :leader
+   :prefix "n"
+   :desc "Org Transclusion Mode" "t" #'org-transclusion-mode))
+
 ;; -- Images
 (after! org
   (when (display-graphic-p)
