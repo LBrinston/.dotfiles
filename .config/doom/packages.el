@@ -62,6 +62,7 @@
          :repo "toshism/org-super-links"
          :branch "develop" )
  )
+(package! helm-org-ql)
 
 (package! engrave-faces)
 

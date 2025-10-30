@@ -3530,6 +3530,7 @@ Creates automatic backlinks when it is used to create a link. ~org-refile~ targe
          :repo "toshism/org-super-links"
          :branch "develop" )
  )
+(package! helm-org-ql)
 #+end_src
 
 #+begin_src emacs-lisp
