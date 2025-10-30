@@ -1024,10 +1024,18 @@ do not already have one."
 ("wb" "Bug" entry (file "~/.notes/agenda-work.org")
  "* BUG %^{Project name} - %^{Bug description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
+;; PO
+;; This would be place to figure out how to use capture with tables & refile?
+("wp" "Work PO")
+("wpp" "Purchase Order" entry (file "~/.notes/agenda-work.org")
+ "* PO %^{PO#} - %^{Item description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:%?"
+ :empty-lines-after 1 :prepend t)
+("wpl" "Purchase Order with link" entry (file "~/.notes/agenda-work.org")
+ "* PO %^{PO#} - %^{Item descripion}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n[[%^{Link}][%^{Description}]]%?")
 ;; QUESTION
 ("wq" "Work Question")
 ("wqq" "Question" entry (file "~/.notes/agenda-work.org")
- "* QUESTION %^{Project name} - %^{Bug description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
+ "* QUESTION %^{Project name} - %^{Question description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n%?"
  :empty-lines-after 1 :prepend t)
 ("wql" "Question with link" entry (file "~/.notes/agenda-work.org")
  "* QUESTION %^{Project name} - %^{Question description}\n:PROPERTIES:\n:CREATED:\t%U\n:END:\n[[%^{Link}][%^{Description}]]\n%?"
