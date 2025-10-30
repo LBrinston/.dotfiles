@@ -268,7 +268,19 @@ which contain configuration files that should be tangled"
    :map global-map "<f12>" #'org-transclusion-add
    :leader
    :prefix "n"
-   :desc "Org Transclusion Mode" "t" #'org-transclusion-mode))
+   :desc "Org Transclusion Mode" "t" #'org-transclusion-mode)
+  :config
+  ;; May want to set explicit faces?
+  ;; ref: https://nobiot.github.io/org-transclusion/#Face-for-the-_0023_002btransclude-keyword
+  ;; (set-face-attribute
+  ;;  'org-transclusion nil
+  ;;  :background "black"
+  ;;  )
+  ;; (set-face-attribute
+  ;;  'org-transclusion-source nil
+  ;;  :background "black"
+  ;;  )
+  )
 
 ;; -- Images
 (after! org
