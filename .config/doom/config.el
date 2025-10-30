@@ -459,20 +459,34 @@ do not already have one."
          ("C-c s C-l" . org-super-links-insert-link)
          )
   ;; TODO - configure link formatting?
+  :config
+  (setq org-super-links-search-function "helm-org-ql")
+  
+  (defun org-super-links-quick-related ()
+    "Quickly add a related: link via org-super-links-link"
+    (interactive)
+    (let ((org-super-links-link-prefix "\nrelated: "))
+      (org-super-links-link)))
+
+  (global-set-key (kbd "C-c s r") 'org-super-links-quick-related)
+
+  ;; This doesn't seem to work.
+  (defun org-super-links-quick-insert-related ()
+    "Quickly insert a link to heading you departed from when calling org-capture."
+    (interactive)
+    (let ((org-super-links-link-prefix "\nrelated: "))
+      (org-super-links-insert-link)))
+
+  (global-set-key (kbd "C-c s i") 'org-super-links-quick-insert-related)  
   )
-(map!
- :leader
- :prefix ("m l b" . "Backlink")
- :n :desc "org-super-links-store-link" "s" #'org-super-links-store-link
- :prefix ("m l b" . "Backlink")
- :n :desc "org-super-links-insert-link" "i" #'org-super-links-insert-link
- :prefix ("m l b" . "Backlink")
- :n :desc "org-super-links-link" "S" #'org-super-links-link
- :prefix ("m l b" . "Backlink")
- :n :desc "org-super-links-link" "d" #'org-super-links-delete-link
- :prefix ("m l b" . "Backlink")
- :n :desc "org-super-links-convert-to-super" "c" #'org-super-links-convert-link-to-super
- )
+  (map! :leader
+        :prefix "m l b"
+        :desc "Backlinks"
+        :n "s" #'org-super-links-store-link
+        :n "i" #'org-super-links-insert-link
+        :n "S" #'org-super-links-link
+        :n "d" #'org-super-links-delete-link
+        :n "c" #'org-super-links-convert-link-to-super)
 
 (after! org
 (defun set-creation-date-heading-property ()
